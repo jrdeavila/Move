@@ -5,11 +5,13 @@ import 'package:move_app/src/presentation/utils/dimensions.dart';
 class ButtonClassic extends StatefulWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color color;
 
   const ButtonClassic({
     Key? key,
     required this.text,
     required this.onPressed,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class _ButtonClassicState extends State<ButtonClassic> {
     return ElevatedButton(
       onPressed: widget.onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: widget.color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -59,30 +61,33 @@ class CustomButton extends StatefulWidget {
 class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: widget.onPressed,
-      style: TextButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 179, 174, 174),
-        padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 20),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.02),
+      child: TextButton(
+        onPressed: widget.onPressed,
+        style: TextButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 179, 174, 174),
+          padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            widget.text,
-            style: GoogleFonts.montserrat(
-              color: Colors.black,
-              fontSize: 16,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.text,
+              style: GoogleFonts.montserrat(
+                color: Colors.black,
+                fontSize: 16,
+              ),
             ),
-          ),
-          Icon(
-            widget.icon,
-            color: Colors.black,
-          ),
-        ],
+            Icon(
+              widget.icon,
+              color: Colors.black,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/pages/verification/verification_code.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
-import 'package:move_app/src/presentation/widgets/button.dart';
-import 'package:move_app/src/presentation/widgets/input.dart';
+import 'package:move_app/lib.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -113,6 +107,7 @@ class _RegisterState extends State<Register> {
                               onPressed: () {
                                 Get.offAll(() => const VerificationCode());
                               },
+                              color: Colors.black,
                             ),
                           ],
                         ),

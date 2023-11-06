@@ -138,6 +138,7 @@ class _VerificationCodeState extends State<VerificationCode> {
                 onPressed: () {
                   Get.offAll(() => const DashboardClient());
                 },
+                color: Colors.black,
               ),
             )
           ],

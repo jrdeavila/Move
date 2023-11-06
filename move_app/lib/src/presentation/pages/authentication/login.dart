@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/pages/verification/verification_code.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
-import 'package:move_app/src/presentation/widgets/button.dart';
-import 'package:move_app/src/presentation/widgets/input.dart';
+import 'package:move_app/lib.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -107,6 +101,7 @@ class _LoginState extends State<Login> {
                               onPressed: () {
                                 Get.offAll(() => const VerificationCode());
                               },
+                              color: Colors.black,
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.04,

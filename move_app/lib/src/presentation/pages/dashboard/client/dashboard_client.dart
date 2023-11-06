@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'client.dart';
 
 class DashboardClient extends StatefulWidget {
   const DashboardClient({super.key});
@@ -86,7 +86,7 @@ class _DashboardClientState extends State<DashboardClient> {
                       colorTitle: Colors.white,
                       root: 'assets/images/profile.png',
                       onPressed: () {
-                        //Get.offAll(() => const Profile());
+                        Get.offAll(() => const Profiles());
                       },
                     ),
                   ]),
