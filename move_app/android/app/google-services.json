@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64558452563",
+    "project_id": "mevo-ceb14",
+    "storage_bucket": "mevo-ceb14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64558452563:android:80b07ca8f9c6d610c55ba6",
+        "android_client_info": {
+          "package_name": "com.example.move_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8tuDvLiRFNDh-pNHmCzNKHjAVbSjI1tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

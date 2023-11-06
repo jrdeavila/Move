@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAPDVhp1w7-pKBRPc6oo-aUPdhQiT4BD9A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>64558452563</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.moveApp</string>
+	<key>PROJECT_ID</key>
+	<string>mevo-ceb14</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mevo-ceb14.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:64558452563:ios:e220c21c1861d94bc55ba6</string>
+</dict>
+</plist>
