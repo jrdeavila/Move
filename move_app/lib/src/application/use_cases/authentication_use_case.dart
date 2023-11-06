@@ -8,7 +8,7 @@ class LoginUseCase implements ILoginUseCase {
   LoginUseCase(this._authenticationService);
 
   @override
-  Future<String> login(LoginRequest loginRequest) {
+  Future<AppUser> login(LoginRequest loginRequest) {
     return _authenticationService.login(
       loginRequest.email,
       loginRequest.password,
@@ -28,18 +28,6 @@ class LogoutUseCase implements ILogoutUseCase {
   }
 }
 
-@Injectable(as: IRefreshTokenUseCase)
-class RefreshTokenUseCase implements IRefreshTokenUseCase {
-  final IAuthenticationService _authenticationService;
-
-  RefreshTokenUseCase(this._authenticationService);
-
-  @override
-  Future<String> refreshToken() {
-    return _authenticationService.refreshToken();
-  }
-}
-
 @Injectable(as: IGetUserUseCase)
 class GetUserUseCase implements IGetUserUseCase {
   final IAuthenticationService _authenticationService;
@@ -47,7 +35,7 @@ class GetUserUseCase implements IGetUserUseCase {
   GetUserUseCase(this._authenticationService);
 
   @override
-  Future<User> getUser() {
+  Future<AppUser> getUser() {
     return _authenticationService.getUser();
   }
 }
@@ -59,7 +47,7 @@ class RegisterUseCase implements IRegisterUseCase {
   RegisterUseCase(this._authenticationService);
 
   @override
-  Future<String> register(RegisterRequest registerRequest) {
+  Future<AppUser> register(RegisterRequest registerRequest) {
     return _authenticationService.register(
       registerRequest.name,
       registerRequest.email,

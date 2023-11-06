@@ -1,7 +1,19 @@
-class User {
-  final int id;
+class AppUser {
+  final String uid;
   final String name;
   final String email;
+  final List<AppUserRole> roles;
 
-  User({required this.id, required this.name, required this.email});
+  AppUser({
+    required this.uid,
+    required this.name,
+    required this.email,
+    required this.roles,
+  });
+}
+
+enum AppUserRole {
+  client,
+  driver,
+  admin,
 }

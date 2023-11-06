@@ -1,14 +1,14 @@
 import 'package:move_app/lib.dart';
 
 abstract class IAuthenticationService {
-  Future<String> login(String email, String password);
+  Future<AppUser> login(String email, String password);
 
   Future<void> logout();
 
-  Future<String> refreshToken();
+  Stream<bool> isAuthenticated();
 
-  Future<User> getUser();
+  Future<AppUser> getUser();
 
-  Future<String> register(
+  Future<AppUser> register(
       String name, String email, String password, String confirmPassword);
 }

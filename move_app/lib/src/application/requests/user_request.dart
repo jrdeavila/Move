@@ -1,5 +1,3 @@
-import 'package:move_app/lib.dart';
-
 class LoginRequest {
   final String email;
   final String password;
@@ -8,7 +6,7 @@ class LoginRequest {
     required this.email,
     required this.password,
   });
-  JSON toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "email": email,
       "password": password,
@@ -28,7 +26,7 @@ class RegisterRequest {
     required this.password,
     required this.confirmPassword,
   });
-  JSON toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "name": name,
       "email": email,

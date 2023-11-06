@@ -1,25 +1,17 @@
 import 'package:move_app/lib.dart';
 
 abstract class ILoginUseCase {
-  Future<String> login(LoginRequest loginRequest);
+  Future<AppUser> login(LoginRequest loginRequest);
 }
 
 abstract class ILogoutUseCase {
   Future<void> logout();
 }
 
-abstract class IRefreshTokenUseCase {
-  Future<String> refreshToken();
-}
-
 abstract class IGetUserUseCase {
-  Future<User> getUser();
-}
-
-abstract class IGetAccessTokenUseCase {
-  Future<String> getAccessToken();
+  Future<AppUser> getUser();
 }
 
 abstract class IRegisterUseCase {
-  Future<String> register(RegisterRequest registerRequest);
+  Future<AppUser> register(RegisterRequest registerRequest);
 }

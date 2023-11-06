@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:move_app/src/presentation/pages/app.dart';
+import 'package:move_app/lib.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   runApp(const App());
 }
