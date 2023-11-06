@@ -1,2 +1,3 @@
-export 'common/common.dart';
-export 'features/features.dart';
+export 'pages/pages.dart';
+export 'utils/utils.dart';
+export 'widgets/widgets.dart';
