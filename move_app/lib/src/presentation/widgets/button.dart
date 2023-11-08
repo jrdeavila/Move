@@ -66,7 +66,7 @@ class _CustomButtonState extends State<CustomButton> {
       child: TextButton(
         onPressed: widget.onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 179, 174, 174),
+          backgroundColor: const Color.fromRGBO(234, 234, 234, 1),
           padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),

@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:move_app/lib.dart';
 
 class Login extends StatefulWidget {
@@ -11,8 +8,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerPassword = TextEditingController();
+  TextEditingController controllerPhone = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,67 +72,32 @@ class _LoginState extends State<Login> {
                               padding: EdgeInsets.only(
                                 bottom: Dimensions.screenHeight * 0.04,
                               ),
-                              child: Text('Ingresar',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                    fontSize: Dimensions.screenWidth * 0.07,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.2,
-                                  )),
+                              child: Text(
+                                'Ingrese su número de télefono para iniciar sesión',
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.black,
+                                  fontSize: Dimensions.screenWidth * 0.065,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.2,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             InputClassic(
-                              labelText: 'Correo',
-                              controller: controllerEmail,
+                              labelText: 'Telefono',
+                              controller: controllerPhone,
                               isPassword: false,
-                              isNumericKeyboard: false,
-                            ),
-                            InputClassic(
-                              labelText: 'Contraseña',
-                              controller: controllerPassword,
-                              isPassword: true,
                               isNumericKeyboard: false,
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,
                             ),
                             ButtonClassic(
-                              text: "Ingresar",
+                              text: "Siguiente",
                               onPressed: () {
                                 Get.offAll(() => const VerificationCode());
                               },
                               color: Colors.black,
-                            ),
-                            SizedBox(
-                              height: Dimensions.screenHeight * 0.04,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Get.offAllNamed('/register');
-                              },
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('¿No tienes una cuenta?',
-                                      style: GoogleFonts.montserrat(
-                                        color: Colors.black,
-                                        fontSize: Dimensions.screenWidth * 0.04,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: 1,
-                                        decoration: TextDecoration.none,
-                                      )),
-                                  SizedBox(
-                                    width: Dimensions.screenWidth * 0.02,
-                                  ),
-                                  Text('Registrar',
-                                      style: GoogleFonts.montserrat(
-                                        color: Colors.black,
-                                        fontSize: Dimensions.screenWidth * 0.04,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 1.2,
-                                        decoration: TextDecoration.none,
-                                      )),
-                                ],
-                              ),
                             ),
                           ],
                         ),
