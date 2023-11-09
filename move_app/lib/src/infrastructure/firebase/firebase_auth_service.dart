@@ -31,19 +31,48 @@ class FirebaseAuthService implements IAuthenticationService {
   }
 
   @override
-  Future<AppUser> register(String name, String email, String password,
-      String confirmPassword) async {
-    final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    final user =
-        AppUser(uid: credential.user!.uid, email: email, name: name, roles: [
-      AppUserRole.client,
-    ]);
-    return _userRepository.createUser(user);
+  Stream<bool> isAuthenticated() {
+    return _firebaseAuth.authStateChanges().map((user) => user != null);
   }
 
   @override
-  Stream<bool> isAuthenticated() {
-    return _firebaseAuth.authStateChanges().map((user) => user != null);
+  Future<AppUser> register(AppUser appUser, {required String password}) {
+    return _firebaseAuth
+        .createUserWithEmailAndPassword(
+      email: appUser.email,
+      password: password,
+    )
+        .then((credential) {
+      appUser.uuid = credential.user!.uid;
+      return _userRepository.createUser(appUser);
+    });
+  }
+}
+
+class FirebasePhoneAuthenticationService
+    implements IPhoneAuthenticationService {
+  final FirebaseAuth _firebaseAuth;
+  final IUserRepository _userRepository;
+
+  FirebasePhoneAuthenticationService({
+    required FirebaseAuth firebaseAuth,
+    required IUserRepository userRepository,
+  })  : _firebaseAuth = firebaseAuth,
+        _userRepository = userRepository;
+
+  @override
+  Future<Future<AppUser> Function(String verficationCode)> loginWithPhone(
+      String phone) async {
+    final confirmation = await _firebaseAuth.signInWithPhoneNumber(phone);
+    return (String verificationCode) async {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: confirmation.verificationId,
+        smsCode: verificationCode,
+      );
+      final userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+      final user = userCredential.user;
+      return _userRepository.getUser(user!.uid);
+    };
   }
 }

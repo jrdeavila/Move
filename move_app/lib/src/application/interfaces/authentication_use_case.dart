@@ -4,6 +4,11 @@ abstract class ILoginUseCase {
   Future<AppUser> login(LoginRequest loginRequest);
 }
 
+abstract class ILoginWithPhoneUseCase {
+  Future<Future<AppUser> Function(String verificationCode)> loginWithPhone(
+      LoginWithPhoneRequest loginWithPhoneRequest);
+}
+
 abstract class ILogoutUseCase {
   Future<void> logout();
 }

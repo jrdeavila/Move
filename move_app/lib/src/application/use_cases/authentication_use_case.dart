@@ -16,6 +16,19 @@ class LoginUseCase implements ILoginUseCase {
   }
 }
 
+@Injectable(as: ILoginWithPhoneUseCase)
+class LoginWithPhoneUseCase implements ILoginWithPhoneUseCase {
+  final IPhoneAuthenticationService _authenticationService;
+
+  LoginWithPhoneUseCase(this._authenticationService);
+
+  @override
+  Future<Future<AppUser> Function(String verificationCode)> loginWithPhone(
+      LoginWithPhoneRequest loginWithPhoneRequest) {
+    return _authenticationService.loginWithPhone(loginWithPhoneRequest.phone);
+  }
+}
+
 @Injectable(as: ILogoutUseCase)
 class LogoutUseCase implements ILogoutUseCase {
   final IAuthenticationService _authenticationService;
@@ -48,11 +61,10 @@ class RegisterUseCase implements IRegisterUseCase {
 
   @override
   Future<AppUser> register(RegisterRequest registerRequest) {
+    AppUser appUser = registerRequest.toUser();
     return _authenticationService.register(
-      registerRequest.name,
-      registerRequest.email,
-      registerRequest.password,
-      registerRequest.confirmPassword,
+      appUser,
+      password: registerRequest.password,
     );
   }
 }

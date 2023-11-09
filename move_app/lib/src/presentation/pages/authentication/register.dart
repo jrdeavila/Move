@@ -11,11 +11,34 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController controllerName = TextEditingController();
-  TextEditingController controllerLastName = TextEditingController();
-  TextEditingController controllerPhone = TextEditingController();
-  TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerPassword = TextEditingController();
+  final RegisterCtrl _registerCtrl = Get.find<RegisterCtrl>();
+
+  final TextEditingController _controllerFirstName = TextEditingController();
+  final TextEditingController _controllerLastName = TextEditingController();
+  final TextEditingController _controllerPhone = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerFirstName.addListener(() {
+      _registerCtrl.onFirstnameChanged(_controllerFirstName.text);
+    });
+    _controllerLastName.addListener(() {
+      _registerCtrl.onLastnameChanged(_controllerLastName.text);
+    });
+    _controllerPhone.addListener(() {
+      _registerCtrl.onPhoneChanged(_controllerPhone.text);
+    });
+    _controllerEmail.addListener(() {
+      _registerCtrl.onEmailChanged(_controllerEmail.text);
+    });
+    _controllerPassword.addListener(() {
+      _registerCtrl.onPasswordChanged(_controllerPassword.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,31 +97,31 @@ class _RegisterState extends State<Register> {
                                 )),
                             InputClassic(
                               labelText: 'Nombre',
-                              controller: controllerName,
+                              controller: _controllerFirstName,
                               isPassword: false,
                               isNumericKeyboard: false,
                             ),
                             InputClassic(
                               labelText: 'Apellido',
-                              controller: controllerLastName,
+                              controller: _controllerLastName,
                               isPassword: false,
                               isNumericKeyboard: false,
                             ),
                             InputClassic(
                               labelText: 'Celular',
-                              controller: controllerPhone,
+                              controller: _controllerPhone,
                               isPassword: false,
                               isNumericKeyboard: true,
                             ),
                             InputClassic(
                               labelText: 'Correo',
-                              controller: controllerEmail,
+                              controller: _controllerEmail,
                               isPassword: false,
                               isNumericKeyboard: false,
                             ),
                             InputClassic(
                               labelText: 'Contraseña',
-                              controller: controllerPassword,
+                              controller: _controllerPassword,
                               isPassword: true,
                               isNumericKeyboard: false,
                             ),
@@ -107,9 +130,7 @@ class _RegisterState extends State<Register> {
                             ),
                             ButtonClassic(
                               text: "Registrar",
-                              onPressed: () {
-                                Get.offAll(() => const VerificationCode());
-                              },
+                              onPressed: () {},
                               color: Colors.black,
                             ),
                           ],

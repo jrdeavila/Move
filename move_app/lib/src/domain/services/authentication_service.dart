@@ -10,5 +10,12 @@ abstract class IAuthenticationService {
   Future<AppUser> getUser();
 
   Future<AppUser> register(
-      String name, String email, String password, String confirmPassword);
+    AppUser appUser, {
+    required String password,
+  });
+}
+
+abstract class IPhoneAuthenticationService {
+  Future<Future<AppUser> Function(String verficationCode)> loginWithPhone(
+      String phone);
 }

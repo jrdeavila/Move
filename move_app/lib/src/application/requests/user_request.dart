@@ -1,3 +1,5 @@
+import 'package:move_app/src/domain/entities/user.dart';
+
 class LoginRequest {
   final String email;
   final String password;
@@ -14,24 +16,41 @@ class LoginRequest {
   }
 }
 
+class LoginWithPhoneRequest {
+  final String phone;
+
+  LoginWithPhoneRequest({
+    required this.phone,
+  });
+}
+
 class RegisterRequest {
-  final String name;
+  final String uuid;
+  final String firstname;
+  final String lastname;
+  final String phone;
   final String email;
   final String password;
-  final String confirmPassword;
 
   RegisterRequest({
-    required this.name,
+    required this.uuid,
+    required this.firstname,
+    required this.lastname,
     required this.email,
     required this.password,
-    required this.confirmPassword,
+    required this.phone,
   });
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "email": email,
-      "password": password,
-      "confirmPassword": confirmPassword,
-    };
+
+  AppUser toUser() {
+    return AppUser(
+      uuid: uuid,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      phone: phone,
+      roles: [
+        AppUserRole.client,
+      ],
+    );
   }
 }
