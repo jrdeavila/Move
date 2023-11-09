@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'client.dart';
 
 class DashboardClient extends StatefulWidget {
   const DashboardClient({super.key});
@@ -70,7 +70,9 @@ class _DashboardClientState extends State<DashboardClient> {
                       colorTitle: Colors.white,
                       root: 'assets/images/car.png',
                       description: '¿Necesitas un viaje? ¡Estamos en camino!',
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.offAll(() => const RequestService());
+                      },
                     ),
                     CardCompound(
                       title: 'Modo',
