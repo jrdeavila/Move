@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/lib.dart';
+import 'client.dart';
 
 class DashboardClient extends StatefulWidget {
   const DashboardClient({super.key});
@@ -73,7 +70,9 @@ class _DashboardClientState extends State<DashboardClient> {
                       colorTitle: Colors.white,
                       root: 'assets/images/car.png',
                       description: '¿Necesitas un viaje? ¡Estamos en camino!',
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.offAll(() => const RequestService());
+                      },
                     ),
                     CardCompound(
                       title: 'Modo',
@@ -81,7 +80,9 @@ class _DashboardClientState extends State<DashboardClient> {
                       color: const Color.fromRGBO(217, 217, 217, 1),
                       colorTitle: Colors.white,
                       root: 'assets/images/steering.png',
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.offAll(() => const ApplicationForm());
+                      },
                     ),
                     CardClassic(
                       title: 'Perfil',

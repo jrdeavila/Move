@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:move_app/lib.dart';
 
 class Register extends StatefulWidget {
@@ -78,8 +75,7 @@ class _RegisterState extends State<Register> {
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                          topLeft:
-                              Radius.circular(60), // Esquina superior izquierda
+                          topLeft: Radius.circular(60),
                         ),
                       ),
                       child: Padding(
