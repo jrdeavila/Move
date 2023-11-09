@@ -1,16 +1,15 @@
+import 'package:flutter/services.dart';
 import 'package:move_app/lib.dart';
 
-class Login extends StatefulWidget {
+class Login extends GetView<LoginCtrl> {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  TextEditingController controllerPhone = TextEditingController();
-  @override
   Widget build(BuildContext context) {
+    TextEditingController controllerPhone = TextEditingController();
+    controllerPhone.addListener(() {
+      controller.setNumberPhone(controllerPhone.text);
+    });
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -32,12 +31,14 @@ class _LoginState extends State<Login> {
                               color: Colors.white))),
                   IgnorePointer(
                     child: Container(
-                        height: Dimensions.screenHeight * 0.452,
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/background_login.png'),
-                                fit: BoxFit.contain))),
+                      height: Dimensions.screenHeight * 0.452,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/background_login.png'),
+                            fit: BoxFit.contain),
+                      ),
+                    ),
                   ),
                   Positioned(
                     top: Dimensions.screenHeight * 0.07,
@@ -84,18 +85,20 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             InputClassic(
-                              labelText: 'Telefono',
-                              controller: controllerPhone,
-                              isPassword: false,
-                              isNumericKeyboard: false,
-                            ),
+                                labelText: 'Telefono',
+                                controller: controllerPhone,
+                                isPassword: false,
+                                isNumericKeyboard: true,
+                                formatters: [
+                                  PhoneInputFormatter(),
+                                ]),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,
                             ),
                             ButtonClassic(
                               text: "Siguiente",
                               onPressed: () {
-                                Get.offAll(() => const VerificationCode());
+                                controller.login();
                               },
                               color: Colors.black,
                             ),

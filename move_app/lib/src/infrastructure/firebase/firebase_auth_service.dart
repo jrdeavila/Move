@@ -49,6 +49,7 @@ class FirebaseAuthService implements IAuthenticationService {
   }
 }
 
+@Injectable(as: IPhoneAuthenticationService)
 class FirebasePhoneAuthenticationService
     implements IPhoneAuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -61,18 +62,29 @@ class FirebasePhoneAuthenticationService
         _userRepository = userRepository;
 
   @override
-  Future<Future<AppUser> Function(String verficationCode)> loginWithPhone(
-      String phone) async {
-    final confirmation = await _firebaseAuth.signInWithPhoneNumber(phone);
-    return (String verificationCode) async {
-      final credential = PhoneAuthProvider.credential(
-        verificationId: confirmation.verificationId,
-        smsCode: verificationCode,
-      );
-      final userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-      final user = userCredential.user;
-      return _userRepository.getUser(user!.uid);
-    };
+  Future<void> loginWithPhone({
+    required String phone,
+    required void Function() onCodeSend,
+    required void Function(AppUser) onVerificationComplete,
+    required void Function() onError,
+    required void Function(String) onCodeRetrival,
+    int? resendToken,
+  }) {
+    return _firebaseAuth.verifyPhoneNumber(
+      codeSent: (verificationId, forceResendingToken) {
+        return;
+      },
+      phoneNumber: phone,
+      forceResendingToken: resendToken,
+      verificationCompleted: (phoneAuthCredential) async {
+        final credentials =
+            await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+        final user = await _userRepository.getUser(credentials.user!.uid);
+
+        onVerificationComplete(user);
+      },
+      verificationFailed: (error) => onError(),
+      codeAutoRetrievalTimeout: onCodeRetrival,
+    );
   }
 }

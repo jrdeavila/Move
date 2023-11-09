@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_app/src/presentation/utils/dimensions.dart';
 
@@ -7,12 +8,14 @@ class InputClassic extends StatefulWidget {
   final TextEditingController controller;
   final bool isPassword;
   final bool isNumericKeyboard; // Nuevo atributo
+  final List<TextInputFormatter> formatters;
   const InputClassic({
     Key? key,
     required this.labelText,
     required this.controller,
     required this.isPassword,
     required this.isNumericKeyboard,
+    this.formatters = const [],
   }) : super(key: key);
 
   @override
@@ -34,6 +37,7 @@ class _InputClassicState extends State<InputClassic> {
       child: TextField(
         obscureText: widget.isPassword,
         cursorColor: Colors.black,
+        inputFormatters: widget.formatters,
         style: GoogleFonts.montserrat(
           color: const Color.fromRGBO(30, 30, 30, 1),
         ),

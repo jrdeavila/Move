@@ -5,8 +5,7 @@ abstract class ILoginUseCase {
 }
 
 abstract class ILoginWithPhoneUseCase {
-  Future<Future<AppUser> Function(String verificationCode)> loginWithPhone(
-      LoginWithPhoneRequest loginWithPhoneRequest);
+  Future<void> loginWithPhone(LoginWithPhoneRequest loginWithPhoneRequest);
 }
 
 abstract class ILogoutUseCase {

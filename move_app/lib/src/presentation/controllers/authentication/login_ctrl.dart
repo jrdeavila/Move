@@ -1,26 +1,45 @@
-import 'package:get/get.dart';
 import 'package:move_app/src/src.dart';
 
 class LoginCtrl extends GetxController {
+  // -------------------------------------------------
   final RxString _phone = ''.obs;
-  final Rx<Future<AppUser> Function(String verificationCode)?> _loginWithPhone =
-      Rx<Future<AppUser> Function(String verificationCode)?>(null);
-
   final RxString _verificationCode = ''.obs;
 
+  // -------------------------------------------------
+  void setNumberPhone(String value) {
+    _phone.value = value;
+  }
+
+  void setVerificationCode(String value) {
+    _verificationCode.value = value;
+  }
+
+  // -------------------------------------------------
   void login() async {
     final useCase = getIt<ILoginWithPhoneUseCase>();
 
-    final confirmationCode = await useCase.loginWithPhone(
+    useCase.loginWithPhone(
       LoginWithPhoneRequest(
-        phone: _phone.value,
+        phone: PhoneConvert.toFirebase(numberPhone: _phone.value),
+        onCodeRetrival: (code) {
+          print(code);
+        },
+        onCodeSend: () {
+          Get.to(() => const VerificationCode());
+        },
+        onError: () {
+          Get.snackbar(
+            'Error',
+            'Error al enviar el código de verificación',
+            backgroundColor: Colors.red,
+          );
+        },
+        onVerificationComplete: (user) {
+          print(user);
+        },
       ),
     );
-
-    _loginWithPhone.value = confirmationCode;
   }
 
-  void sendCode() {
-    _loginWithPhone.value!(_verificationCode.value);
-  }
+  void sendCode() {}
 }

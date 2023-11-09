@@ -23,9 +23,14 @@ class LoginWithPhoneUseCase implements ILoginWithPhoneUseCase {
   LoginWithPhoneUseCase(this._authenticationService);
 
   @override
-  Future<Future<AppUser> Function(String verificationCode)> loginWithPhone(
-      LoginWithPhoneRequest loginWithPhoneRequest) {
-    return _authenticationService.loginWithPhone(loginWithPhoneRequest.phone);
+  Future<void> loginWithPhone(LoginWithPhoneRequest loginWithPhoneRequest) {
+    return _authenticationService.loginWithPhone(
+      phone: loginWithPhoneRequest.phone,
+      onCodeRetrival: loginWithPhoneRequest.onCodeRetrival,
+      onCodeSend: loginWithPhoneRequest.onCodeSend,
+      onError: loginWithPhoneRequest.onError,
+      onVerificationComplete: loginWithPhoneRequest.onVerificationComplete,
+    );
   }
 }
 

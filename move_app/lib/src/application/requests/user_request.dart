@@ -18,9 +18,17 @@ class LoginRequest {
 
 class LoginWithPhoneRequest {
   final String phone;
+  final void Function() onCodeSend;
+  final void Function(AppUser) onVerificationComplete;
+  final void Function() onError;
+  final void Function(String) onCodeRetrival;
 
   LoginWithPhoneRequest({
     required this.phone,
+    required this.onCodeRetrival,
+    required this.onCodeSend,
+    required this.onVerificationComplete,
+    required this.onError,
   });
 }
 

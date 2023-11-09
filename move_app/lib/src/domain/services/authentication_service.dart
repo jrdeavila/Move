@@ -16,6 +16,12 @@ abstract class IAuthenticationService {
 }
 
 abstract class IPhoneAuthenticationService {
-  Future<Future<AppUser> Function(String verficationCode)> loginWithPhone(
-      String phone);
+  Future<void> loginWithPhone({
+    required String phone,
+    required void Function() onCodeSend,
+    required void Function(AppUser) onVerificationComplete,
+    required void Function() onError,
+    required void Function(String) onCodeRetrival,
+    int? resendToken,
+  });
 }
