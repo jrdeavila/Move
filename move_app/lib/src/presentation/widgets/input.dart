@@ -114,3 +114,116 @@ class _InputCodeState extends State<InputCode> {
     );
   }
 }
+
+class InputIcon extends StatefulWidget {
+  final String title;
+  final TextEditingController controller;
+  final bool isNumericKeyboard;
+  final IconData? icon;
+  final Color? colorIcon;
+
+  const InputIcon({
+    Key? key,
+    required this.title,
+    required this.controller,
+    required this.isNumericKeyboard,
+    this.icon,
+    this.colorIcon,
+  }) : super(key: key);
+
+  @override
+  State<InputIcon> createState() => _InputIconState();
+}
+
+class _InputIconState extends State<InputIcon> {
+  @override
+  Widget build(BuildContext context) {
+    TextInputType keyboardType = TextInputType.text;
+
+    if (widget.isNumericKeyboard) {
+      keyboardType = TextInputType.number;
+    }
+
+    return Container(
+      margin: EdgeInsets.only(bottom: Dimensions.screenHeight * 0.02),
+      width: Dimensions.screenWidth * 0.8,
+      child: TextField(
+        cursorColor: Colors.black,
+        style: GoogleFonts.montserrat(
+          color: const Color.fromRGBO(30, 30, 30, 1),
+        ),
+        autofocus: false,
+        controller: widget.controller,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(left: 30),
+          filled: true,
+          fillColor: const Color.fromRGBO(234, 234, 234, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+          focusColor: Colors.black,
+          labelText: widget.title,
+          labelStyle: GoogleFonts.montserrat(
+            fontSize: Dimensions.screenWidth * 0.04,
+            color: Colors.black,
+          ),
+          prefixIcon: widget.icon != null
+              ? Icon(widget.icon, color: widget.colorIcon)
+              : null,
+        ),
+      ),
+    );
+  }
+}
+
+class CustomCurrencyInput extends StatelessWidget {
+  final TextEditingController controller;
+
+  const CustomCurrencyInput({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: Dimensions.screenWidth * 0.15),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: Dimensions.screenWidth * 0.08,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 1.2,
+        ),
+        decoration: InputDecoration(
+          hintStyle: GoogleFonts.montserrat(
+            fontSize: Dimensions.screenWidth * 0.06,
+            color: Colors.black,
+          ),
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'COP',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: Dimensions.screenWidth * 0.06,
+                fontWeight: FontWeight.w300,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
