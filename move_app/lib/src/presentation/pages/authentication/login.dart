@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'authentication.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                               labelText: 'Telefono',
                               controller: controllerPhone,
                               isPassword: false,
-                              isNumericKeyboard: false,
+                              isNumericKeyboard: true,
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,

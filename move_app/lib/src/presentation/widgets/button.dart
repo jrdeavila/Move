@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
+import 'widgets.dart';
 
 class ButtonClassic extends StatefulWidget {
   final String text;

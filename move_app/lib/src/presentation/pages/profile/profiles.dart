@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'profile.dart';
 
 class Profiles extends StatefulWidget {
   const Profiles({super.key});

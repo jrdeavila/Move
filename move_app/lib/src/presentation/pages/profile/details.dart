@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/lib.dart';
+import 'profile.dart';
 
 class Details extends StatefulWidget {
   const Details({super.key});
@@ -93,9 +90,7 @@ class _DetailsState extends State<Details> {
                 ),
                 ButtonClassic(
                   text: "Guardar",
-                  onPressed: () {
-                    Get.offAll(() => const VerificationCode());
-                  },
+                  onPressed: () {},
                   color: const Color.fromRGBO(255, 198, 65, 1),
                 ),
               ],

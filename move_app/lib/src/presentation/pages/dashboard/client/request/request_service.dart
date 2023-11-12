@@ -15,7 +15,11 @@ class _RequestServiceState extends State<RequestService> {
   static const LatLng _pGooglePlex =
       LatLng(10.480301856994629, -73.26976776123047);
   bool isRateFormVisible = false;
-  String option = 'nequi';
+  bool isServiceDetailVisible = false;
+  bool isServiceAcceptedVisible = false;
+
+  String option = 'efectivo';
+  String payment = '';
 
   @override
   void initState() {
@@ -27,6 +31,173 @@ class _RequestServiceState extends State<RequestService> {
     var status = await Permission.location.request();
     if (status.isGranted) {
     } else {}
+  }
+
+  Widget serviceAccepted() {
+    return Positioned(
+      top: Dimensions.screenHeight * 0.6,
+      child: FadeInUpBig(
+          child: Container(
+        width: Dimensions.screenWidth * 1,
+        height: Dimensions.screenHeight * 0.55,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: Dimensions.screenHeight * 0.035,
+                bottom: Dimensions.screenHeight * 0.02,
+              ),
+              child: Row(
+                children: [
+                  const UserProfile(user: 'Pedro Miguel', score: '4,5'),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: Dimensions.screenWidth * 0.3,
+                        child: Text('Su movil llegara aproximadamente en 3 min',
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontSize: Dimensions.screenWidth * 0.03,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1,
+                            )),
+                      ),
+                      Text('Negro Kia Picanto',
+                          style: GoogleFonts.montserrat(
+                            color: Colors.black,
+                            fontSize: Dimensions.screenWidth * 0.04,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 1,
+                          )),
+                      Container(
+                        width: Dimensions.screenWidth * 0.26,
+                        height: Dimensions.screenHeight * 0.035,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: const Color.fromRGBO(140, 138, 142, 1),
+                        ),
+                        child: Center(
+                          child: Text('IOZ320',
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontSize: Dimensions.screenWidth * 0.035,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1,
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Text('COP ${paymentController.text}',
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: Dimensions.screenWidth * 0.06,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1,
+                )),
+            CardDetails(
+              color: Colors.blue,
+              adress: controllerInitialLocation.text,
+              title: 'Origen',
+            ),
+            CardDetails(
+              color: const Color.fromRGBO(255, 198, 65, 1),
+              adress: controllerInitialLocation.text,
+              title: 'Destino',
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: Dimensions.screenWidth * 0.1,
+                  right: Dimensions.screenWidth * 0.1,
+                  top: Dimensions.screenHeight * 0.01),
+              child: ButtonClassic(
+                text: "Cancelar",
+                onPressed: () {},
+                color: const Color.fromRGBO(224, 26, 25, 1),
+              ),
+            ),
+          ],
+        ),
+      )),
+    );
+  }
+
+  Widget serviceDetails() {
+    return Positioned(
+      top: Dimensions.screenHeight * 0.6,
+      child: FadeInUpBig(
+          child: Container(
+        width: Dimensions.screenWidth * 1,
+        height: Dimensions.screenHeight * 0.55,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: Dimensions.screenHeight * 0.035,
+                bottom: Dimensions.screenHeight * 0.02,
+              ),
+              child: Text('Solicitando servicio',
+                  style: GoogleFonts.montserrat(
+                    color: Colors.black,
+                    fontSize: Dimensions.screenWidth * 0.06,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                  )),
+            ),
+            Text('COP ${paymentController.text}',
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: Dimensions.screenWidth * 0.06,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1,
+                )),
+            CardDetails(
+              color: Colors.blue,
+              adress: controllerInitialLocation.text,
+              title: 'Origen',
+            ),
+            CardDetails(
+              color: const Color.fromRGBO(255, 198, 65, 1),
+              adress: controllerInitialLocation.text,
+              title: 'Destino',
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: Dimensions.screenWidth * 0.1,
+                  right: Dimensions.screenWidth * 0.1,
+                  top: Dimensions.screenHeight * 0.01),
+              child: ButtonClassic(
+                text: "Cancelar",
+                onPressed: () {
+                  setState(() {
+                    isServiceAcceptedVisible = true;
+                  });
+                },
+                color: const Color.fromRGBO(224, 26, 25, 1),
+              ),
+            ),
+          ],
+        ),
+      )),
+    );
   }
 
   Widget rateForm() {
@@ -115,6 +286,7 @@ class _RequestServiceState extends State<RequestService> {
                       color: Colors.transparent,
                     ),
                     items: <String>[
+                      'efectivo',
                       'nequi',
                       'bancolombia',
                       'daviplata',
@@ -145,7 +317,12 @@ class _RequestServiceState extends State<RequestService> {
                     top: Dimensions.screenHeight * 0.02),
                 child: ButtonClassic(
                   text: "Finalizar",
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      payment = '${paymentController.text} - $option';
+                      isRateFormVisible = false;
+                    });
+                  },
                   color: const Color.fromRGBO(255, 198, 65, 1),
                 ),
               ),
@@ -229,7 +406,7 @@ class _RequestServiceState extends State<RequestService> {
                     ),
                     ButtonIcon(
                       icon: Icons.attach_money,
-                      text: 'Precio sugerido',
+                      text: payment.isNotEmpty ? payment : 'Precio sugerido',
                       onPressed: () {
                         setState(() {
                           isRateFormVisible = true;
@@ -245,7 +422,11 @@ class _RequestServiceState extends State<RequestService> {
                           top: Dimensions.screenHeight * 0.02),
                       child: ButtonClassic(
                         text: "Solicitar auto",
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            isServiceDetailVisible = true;
+                          });
+                        },
                         color: const Color.fromRGBO(255, 198, 65, 1),
                       ),
                     ),
@@ -263,6 +444,8 @@ class _RequestServiceState extends State<RequestService> {
                 ),
               ),
             isRateFormVisible ? rateForm() : const SizedBox(),
+            isServiceDetailVisible ? serviceDetails() : const SizedBox(),
+            isServiceAcceptedVisible ? serviceAccepted() : const SizedBox(),
           ],
         ),
       ),

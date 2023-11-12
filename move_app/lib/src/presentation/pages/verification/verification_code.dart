@@ -1,11 +1,4 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/pages/dashboard/client/dashboard_client.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
-import 'package:move_app/src/presentation/widgets/button.dart';
-import 'package:move_app/src/presentation/widgets/input.dart';
+import 'verification.dart';
 
 class VerificationCode extends StatefulWidget {
   const VerificationCode({super.key});
@@ -43,6 +36,12 @@ class _VerificationCodeState extends State<VerificationCode> {
   void initState() {
     super.initState();
     startTimer();
+  }
+
+  @override
+  void dispose() {
+    countdownTimer.cancel();
+    super.dispose();
   }
 
   @override
@@ -136,6 +135,7 @@ class _VerificationCodeState extends State<VerificationCode> {
               child: ButtonClassic(
                 text: "Verificar",
                 onPressed: () {
+                  countdownTimer.cancel();
                   Get.offAll(() => const DashboardClient());
                 },
                 color: Colors.black,

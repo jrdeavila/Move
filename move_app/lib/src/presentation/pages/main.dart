@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
+import 'pages.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -26,7 +23,7 @@ class _MainState extends State<Main> {
               child: Text('A',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -37,7 +34,7 @@ class _MainState extends State<Main> {
               child: Text('DONDE',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -48,7 +45,7 @@ class _MainState extends State<Main> {
               child: Text('QUIERAS',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -59,7 +56,7 @@ class _MainState extends State<Main> {
               child: Text('NOSOTROS',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.14,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -70,7 +67,7 @@ class _MainState extends State<Main> {
               child: Text('VAMOS.',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -104,8 +101,8 @@ class _MainState extends State<Main> {
                       )),
                 ),
                 Positioned(
-                  top: Dimensions.screenHeight * 0.2,
-                  left: Dimensions.screenWidth * 0.55,
+                  top: Dimensions.screenHeight * 0.24,
+                  left: Dimensions.screenWidth * 0.56,
                   child: ElevatedButton(
                     onPressed: () {
                       Get.offAllNamed('/login');
