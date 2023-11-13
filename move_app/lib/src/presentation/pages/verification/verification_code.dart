@@ -46,7 +46,7 @@ class _VerificationCodeState extends State<VerificationCode> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offAllNamed('/principal');
+            Get.offAllNamed(MainRoutes.main);
           },
           icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black),
         ),

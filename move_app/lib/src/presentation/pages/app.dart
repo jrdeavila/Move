@@ -7,13 +7,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {
-        '/principal': (context) => const Main(),
-      },
       getPages: [
+        ...MainRoutes.routes,
         ...AuthenticationRoutes.routes,
       ],
-      home: const Main(),
+      initialRoute: MainRoutes.main,
     );
   }
 }

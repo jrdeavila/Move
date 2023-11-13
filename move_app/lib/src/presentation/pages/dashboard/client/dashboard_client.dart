@@ -20,7 +20,7 @@ class _DashboardClientState extends State<DashboardClient> {
           actions: [
             IconButton(
               onPressed: () {
-                Get.offAllNamed('/principal');
+                Get.offAllNamed(MainRoutes.main);
               },
               icon: const Icon(Icons.output_rounded, color: Colors.black),
             ),

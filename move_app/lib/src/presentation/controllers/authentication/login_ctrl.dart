@@ -36,7 +36,7 @@ class LoginCtrl extends GetxController {
       SendCodeRequest(
         code: _verificationCode.value,
         onLoginSuccessful: () {
-          Get.offAllNamed('/principal');
+          Get.offAllNamed(MainRoutes.main);
         },
         onShouldRegister: () {
           Get.toNamed(AuthenticationRoutes.register);

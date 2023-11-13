@@ -25,7 +25,7 @@ class Login extends GetView<LoginCtrl> {
                       left: Dimensions.screenWidth * 0.05,
                       child: IconButton(
                           onPressed: () {
-                            Get.offAllNamed('/principal');
+                            Get.offAllNamed(MainRoutes.main);
                           },
                           icon: const Icon(Icons.arrow_back_ios_rounded,
                               color: Colors.white))),

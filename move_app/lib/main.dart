@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:move_app/lib.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await configureDependencies();
-
-  runApp(const App());
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await configureDependencies();
+    return runApp(const App());
+  }, (error, stack) {
+    Get.find<ExceptionCtrl>().exception(error);
+  });
 }
