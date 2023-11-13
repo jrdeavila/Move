@@ -17,9 +17,18 @@ class _RequestServiceState extends State<RequestService> {
   bool isRateFormVisible = false;
   bool isServiceDetailVisible = false;
   bool isServiceAcceptedVisible = false;
+  bool isServiceCanceledVisible = false;
 
   String option = 'efectivo';
   String payment = '';
+  int _selectedOption = 0;
+
+  List<String> options = [
+    'Cambio de planes',
+    'Demora excesiva',
+    'Problema con el conductor',
+    'Problema con el vehículo',
+  ];
 
   @override
   void initState() {
@@ -33,9 +42,107 @@ class _RequestServiceState extends State<RequestService> {
     } else {}
   }
 
+  Widget serviceCanceled() {
+    return Positioned(
+        top: Dimensions.screenHeight * 0.46,
+        child: FadeInUpBig(
+          child: Container(
+            width: Dimensions.screenWidth * 1,
+            height: Dimensions.screenHeight * 0.55,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: Dimensions.screenWidth * 0.02,
+                right: Dimensions.screenWidth * 0.02,
+                top: Dimensions.screenHeight * 0.03,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isServiceCanceledVisible = false;
+                            isServiceAcceptedVisible = true;
+                          });
+                        },
+                        icon: const Icon(Icons.arrow_back_ios_rounded,
+                            color: Colors.black),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: Dimensions.screenWidth * 0.03),
+                        child: Text('Cancelacion de servicio',
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontSize: Dimensions.screenWidth * 0.055,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            )),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.screenWidth * 0.05,
+                        vertical: Dimensions.screenHeight * 0.01),
+                    child: Text(
+                        '¿Por qué desea cancelar tu servicio de transporte?',
+                        style: GoogleFonts.montserrat(
+                          color: Colors.black,
+                          fontSize: Dimensions.screenWidth * 0.04,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1,
+                        )),
+                  ),
+                  Column(
+                    children: options
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => RadioListTile(
+                            title: Text(
+                              entry.value,
+                              style: GoogleFonts.montserrat(
+                                fontSize: Dimensions.screenWidth * 0.04,
+                              ),
+                            ),
+                            value: entry.key,
+                            groupValue: _selectedOption,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedOption = value!;
+                              });
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  ButtonClassic(
+                    text: "Confirmar cancelación",
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    color: const Color.fromRGBO(224, 26, 25, 1),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
   Widget serviceAccepted() {
     return Positioned(
-      top: Dimensions.screenHeight * 0.6,
+      top: Dimensions.screenHeight * 0.53,
       child: FadeInUpBig(
           child: Container(
         width: Dimensions.screenWidth * 1,
@@ -61,11 +168,11 @@ class _RequestServiceState extends State<RequestService> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: Dimensions.screenWidth * 0.3,
+                        width: Dimensions.screenWidth * 0.6,
                         child: Text('Su movil llegara aproximadamente en 3 min',
                             style: GoogleFonts.montserrat(
                               color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.03,
+                              fontSize: Dimensions.screenWidth * 0.04,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1,
                             )),
@@ -77,21 +184,41 @@ class _RequestServiceState extends State<RequestService> {
                             fontWeight: FontWeight.w400,
                             letterSpacing: 1,
                           )),
-                      Container(
-                        width: Dimensions.screenWidth * 0.26,
-                        height: Dimensions.screenHeight * 0.035,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: const Color.fromRGBO(140, 138, 142, 1),
-                        ),
-                        child: Center(
-                          child: Text('IOZ320',
-                              style: GoogleFonts.montserrat(
-                                color: Colors.white,
-                                fontSize: Dimensions.screenWidth * 0.035,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1,
-                              )),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: Dimensions.screenHeight * 0.01),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: Dimensions.screenWidth * 0.26,
+                              height: Dimensions.screenHeight * 0.035,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: const Color.fromRGBO(140, 138, 142, 1),
+                              ),
+                              child: Center(
+                                child: Text('IOZ320',
+                                    style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize: Dimensions.screenWidth * 0.035,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1,
+                                    )),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: Dimensions.screenWidth * 0.03),
+                              child: Text('COP ${paymentController.text}',
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.black,
+                                    fontSize: Dimensions.screenWidth * 0.045,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 1,
+                                  )),
+                            ),
+                          ],
                         ),
                       )
                     ],
@@ -99,13 +226,6 @@ class _RequestServiceState extends State<RequestService> {
                 ],
               ),
             ),
-            Text('COP ${paymentController.text}',
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: Dimensions.screenWidth * 0.06,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 1,
-                )),
             CardDetails(
               color: Colors.blue,
               adress: controllerInitialLocation.text,
@@ -123,7 +243,11 @@ class _RequestServiceState extends State<RequestService> {
                   top: Dimensions.screenHeight * 0.01),
               child: ButtonClassic(
                 text: "Cancelar",
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    isServiceCanceledVisible = true;
+                  });
+                },
                 color: const Color.fromRGBO(224, 26, 25, 1),
               ),
             ),
@@ -188,7 +312,7 @@ class _RequestServiceState extends State<RequestService> {
                 text: "Cancelar",
                 onPressed: () {
                   setState(() {
-                    isServiceAcceptedVisible = true;
+                    isServiceCanceledVisible = true;
                   });
                 },
                 color: const Color.fromRGBO(224, 26, 25, 1),
@@ -434,6 +558,23 @@ class _RequestServiceState extends State<RequestService> {
                 ),
               ),
             ),
+            Positioned(
+                top: Dimensions.screenHeight * 0.1,
+                left: Dimensions.screenWidth * 0.19,
+                child: CardService(
+                  user: 'Miguel Galindo',
+                  score: '4,5',
+                  price: '8000',
+                  km: '2,5 km',
+                  time: '3 min',
+                  carName: 'Negro Kia Picanto',
+                  license: 'IOZ32O',
+                  onPressed: () {
+                    setState(() {
+                      isServiceAcceptedVisible = true;
+                    });
+                  },
+                )),
             if (isRateFormVisible)
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
@@ -446,6 +587,7 @@ class _RequestServiceState extends State<RequestService> {
             isRateFormVisible ? rateForm() : const SizedBox(),
             isServiceDetailVisible ? serviceDetails() : const SizedBox(),
             isServiceAcceptedVisible ? serviceAccepted() : const SizedBox(),
+            isServiceCanceledVisible ? serviceCanceled() : const SizedBox(),
           ],
         ),
       ),
