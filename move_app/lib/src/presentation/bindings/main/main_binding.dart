@@ -3,6 +3,7 @@ import 'package:move_app/lib.dart';
 class MainBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ExceptionCtrl());
+    Get.put(ExceptionCtrl());
+    Get.put(SessionCtrl());
   }
 }

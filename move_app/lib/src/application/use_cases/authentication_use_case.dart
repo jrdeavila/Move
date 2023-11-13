@@ -46,27 +46,43 @@ class SendCodeUseCase implements ISendCodeUseCase {
 @Injectable(as: IGetUserUseCase)
 class GetUserUseCase implements IGetUserUseCase {
   final IAuthenticationService _authenticationService;
+  final IUserRepository _userRepository;
 
-  GetUserUseCase(this._authenticationService);
+  GetUserUseCase({
+    required IAuthenticationService authenticationService,
+    required IUserRepository userRepository,
+  })  : _authenticationService = authenticationService,
+        _userRepository = userRepository;
 
   @override
-  Future<AppUser> getUser() {
-    return _authenticationService.getUser();
+  Future<AppUser> getUser() async {
+    String uuid = _authenticationService.getUserUuid();
+    return _userRepository.getUser(uuid);
   }
 }
 
 @Injectable(as: IRegisterUseCase)
 class RegisterUseCase implements IRegisterUseCase {
+  final IUserRepository _userRepository;
   final IAuthenticationService _authenticationService;
 
-  RegisterUseCase(this._authenticationService);
+  RegisterUseCase({
+    required IUserRepository userRepository,
+    required IAuthenticationService authenticationService,
+  })  : _userRepository = userRepository,
+        _authenticationService = authenticationService;
 
   @override
-  Future<AppUser> register(RegisterRequest registerRequest) {
-    AppUser appUser = registerRequest.toUser();
-    return _authenticationService.register(
-      appUser,
-      password: registerRequest.password,
-    );
+  Future<AppUser> register(RegisterRequest registerRequest) async {
+    final user = AppUser(
+        uuid: _authenticationService.getUserUuid(),
+        firstname: registerRequest.firstname,
+        lastname: registerRequest.lastname,
+        phone: _authenticationService.getUserPhone(),
+        email: registerRequest.email,
+        roles: [
+          AppUserRole.client,
+        ]);
+    return _userRepository.createUser(user);
   }
 }

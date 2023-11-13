@@ -7,7 +7,6 @@ abstract class MainRoutes {
     GetPage(
       name: main,
       page: () => const Main(),
-      binding: MainBinding(),
     ),
   ];
 }

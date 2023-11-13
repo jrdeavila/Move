@@ -10,8 +10,10 @@ class App extends StatelessWidget {
       getPages: [
         ...MainRoutes.routes,
         ...AuthenticationRoutes.routes,
+        ...DashboardRoutes.routes,
       ],
       initialRoute: MainRoutes.main,
+      initialBinding: MainBinding(),
     );
   }
 }

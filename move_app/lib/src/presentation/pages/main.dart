@@ -4,14 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:move_app/src/presentation/routes/routes.dart';
 import 'package:move_app/src/presentation/utils/dimensions.dart';
 
-class Main extends StatefulWidget {
+class Main extends StatelessWidget {
   const Main({super.key});
 
-  @override
-  State<Main> createState() => _MainState();
-}
-
-class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

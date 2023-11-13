@@ -1,16 +1,10 @@
-import 'package:move_app/lib.dart';
-
 abstract class IAuthenticationService {
   Future<void> logout();
 
   Stream<bool> isAuthenticated();
 
-  Future<AppUser> getUser();
-
-  Future<AppUser> register(
-    AppUser appUser, {
-    required String password,
-  });
+  String getUserUuid();
+  String getUserPhone();
 }
 
 abstract class IPhoneAuthenticationService {

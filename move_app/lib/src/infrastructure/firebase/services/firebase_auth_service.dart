@@ -5,18 +5,10 @@ import 'package:move_app/lib.dart';
 @Injectable(as: IAuthenticationService)
 class FirebaseAuthService implements IAuthenticationService {
   final FirebaseAuth _firebaseAuth;
-  final IUserRepository _userRepository;
 
-  FirebaseAuthService(
-      {required FirebaseAuth firebaseAuth,
-      required IUserRepository userRepository})
-      : _firebaseAuth = firebaseAuth,
-        _userRepository = userRepository;
-  @override
-  Future<AppUser> getUser() {
-    final user = _firebaseAuth.currentUser;
-    return _userRepository.getUser(user!.uid);
-  }
+  FirebaseAuthService({
+    required FirebaseAuth firebaseAuth,
+  }) : _firebaseAuth = firebaseAuth;
 
   @override
   Future<void> logout() {
@@ -29,16 +21,13 @@ class FirebaseAuthService implements IAuthenticationService {
   }
 
   @override
-  Future<AppUser> register(AppUser appUser, {required String password}) {
-    return _firebaseAuth
-        .createUserWithEmailAndPassword(
-      email: appUser.email,
-      password: password,
-    )
-        .then((credential) {
-      appUser.uuid = credential.user!.uid;
-      return _userRepository.createUser(appUser);
-    });
+  String getUserPhone() {
+    return _firebaseAuth.currentUser!.phoneNumber!;
+  }
+
+  @override
+  String getUserUuid() {
+    return _firebaseAuth.currentUser!.uid;
   }
 }
 

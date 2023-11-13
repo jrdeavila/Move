@@ -8,31 +8,24 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final RegisterCtrl _registerCtrl = Get.find<RegisterCtrl>();
+
   final TextEditingController _controllerFirstName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
-  final TextEditingController _controllerPhone = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    final RegisterCtrl _registerCtrl = Get.find<RegisterCtrl>();
     _controllerFirstName.addListener(() {
       _registerCtrl.onFirstnameChanged(_controllerFirstName.text);
     });
     _controllerLastName.addListener(() {
       _registerCtrl.onLastnameChanged(_controllerLastName.text);
     });
-    _controllerPhone.addListener(() {
-      _registerCtrl.onPhoneChanged(_controllerPhone.text);
-    });
     _controllerEmail.addListener(() {
       _registerCtrl.onEmailChanged(_controllerEmail.text);
-    });
-    _controllerPassword.addListener(() {
-      _registerCtrl.onPasswordChanged(_controllerPassword.text);
     });
   }
 
@@ -104,21 +97,9 @@ class _RegisterState extends State<Register> {
                               isNumericKeyboard: false,
                             ),
                             InputClassic(
-                              labelText: 'Celular',
-                              controller: _controllerPhone,
-                              isPassword: false,
-                              isNumericKeyboard: true,
-                            ),
-                            InputClassic(
                               labelText: 'Correo',
                               controller: _controllerEmail,
                               isPassword: false,
-                              isNumericKeyboard: false,
-                            ),
-                            InputClassic(
-                              labelText: 'Contraseña',
-                              controller: _controllerPassword,
-                              isPassword: true,
                               isNumericKeyboard: false,
                             ),
                             SizedBox(
@@ -126,7 +107,9 @@ class _RegisterState extends State<Register> {
                             ),
                             ButtonClassic(
                               text: "Registrar",
-                              onPressed: () {},
+                              onPressed: () {
+                                _registerCtrl.register();
+                              },
                               color: Colors.black,
                             ),
                           ],

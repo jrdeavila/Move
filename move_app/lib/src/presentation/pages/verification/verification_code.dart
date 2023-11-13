@@ -81,6 +81,7 @@ class _VerificationCodeState extends State<VerificationCode> {
             ),
             PinCodeTextField(
               appContext: context,
+              keyboardType: TextInputType.number,
               length: 6,
               onCompleted: (value) {
                 _controller.setVerificationCode(value);
