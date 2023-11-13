@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:move_app/src/presentation/routes/routes.dart';
 import 'package:move_app/src/presentation/utils/dimensions.dart';
 
 class Main extends StatefulWidget {
@@ -108,7 +109,7 @@ class _MainState extends State<Main> {
                   left: Dimensions.screenWidth * 0.55,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.offAllNamed('/login');
+                      Get.offAllNamed(AuthenticationRoutes.login);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

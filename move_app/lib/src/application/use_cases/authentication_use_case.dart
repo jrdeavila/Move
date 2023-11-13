@@ -1,21 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
 
-@Injectable(as: ILoginUseCase)
-class LoginUseCase implements ILoginUseCase {
-  final IAuthenticationService _authenticationService;
-
-  LoginUseCase(this._authenticationService);
-
-  @override
-  Future<AppUser> login(LoginRequest loginRequest) {
-    return _authenticationService.login(
-      loginRequest.email,
-      loginRequest.password,
-    );
-  }
-}
-
 @Injectable(as: ILoginWithPhoneUseCase)
 class LoginWithPhoneUseCase implements ILoginWithPhoneUseCase {
   final IPhoneAuthenticationService _authenticationService;
@@ -26,10 +11,7 @@ class LoginWithPhoneUseCase implements ILoginWithPhoneUseCase {
   Future<void> loginWithPhone(LoginWithPhoneRequest loginWithPhoneRequest) {
     return _authenticationService.loginWithPhone(
       phone: loginWithPhoneRequest.phone,
-      onCodeRetrival: loginWithPhoneRequest.onCodeRetrival,
       onCodeSend: loginWithPhoneRequest.onCodeSend,
-      onError: loginWithPhoneRequest.onError,
-      onVerificationComplete: loginWithPhoneRequest.onVerificationComplete,
     );
   }
 }
@@ -43,6 +25,21 @@ class LogoutUseCase implements ILogoutUseCase {
   @override
   Future<void> logout() {
     return _authenticationService.logout();
+  }
+}
+
+@Injectable(as: ISendCodeUseCase)
+class SendCodeUseCase implements ISendCodeUseCase {
+  final IPhoneAuthenticationService _authenticationService;
+
+  SendCodeUseCase(this._authenticationService);
+  @override
+  Future<void> sendCode(SendCodeRequest sendCodeRequest) {
+    return _authenticationService.verifyCode(
+      smsCode: sendCodeRequest.code,
+      onLoginSuccess: sendCodeRequest.onLoginSuccessful,
+      onShouldRegister: sendCodeRequest.onShouldRegister,
+    );
   }
 }
 

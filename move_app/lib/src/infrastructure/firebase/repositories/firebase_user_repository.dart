@@ -40,6 +40,15 @@ class FirebaseUserRepository implements IUserRepository {
         .update(userToJson(user))
         .then((value) => user);
   }
+
+  @override
+  Future<bool> isUserExists(String uuid) {
+    return _firestore
+        .collection('users')
+        .doc(uuid)
+        .get()
+        .then((snapshot) => snapshot.exists);
+  }
 }
 
 Map<String, dynamic> userToJson(AppUser user) => <String, dynamic>{

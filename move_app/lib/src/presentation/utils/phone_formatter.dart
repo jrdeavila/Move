@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 abstract class PhoneConvert {
   static String replace({
     required String numberPhone,
-    String replace = "-",
+    String replace = " ",
   }) {
     return numberPhone.replaceAll(replace, "");
   }
@@ -11,7 +11,7 @@ abstract class PhoneConvert {
   static String toFirebase({
     required String numberPhone,
   }) {
-    var r = replace(numberPhone: numberPhone, replace: "-");
+    var r = replace(numberPhone: numberPhone, replace: " ");
     return "+57$r";
   }
 
@@ -19,12 +19,12 @@ abstract class PhoneConvert {
     required String numberPhone,
   }) {
     var r = replace(numberPhone: numberPhone, replace: "+57");
-    return "${r.substring(0, 3)}-${r.substring(3, 6)}-${r.substring(6, 10)}";
+    return "${r.substring(0, 3)} ${r.substring(3, 6)} ${r.substring(6, 10)}";
   }
 }
 
 class PhoneInputFormatter extends MaskInputFormatter {
-  PhoneInputFormatter() : super(mask: "xxx-xxx-xxxx", separator: "-");
+  PhoneInputFormatter() : super(mask: "xxx xxx xxxx", separator: " ");
 }
 
 class MaskInputFormatter extends TextInputFormatter {

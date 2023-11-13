@@ -94,7 +94,7 @@ class _DetailsState extends State<Details> {
                 ButtonClassic(
                   text: "Guardar",
                   onPressed: () {
-                    Get.offAll(() => const VerificationCode());
+                    // TODO: Implementar
                   },
                   color: const Color.fromRGBO(255, 198, 65, 1),
                 ),

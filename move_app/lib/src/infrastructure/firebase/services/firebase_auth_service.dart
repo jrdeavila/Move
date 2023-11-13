@@ -19,13 +19,6 @@ class FirebaseAuthService implements IAuthenticationService {
   }
 
   @override
-  Future<AppUser> login(String email, String password) {
-    return _firebaseAuth
-        .signInWithEmailAndPassword(email: email, password: password)
-        .then((credential) => _userRepository.getUser(credential.user!.uid));
-  }
-
-  @override
   Future<void> logout() {
     return _firebaseAuth.signOut();
   }
@@ -49,11 +42,14 @@ class FirebaseAuthService implements IAuthenticationService {
   }
 }
 
-@Injectable(as: IPhoneAuthenticationService)
+@Singleton(as: IPhoneAuthenticationService)
 class FirebasePhoneAuthenticationService
     implements IPhoneAuthenticationService {
   final FirebaseAuth _firebaseAuth;
   final IUserRepository _userRepository;
+
+  late String _verificationId;
+  int? _resendToken;
 
   FirebasePhoneAuthenticationService({
     required FirebaseAuth firebaseAuth,
@@ -65,26 +61,42 @@ class FirebasePhoneAuthenticationService
   Future<void> loginWithPhone({
     required String phone,
     required void Function() onCodeSend,
-    required void Function(AppUser) onVerificationComplete,
-    required void Function() onError,
-    required void Function(String) onCodeRetrival,
-    int? resendToken,
+    Duration timeout = const Duration(seconds: 60),
   }) {
     return _firebaseAuth.verifyPhoneNumber(
       codeSent: (verificationId, forceResendingToken) {
-        return;
+        _resendToken = forceResendingToken;
+        _verificationId = verificationId;
+        onCodeSend();
       },
       phoneNumber: phone,
-      forceResendingToken: resendToken,
-      verificationCompleted: (phoneAuthCredential) async {
-        final credentials =
-            await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-        final user = await _userRepository.getUser(credentials.user!.uid);
-
-        onVerificationComplete(user);
-      },
-      verificationFailed: (error) => onError(),
-      codeAutoRetrievalTimeout: onCodeRetrival,
+      forceResendingToken: _resendToken,
+      verificationCompleted: (phoneAuthCredential) {},
+      verificationFailed: (error) => throw error,
+      codeAutoRetrievalTimeout: (code) {},
+      timeout: timeout,
     );
+  }
+
+  @override
+  Future<void> verifyCode({
+    required String smsCode,
+    required void Function() onLoginSuccess,
+    required void Function() onShouldRegister,
+  }) async {
+    final credential = PhoneAuthProvider.credential(
+      verificationId: _verificationId,
+      smsCode: smsCode,
+    );
+
+    final userCredential = await _firebaseAuth.signInWithCredential(credential);
+
+    final existInfo =
+        await _userRepository.isUserExists(userCredential.user!.uid);
+    if (existInfo) {
+      return onLoginSuccess();
+    } else {
+      return onShouldRegister();
+    }
   }
 }

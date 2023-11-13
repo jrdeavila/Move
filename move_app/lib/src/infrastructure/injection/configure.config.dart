@@ -17,8 +17,8 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../../lib.dart' as _i7;
 import '../../application/use_cases/authentication_use_case.dart' as _i10;
-import '../firebase/firebase_auth_service.dart' as _i9;
 import '../firebase/repositories/firebase_user_repository.dart' as _i8;
+import '../firebase/services/firebase_auth_service.dart' as _i9;
 import 'dependecies.dart' as _i11;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -44,7 +44,10 @@ extension GetItInjectableX on _i1.GetIt {
       () => appCheckModule.appCheck,
       preResolve: true,
     );
-    gh.lazySingleton<_i5.FirebaseAuth>(() => firebaseAuthModule.firebaseAuth);
+    await gh.lazySingletonAsync<_i5.FirebaseAuth>(
+      () => firebaseAuthModule.firebaseAuth,
+      preResolve: true,
+    );
     gh.lazySingleton<_i6.FirebaseFirestore>(() => firestoreModule.firestore);
     gh.factory<_i7.IUserRepository>(() =>
         _i8.FirebaseUserRepository(firestore: gh<_i6.FirebaseFirestore>()));
@@ -54,17 +57,17 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i7.IGetUserUseCase>(
         () => _i10.GetUserUseCase(gh<_i7.IAuthenticationService>()));
-    gh.factory<_i7.ILoginUseCase>(
-        () => _i10.LoginUseCase(gh<_i7.IAuthenticationService>()));
     gh.factory<_i7.ILogoutUseCase>(
         () => _i10.LogoutUseCase(gh<_i7.IAuthenticationService>()));
-    gh.factory<_i7.IPhoneAuthenticationService>(
-        () => _i9.FirebasePhoneAuthenticationService(
-              firebaseAuth: gh<_i5.FirebaseAuth>(),
-              userRepository: gh<_i7.IUserRepository>(),
-            ));
+    gh.singleton<_i7.IPhoneAuthenticationService>(
+        _i9.FirebasePhoneAuthenticationService(
+      firebaseAuth: gh<_i5.FirebaseAuth>(),
+      userRepository: gh<_i7.IUserRepository>(),
+    ));
     gh.factory<_i7.IRegisterUseCase>(
         () => _i10.RegisterUseCase(gh<_i7.IAuthenticationService>()));
+    gh.factory<_i7.ISendCodeUseCase>(
+        () => _i10.SendCodeUseCase(gh<_i7.IPhoneAuthenticationService>()));
     gh.factory<_i7.ILoginWithPhoneUseCase>(() =>
         _i10.LoginWithPhoneUseCase(gh<_i7.IPhoneAuthenticationService>()));
     return this;

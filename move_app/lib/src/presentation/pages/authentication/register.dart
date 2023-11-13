@@ -8,8 +8,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final RegisterCtrl _registerCtrl = Get.find<RegisterCtrl>();
-
   final TextEditingController _controllerFirstName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
   final TextEditingController _controllerPhone = TextEditingController();
@@ -19,6 +17,8 @@ class _RegisterState extends State<Register> {
   @override
   void initState() {
     super.initState();
+
+    final RegisterCtrl _registerCtrl = Get.find<RegisterCtrl>();
     _controllerFirstName.addListener(() {
       _registerCtrl.onFirstnameChanged(_controllerFirstName.text);
     });

@@ -19,16 +19,10 @@ class LoginRequest {
 class LoginWithPhoneRequest {
   final String phone;
   final void Function() onCodeSend;
-  final void Function(AppUser) onVerificationComplete;
-  final void Function() onError;
-  final void Function(String) onCodeRetrival;
 
   LoginWithPhoneRequest({
     required this.phone,
-    required this.onCodeRetrival,
     required this.onCodeSend,
-    required this.onVerificationComplete,
-    required this.onError,
   });
 }
 
@@ -61,4 +55,15 @@ class RegisterRequest {
       ],
     );
   }
+}
+
+class SendCodeRequest {
+  final String code;
+  final void Function() onLoginSuccessful;
+  final void Function() onShouldRegister;
+  SendCodeRequest({
+    required this.code,
+    required this.onLoginSuccessful,
+    required this.onShouldRegister,
+  });
 }

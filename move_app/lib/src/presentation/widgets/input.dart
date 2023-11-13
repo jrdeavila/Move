@@ -75,9 +75,27 @@ class InputCode extends StatefulWidget {
 
 class _InputCodeState extends State<InputCode> {
   @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() {
+      if (widget.controller.text.length == 1) {
+        FocusScope.of(context).nextFocus();
+        return;
+      }
+      if (widget.controller.text.isEmpty &&
+          widget.controller.selection.baseOffset == 0) {
+        FocusScope.of(context).previousFocus();
+        return;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.04),
+      margin: EdgeInsets.symmetric(
+        vertical: Dimensions.screenHeight * 0.04,
+      ),
       width: Dimensions.screenWidth * 0.15,
       height: Dimensions.screenHeight * 0.09,
       decoration: BoxDecoration(
@@ -90,10 +108,7 @@ class _InputCodeState extends State<InputCode> {
           ),
         ],
       ),
-      child: Padding(
-        padding: EdgeInsets.only(
-            left: Dimensions.screenWidth * 0.001,
-            bottom: Dimensions.screenHeight * 0.01),
+      child: Center(
         child: TextField(
           cursorColor: Colors.black,
           style: GoogleFonts.montserrat(

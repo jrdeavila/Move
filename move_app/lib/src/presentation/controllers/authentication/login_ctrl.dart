@@ -17,29 +17,31 @@ class LoginCtrl extends GetxController {
   // -------------------------------------------------
   void login() async {
     final useCase = getIt<ILoginWithPhoneUseCase>();
-
     useCase.loginWithPhone(
       LoginWithPhoneRequest(
         phone: PhoneConvert.toFirebase(numberPhone: _phone.value),
-        onCodeRetrival: (code) {
-          print(code);
-        },
         onCodeSend: () {
-          Get.to(() => const VerificationCode());
-        },
-        onError: () {
-          Get.snackbar(
-            'Error',
-            'Error al enviar el código de verificación',
-            backgroundColor: Colors.red,
-          );
-        },
-        onVerificationComplete: (user) {
-          print(user);
+          Get.to(() => const VerificationCode(
+                timer: Duration(seconds: 60),
+                codeDigits: 6,
+              ));
         },
       ),
     );
   }
 
-  void sendCode() {}
+  void sendCode() {
+    final useCase = getIt<ISendCodeUseCase>();
+    useCase.sendCode(
+      SendCodeRequest(
+        code: _verificationCode.value,
+        onLoginSuccessful: () {
+          Get.offAllNamed('/principal');
+        },
+        onShouldRegister: () {
+          Get.toNamed(AuthenticationRoutes.register);
+        },
+      ),
+    );
+  }
 }

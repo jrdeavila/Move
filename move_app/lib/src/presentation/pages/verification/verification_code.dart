@@ -1,48 +1,42 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/pages/dashboard/client/dashboard_client.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
-import 'package:move_app/src/presentation/widgets/button.dart';
-import 'package:move_app/src/presentation/widgets/input.dart';
+
+import 'package:move_app/lib.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerificationCode extends StatefulWidget {
-  const VerificationCode({super.key});
+  final Duration timer;
+  final int codeDigits;
+  const VerificationCode(
+      {super.key, required this.timer, required this.codeDigits});
 
   @override
   State<VerificationCode> createState() => _VerificationCodeState();
 }
 
 class _VerificationCodeState extends State<VerificationCode> {
-  int timer = 20;
-  bool isTimerRunning = true;
-  late Timer countdownTimer;
-  TextEditingController firstNumber = TextEditingController();
-  TextEditingController secondNumber = TextEditingController();
-  TextEditingController thirdNumber = TextEditingController();
-  TextEditingController fourthNumber = TextEditingController();
-  TextEditingController fifthNumber = TextEditingController();
+  bool _isTimerRunning = false;
+  int _timerValue = 0;
+  final _controller = Get.find<LoginCtrl>();
 
-  void startTimer() {
-    if (isTimerRunning) {
-      countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        setState(() {
-          if (this.timer <= 0) {
-            isTimerRunning = false;
-            countdownTimer.cancel();
-          } else {
-            this.timer--;
-          }
-        });
-      });
-    }
+  void _startTimer() {
+    Timer.periodic(
+      1.seconds,
+      (timer) {
+        _timerValue = widget.timer.inSeconds - timer.tick;
+        bool isFinished = timer.tick == widget.timer.inSeconds;
+        _isTimerRunning = !isFinished;
+        if (isFinished) {
+          timer.cancel();
+        }
+        setState(() {});
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+    _startTimer();
   }
 
   @override
@@ -85,29 +79,17 @@ class _VerificationCodeState extends State<VerificationCode> {
                     letterSpacing: 1,
                   )),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InputCode(
-                  controller: firstNumber,
-                ),
-                InputCode(
-                  controller: secondNumber,
-                ),
-                InputCode(
-                  controller: thirdNumber,
-                ),
-                InputCode(
-                  controller: fourthNumber,
-                ),
-                InputCode(
-                  controller: fifthNumber,
-                ),
-              ],
+            PinCodeTextField(
+              appContext: context,
+              length: 6,
+              onCompleted: (value) {
+                _controller.setVerificationCode(value);
+                _controller.sendCode();
+              },
             ),
             Padding(
               padding: EdgeInsets.only(bottom: Dimensions.screenHeight * 0.02),
-              child: Text('0:$timer',
+              child: Text('00:${_timerValue.toString().padLeft(2, '0')}',
                   style: GoogleFonts.montserrat(
                     color: Colors.black,
                     fontSize: Dimensions.screenWidth * 0.05,
@@ -115,18 +97,19 @@ class _VerificationCodeState extends State<VerificationCode> {
                     letterSpacing: 1,
                   )),
             ),
-            InkWell(
-              onTap: () {
-                if (timer == 0) {
-                  print('si doy click');
+            TextButton(
+              onPressed: () {
+                if (!_isTimerRunning) {
+                  _startTimer();
+                  _controller.login();
                 }
               },
-              child: Text('enviar código SMS',
+              child: Text('Reenviar Código',
                   style: GoogleFonts.montserrat(
-                    color: isTimerRunning
+                    color: _isTimerRunning
                         ? const Color.fromRGBO(217, 217, 217, 1)
                         : Colors.black,
-                    fontSize: Dimensions.screenWidth * 0.04,
+                    fontSize: Dimensions.screenWidth * 0.05,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 1,
                   )),
@@ -136,7 +119,7 @@ class _VerificationCodeState extends State<VerificationCode> {
               child: ButtonClassic(
                 text: "Verificar",
                 onPressed: () {
-                  Get.offAll(() => const DashboardClient());
+                  _controller.sendCode();
                 },
                 color: Colors.black,
               ),
