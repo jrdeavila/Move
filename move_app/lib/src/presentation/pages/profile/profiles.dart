@@ -113,7 +113,9 @@ class _ProfilesState extends State<Profiles> {
               CustomButton(
                   text: 'Información del vehiculo',
                   icon: Icons.arrow_forward_ios_rounded,
-                  onPressed: () {})
+                  onPressed: () {
+                    Get.offAll(() => const DetailsCar());
+                  })
             ],
           ),
         ),
