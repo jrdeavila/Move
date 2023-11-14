@@ -225,7 +225,7 @@ class CardService extends StatelessWidget {
         width: Dimensions.screenWidth * 0.85,
         height: Dimensions.screenHeight * 0.18,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(67, 67, 67, 1),
+          color: const Color.fromRGBO(140, 138, 142, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

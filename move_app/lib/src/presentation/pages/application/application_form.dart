@@ -8,7 +8,11 @@ class ApplicationForm extends StatefulWidget {
 }
 
 class _ApplicationFormState extends State<ApplicationForm> {
+  TextEditingController controllerCarBrand = TextEditingController();
+  TextEditingController controllerCarColor = TextEditingController();
+  TextEditingController controllerLicense = TextEditingController();
   bool showFirstListView = true;
+  bool showInfoVehicule = false;
   String title = 'Informacion personal';
 
   void toggleListView() {
@@ -66,31 +70,56 @@ class _ApplicationFormState extends State<ApplicationForm> {
         InputDownload(
           title: 'Tarjeta de propiedad',
           root: 'assets/images/property_card.png',
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              showInfoVehicule = !showInfoVehicule;
+            });
+          },
           width: 90,
           height: 80,
         ),
-        InputDownload(
-          title: 'SOAT',
-          root: 'assets/images/soat.png',
-          onPressed: () {},
-          width: 80,
-          height: 70,
-        ),
-        InputDownload(
-          title: 'Tecnomecanica',
-          root: 'assets/images/technomechanical.png',
-          onPressed: () {},
-          width: 80,
-          height: 70,
-        ),
-        InputDownload(
-          title: 'Foto frontal y trasera',
-          root: 'assets/images/photo_car.png',
-          onPressed: () {},
-          width: 85,
-          height: 100,
-        ),
+        showInfoVehicule
+            ? InputClassic(
+                labelText: 'Marca del automovil',
+                controller: controllerCarBrand,
+                isPassword: false,
+                isNumericKeyboard: false,
+              )
+            : InputDownload(
+                title: 'SOAT',
+                root: 'assets/images/soat.png',
+                onPressed: () {},
+                width: 80,
+                height: 70,
+              ),
+        showInfoVehicule
+            ? InputClassic(
+                labelText: 'Placa',
+                controller: controllerLicense,
+                isPassword: false,
+                isNumericKeyboard: false,
+              )
+            : InputDownload(
+                title: 'Tecnomecanica',
+                root: 'assets/images/technomechanical.png',
+                onPressed: () {},
+                width: 80,
+                height: 70,
+              ),
+        showInfoVehicule
+            ? InputClassic(
+                labelText: 'Color',
+                controller: controllerCarColor,
+                isPassword: false,
+                isNumericKeyboard: false,
+              )
+            : InputDownload(
+                title: 'Foto frontal y trasera',
+                root: 'assets/images/photo_car.png',
+                onPressed: () {},
+                width: 85,
+                height: 100,
+              ),
       ],
     );
   }
@@ -119,46 +148,69 @@ class _ApplicationFormState extends State<ApplicationForm> {
               )),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: Dimensions.width10,
-            vertical: Dimensions.screenHeight * 0.03),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: Dimensions.screenHeight * 0.03,
-              ),
-              child: Text(
-                title,
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: Dimensions.screenWidth * 0.048,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.4,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.width10,
+              vertical: Dimensions.screenHeight * 0.03),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: Dimensions.screenHeight * 0.03,
+                ),
+                child: Text(
+                  title,
+                  style: GoogleFonts.montserrat(
+                    color: Colors.black,
+                    fontSize: Dimensions.screenWidth * 0.048,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.4,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: Dimensions.screenHeight * 0.7,
-              child: showFirstListView
-                  ? buildPersonalInfoListView()
-                  : buildVehicleInfoListView(),
-            ),
-            showFirstListView
-                ? ButtonClassic(
-                    text: "Siguiente",
-                    onPressed: toggleListView,
-                    color: const Color.fromRGBO(255, 198, 65, 1),
-                  )
-                : ButtonClassic(
-                    text: "Finalizar",
-                    onPressed: () {},
-                    color: const Color.fromRGBO(255, 198, 65, 1),
-                  ),
-          ],
+              SizedBox(
+                height: Dimensions.screenHeight * 0.7,
+                child: showFirstListView
+                    ? buildPersonalInfoListView()
+                    : buildVehicleInfoListView(),
+              ),
+              showFirstListView
+                  ? ButtonClassic(
+                      text: "Siguiente",
+                      onPressed: toggleListView,
+                      color: const Color.fromRGBO(255, 198, 65, 1),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ButtonClassicSmall(
+                          text: "Atras",
+                          onPressed: () {
+                            setState(() {
+                              showFirstListView = true;
+                            });
+                          },
+                          color: Colors.grey,
+                        ),
+                        ButtonClassicSmall(
+                          text: "Finalizar",
+                          onPressed: () {
+                            Get.offAll(() => const InformativeMessage(
+                                  isSucess: true,
+                                  title: 'Registro Exitoso',
+                                  description:
+                                      'La empresa revisará la información proporcionada y te informaremos sobre nuestra decisión.',
+                                ));
+                          },
+                          color: const Color.fromRGBO(255, 198, 65, 1),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
         ),
       ),
     );
