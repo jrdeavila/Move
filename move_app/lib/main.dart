@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:move_app/lib.dart';
 
 void main() async {

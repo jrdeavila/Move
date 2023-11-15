@@ -469,8 +469,11 @@ class _RequestServiceState extends State<RequestService> {
               height: Dimensions.screenHeight * 0.7,
               width: Dimensions.screenWidth * 1,
               child: const GoogleMap(
-                initialCameraPosition:
-                    CameraPosition(target: _pGooglePlex, zoom: 14),
+                initialCameraPosition: CameraPosition(
+                  target: _pGooglePlex,
+                  zoom: 14,
+                ),
+                zoomControlsEnabled: false,
               ),
             ),
             Positioned(
