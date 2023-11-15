@@ -14,6 +14,10 @@ class AppUser {
     required this.email,
     required this.roles,
   });
+
+  bool get isAdmin => roles.contains(AppUserRole.admin);
+  bool get isClient => roles.contains(AppUserRole.client);
+  bool get isDriver => roles.contains(AppUserRole.driver);
 }
 
 enum AppUserRole {

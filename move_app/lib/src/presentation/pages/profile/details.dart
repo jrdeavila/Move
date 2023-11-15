@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:move_app/lib.dart';
 
 class Details extends StatefulWidget {
@@ -11,10 +8,23 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  final SessionCtrl sessionCtrl = Get.find();
+  //-----------------------------------
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerLastName = TextEditingController();
   TextEditingController controllerPhone = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
+
+  //-----------------------------------
+  @override
+  void initState() {
+    super.initState();
+    controllerName.text = sessionCtrl.user?.firstname ?? '';
+    controllerLastName.text = sessionCtrl.user?.lastname ?? '';
+    controllerPhone.text = sessionCtrl.user?.phone ?? '';
+    controllerEmail.text = sessionCtrl.user?.email ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

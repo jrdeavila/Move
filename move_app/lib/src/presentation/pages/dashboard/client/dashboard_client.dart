@@ -62,7 +62,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     root: 'assets/images/car.png',
                     description: '¿Necesitas un viaje? ¡Estamos en camino!',
                     onPressed: () {
-                      Get.offAll(() => const RequestService());
+                      Get.to(() => const RequestService());
                     },
                   ),
                   CardCompound(
@@ -72,7 +72,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/steering.png',
                     onPressed: () {
-                      Get.offAll(() => const ApplicationForm());
+                      Get.to(() => const ApplicationForm());
                     },
                   ),
                   CardClassic(
@@ -81,7 +81,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/profile.png',
                     onPressed: () {
-                      Get.offAll(() => const Profiles());
+                      Get.to(() => const Profiles());
                     },
                   ),
                 ]),
