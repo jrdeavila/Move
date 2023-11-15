@@ -1,4 +1,4 @@
-import 'client.dart';
+import 'package:move_app/lib.dart';
 
 class DashboardClient extends GetView<SessionCtrl> {
   const DashboardClient({super.key});
@@ -72,7 +72,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/steering.png',
                     onPressed: () {
-                      Get.to(() => const ApplicationForm());
+                      Get.toNamed(ProfileRoutes.driverMode);
                     },
                   ),
                   CardClassic(

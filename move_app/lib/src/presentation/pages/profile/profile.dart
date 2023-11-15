@@ -1,4 +1,3 @@
 export 'details.dart';
+export 'details_car.dart';
 export 'profiles.dart';
-export 'package:move_app/lib.dart';
-export 'package:move_app/src/presentation/pages/profile/details_car.dart';

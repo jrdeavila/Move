@@ -1,4 +1,4 @@
-import 'profile.dart';
+import 'package:move_app/lib.dart';
 
 class Profiles extends GetView<DetailsCtrl> {
   const Profiles({super.key});

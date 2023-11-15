@@ -1,4 +1,4 @@
-import 'package:move_app/src/src.dart';
+import 'package:move_app/lib.dart';
 
 class RegisterCtrl extends GetxController {
   final RxString _email = ''.obs;

@@ -1,4 +1,4 @@
-import 'application.dart';
+import 'package:move_app/lib.dart';
 
 class ApplicationForm extends StatefulWidget {
   const ApplicationForm({super.key});

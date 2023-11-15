@@ -1,4 +1,4 @@
-import 'widgets.dart';
+import 'package:move_app/lib.dart';
 
 class ButtonClassic extends StatefulWidget {
   final String text;

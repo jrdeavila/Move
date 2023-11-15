@@ -7,6 +7,9 @@ abstract class DashboardRoutes {
     GetPage(
       name: homeClient,
       page: () => const DashboardClient(),
+      middlewares: [
+        VerifyAuth(),
+      ],
     )
   ];
 }

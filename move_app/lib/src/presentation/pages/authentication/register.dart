@@ -1,4 +1,4 @@
-import 'authentication.dart';
+import 'package:move_app/lib.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
