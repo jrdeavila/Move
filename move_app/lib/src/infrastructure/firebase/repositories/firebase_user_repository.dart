@@ -33,12 +33,13 @@ class FirebaseUserRepository implements IUserRepository {
   }
 
   @override
-  Future<AppUser> updateUser(AppUser user) {
-    return _firestore
+  Future<AppUser> updateUser(AppUser user) async {
+    await _firestore
         .collection('users')
         .doc(user.uuid)
-        .update(userToJson(user))
-        .then((value) => user);
+        .update(userToJson(user));
+
+    return getUser(user.uuid);
   }
 
   @override

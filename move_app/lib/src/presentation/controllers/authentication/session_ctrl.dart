@@ -32,12 +32,17 @@ class SessionCtrl extends GetxController {
       Get.offAllNamed(AuthenticationRoutes.login);
     } else {
       Get.offAllNamed(DashboardRoutes.homeClient);
+      Get.addPages(ProfileRoutes.routes);
     }
   }
 
   // -------------------------------------------------
 
   void onRegisterSuccess(AppUser user) {
+    _user.value = user;
+  }
+
+  void onUpdateProfileSuccess(AppUser user) {
     _user.value = user;
   }
 

@@ -1,6 +1,6 @@
 import 'profile.dart';
 
-class Profiles extends GetView<SessionCtrl> {
+class Profiles extends GetView<DetailsCtrl> {
   const Profiles({super.key});
 
   @override
@@ -79,7 +79,7 @@ class Profiles extends GetView<SessionCtrl> {
               SizedBox(
                 height: Dimensions.screenHeight * 0.02,
               ),
-              Obx(() => Text("${controller.user?.firstname}",
+              Obx(() => Text(controller.firstname,
                   style: GoogleFonts.montserrat(
                     color: Colors.black,
                     fontSize: Dimensions.screenWidth * 0.05,
@@ -89,7 +89,7 @@ class Profiles extends GetView<SessionCtrl> {
               SizedBox(
                 height: Dimensions.screenHeight * 0.01,
               ),
-              Obx(() => Text('${controller.user?.email}',
+              Obx(() => Text(controller.email,
                   style: GoogleFonts.montserrat(
                     color: const Color.fromRGBO(67, 67, 67, 1),
                     fontSize: Dimensions.screenWidth * 0.04,
@@ -103,10 +103,10 @@ class Profiles extends GetView<SessionCtrl> {
                   text: 'Datos personales',
                   icon: Icons.arrow_forward_ios_rounded,
                   onPressed: () {
-                    Get.to(() => const Details());
+                    Get.toNamed(ProfileRoutes.details);
                   }),
               Obx(() {
-                if (controller.user?.isAdmin == true) {
+                if (controller.isDriver == true) {
                   return CustomButton(
                     text: 'Información del vehiculo',
                     icon: Icons.arrow_forward_ios_rounded,

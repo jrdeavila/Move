@@ -8,7 +8,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  final SessionCtrl sessionCtrl = Get.find();
+  final DetailsCtrl detailsCtrl = Get.find();
   //-----------------------------------
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerLastName = TextEditingController();
@@ -19,10 +19,23 @@ class _DetailsState extends State<Details> {
   @override
   void initState() {
     super.initState();
-    controllerName.text = sessionCtrl.user?.firstname ?? '';
-    controllerLastName.text = sessionCtrl.user?.lastname ?? '';
-    controllerPhone.text = sessionCtrl.user?.phone ?? '';
-    controllerEmail.text = sessionCtrl.user?.email ?? '';
+    controllerName.text = detailsCtrl.firstname;
+    controllerLastName.text = detailsCtrl.lastname;
+    controllerPhone.text = detailsCtrl.phone;
+    controllerEmail.text = detailsCtrl.email;
+
+    controllerName.addListener(() {
+      detailsCtrl.setFirstName(controllerName.text);
+    });
+    controllerLastName.addListener(() {
+      detailsCtrl.setLastName(controllerLastName.text);
+    });
+    controllerPhone.addListener(() {
+      detailsCtrl.setPhone(controllerPhone.text);
+    });
+    controllerEmail.addListener(() {
+      detailsCtrl.setEmail(controllerEmail.text);
+    });
   }
 
   @override
@@ -91,6 +104,9 @@ class _DetailsState extends State<Details> {
                   controller: controllerPhone,
                   isPassword: false,
                   isNumericKeyboard: true,
+                  formatters: [
+                    PhoneInputFormatter(),
+                  ],
                 ),
                 InputClassic(
                   labelText: 'Correo',
@@ -102,9 +118,9 @@ class _DetailsState extends State<Details> {
                   height: Dimensions.screenHeight * 0.04,
                 ),
                 ButtonClassic(
-                  text: "Guardar",
+                  text: "Actualizar",
                   onPressed: () {
-                    // TODO: Implementar
+                    detailsCtrl.updateProfile();
                   },
                   color: const Color.fromRGBO(255, 198, 65, 1),
                 ),

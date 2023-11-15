@@ -17,9 +17,10 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../../lib.dart' as _i7;
 import '../../application/use_cases/authentication_use_case.dart' as _i9;
+import '../../application/use_cases/profile_use_case.dart' as _i11;
 import '../firebase/repositories/firebase_user_repository.dart' as _i10;
 import '../firebase/services/firebase_auth_service.dart' as _i8;
-import 'dependecies.dart' as _i11;
+import 'dependecies.dart' as _i12;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -70,16 +71,18 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i7.ISendCodeUseCase>(
         () => _i9.SendCodeUseCase(gh<_i7.IPhoneAuthenticationService>()));
+    gh.factory<_i7.IUpdateProfileUseCase>(() =>
+        _i11.UpdateProfileUseCase(userRepository: gh<_i7.IUserRepository>()));
     gh.factory<_i7.ILoginWithPhoneUseCase>(
         () => _i9.LoginWithPhoneUseCase(gh<_i7.IPhoneAuthenticationService>()));
     return this;
   }
 }
 
-class _$FirebaseAppModule extends _i11.FirebaseAppModule {}
+class _$FirebaseAppModule extends _i12.FirebaseAppModule {}
 
-class _$AppCheckModule extends _i11.AppCheckModule {}
+class _$AppCheckModule extends _i12.AppCheckModule {}
 
-class _$FirebaseAuthModule extends _i11.FirebaseAuthModule {}
+class _$FirebaseAuthModule extends _i12.FirebaseAuthModule {}
 
-class _$FirestoreModule extends _i11.FirestoreModule {}
+class _$FirestoreModule extends _i12.FirestoreModule {}

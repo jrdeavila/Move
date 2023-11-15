@@ -81,7 +81,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/profile.png',
                     onPressed: () {
-                      Get.to(() => const Profiles());
+                      Get.toNamed(ProfileRoutes.profile);
                     },
                   ),
                 ]),
