@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:move_app/lib.dart';
 
 class Login extends GetView<LoginCtrl> {

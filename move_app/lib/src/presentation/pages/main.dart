@@ -19,10 +19,10 @@ class Main extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(left: Dimensions.width10),
-              child: Text('TU',
+              child: Text('A',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -30,10 +30,10 @@ class Main extends StatelessWidget {
               padding: EdgeInsets.only(
                   top: Dimensions.screenHeight * 0.02,
                   left: Dimensions.width10),
-              child: Text('DESTINO',
+              child: Text('DONDE',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -41,10 +41,10 @@ class Main extends StatelessWidget {
               padding: EdgeInsets.only(
                   top: Dimensions.screenHeight * 0.02,
                   left: Dimensions.width10),
-              child: Text('ESTÁ',
+              child: Text('QUIERAS',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -52,10 +52,10 @@ class Main extends StatelessWidget {
               padding: EdgeInsets.only(
                   top: Dimensions.screenHeight * 0.02,
                   left: Dimensions.width10),
-              child: Text('A UN',
+              child: Text('NOSOTROS',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.14,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -63,10 +63,10 @@ class Main extends StatelessWidget {
               padding: EdgeInsets.only(
                   top: Dimensions.screenHeight * 0.02,
                   left: Dimensions.width10),
-              child: Text('TOQUE.',
+              child: Text('VAMOS.',
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.15,
+                    fontSize: Dimensions.screenWidth * 0.13,
                     fontWeight: FontWeight.w700,
                   )),
             ),
@@ -100,8 +100,8 @@ class Main extends StatelessWidget {
                       )),
                 ),
                 Positioned(
-                  top: Dimensions.screenHeight * 0.2,
-                  left: Dimensions.screenWidth * 0.55,
+                  top: Dimensions.screenHeight * 0.24,
+                  left: Dimensions.screenWidth * 0.56,
                   child: ElevatedButton(
                     onPressed: () {
                       Get.offAllNamed(AuthenticationRoutes.login);
