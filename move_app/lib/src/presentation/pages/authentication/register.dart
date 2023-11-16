@@ -1,4 +1,4 @@
-import 'authentication.dart';
+import 'package:move_app/lib.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -8,11 +8,27 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController controllerName = TextEditingController();
-  TextEditingController controllerLastName = TextEditingController();
-  TextEditingController controllerPhone = TextEditingController();
-  TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerPassword = TextEditingController();
+  final RegisterCtrl _registerCtrl = Get.find<RegisterCtrl>();
+
+  final TextEditingController _controllerFirstName = TextEditingController();
+  final TextEditingController _controllerLastName = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerFirstName.addListener(() {
+      _registerCtrl.onFirstnameChanged(_controllerFirstName.text);
+    });
+    _controllerLastName.addListener(() {
+      _registerCtrl.onLastnameChanged(_controllerLastName.text);
+    });
+    _controllerEmail.addListener(() {
+      _registerCtrl.onEmailChanged(_controllerEmail.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +46,7 @@ class _RegisterState extends State<Register> {
                       left: Dimensions.screenWidth * 0.05,
                       child: IconButton(
                           onPressed: () {
-                            Get.offAllNamed('/principal');
+                            Get.offAllNamed(MainRoutes.main);
                           },
                           icon: const Icon(Icons.arrow_back_ios_rounded,
                               color: Colors.white))),
@@ -70,36 +86,22 @@ class _RegisterState extends State<Register> {
                                 )),
                             InputClassic(
                               labelText: 'Nombre',
-                              controller: controllerName,
+                              controller: _controllerFirstName,
                               isPassword: false,
                               isNumericKeyboard: false,
                               isDateInput: false,
                             ),
                             InputClassic(
                               labelText: 'Apellido',
-                              controller: controllerLastName,
+                              controller: _controllerLastName,
                               isPassword: false,
                               isNumericKeyboard: false,
-                              isDateInput: false,
-                            ),
-                            InputClassic(
-                              labelText: 'Celular',
-                              controller: controllerPhone,
-                              isPassword: false,
-                              isNumericKeyboard: true,
                               isDateInput: false,
                             ),
                             InputClassic(
                               labelText: 'Correo',
-                              controller: controllerEmail,
+                              controller: _controllerEmail,
                               isPassword: false,
-                              isNumericKeyboard: false,
-                              isDateInput: false,
-                            ),
-                            InputClassic(
-                              labelText: 'Contraseña',
-                              controller: controllerPassword,
-                              isPassword: true,
                               isNumericKeyboard: false,
                               isDateInput: false,
                             ),
@@ -109,7 +111,7 @@ class _RegisterState extends State<Register> {
                             ButtonClassic(
                               text: "Registrar",
                               onPressed: () {
-                                Get.offAll(() => const VerificationCode());
+                                _registerCtrl.register();
                               },
                               color: Colors.black,
                             ),

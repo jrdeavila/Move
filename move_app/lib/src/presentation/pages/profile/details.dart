@@ -1,4 +1,4 @@
-import 'profile.dart';
+import 'package:move_app/lib.dart';
 
 class Details extends StatefulWidget {
   const Details({super.key});
@@ -8,10 +8,36 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  final DetailsCtrl detailsCtrl = Get.find();
+  //-----------------------------------
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerLastName = TextEditingController();
   TextEditingController controllerPhone = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
+
+  //-----------------------------------
+  @override
+  void initState() {
+    super.initState();
+    controllerName.text = detailsCtrl.firstname;
+    controllerLastName.text = detailsCtrl.lastname;
+    controllerPhone.text = detailsCtrl.phone;
+    controllerEmail.text = detailsCtrl.email;
+
+    controllerName.addListener(() {
+      detailsCtrl.setFirstName(controllerName.text);
+    });
+    controllerLastName.addListener(() {
+      detailsCtrl.setLastName(controllerLastName.text);
+    });
+    controllerPhone.addListener(() {
+      detailsCtrl.setPhone(controllerPhone.text);
+    });
+    controllerEmail.addListener(() {
+      detailsCtrl.setEmail(controllerEmail.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,8 +119,10 @@ class _DetailsState extends State<Details> {
                   height: Dimensions.screenHeight * 0.04,
                 ),
                 ButtonClassic(
-                  text: "Guardar",
-                  onPressed: () {},
+                  text: "Actualizar",
+                  onPressed: () {
+                    detailsCtrl.updateProfile();
+                  },
                   color: const Color.fromRGBO(255, 198, 65, 1),
                 ),
               ],

@@ -1,16 +1,14 @@
-import 'authentication.dart';
+import 'package:move_app/lib.dart';
 
-class Login extends StatefulWidget {
+class Login extends GetView<LoginCtrl> {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  TextEditingController controllerPhone = TextEditingController();
-  @override
   Widget build(BuildContext context) {
+    TextEditingController controllerPhone = TextEditingController();
+    controllerPhone.addListener(() {
+      controller.setNumberPhone(controllerPhone.text);
+    });
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -26,18 +24,20 @@ class _LoginState extends State<Login> {
                       left: Dimensions.screenWidth * 0.05,
                       child: IconButton(
                           onPressed: () {
-                            Get.offAllNamed('/principal');
+                            Get.offAllNamed(MainRoutes.main);
                           },
                           icon: const Icon(Icons.arrow_back_ios_rounded,
                               color: Colors.white))),
                   IgnorePointer(
                     child: Container(
-                        height: Dimensions.screenHeight * 0.452,
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/background_login.png'),
-                                fit: BoxFit.contain))),
+                      height: Dimensions.screenHeight * 0.452,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/background_login.png'),
+                            fit: BoxFit.contain),
+                      ),
+                    ),
                   ),
                   Positioned(
                     top: Dimensions.screenHeight * 0.07,
@@ -89,6 +89,7 @@ class _LoginState extends State<Login> {
                               isPassword: false,
                               isNumericKeyboard: true,
                               isDateInput: false,
+                              formatters: [PhoneInputFormatter()],
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,
@@ -96,7 +97,7 @@ class _LoginState extends State<Login> {
                             ButtonClassic(
                               text: "Siguiente",
                               onPressed: () {
-                                Get.offAll(() => const VerificationCode());
+                                controller.login();
                               },
                               color: Colors.black,
                             ),

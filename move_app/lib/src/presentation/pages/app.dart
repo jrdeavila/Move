@@ -1,4 +1,4 @@
-import 'pages.dart';
+import 'package:move_app/lib.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -7,12 +7,13 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {
-        '/principal': (context) => const Main(),
-        '/login': (context) => const Login(),
-        '/register': (context) => const Register(),
-      },
-      home: const Main(),
+      getPages: [
+        ...MainRoutes.routes,
+        ...AuthenticationRoutes.routes,
+        ...DashboardRoutes.routes,
+      ],
+      initialRoute: MainRoutes.main,
+      initialBinding: MainBinding(),
     );
   }
 }

@@ -1,13 +1,8 @@
-import 'profile.dart';
+import 'package:move_app/lib.dart';
 
-class Profiles extends StatefulWidget {
+class Profiles extends GetView<DetailsCtrl> {
   const Profiles({super.key});
 
-  @override
-  State<Profiles> createState() => _ProfilesState();
-}
-
-class _ProfilesState extends State<Profiles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,23 +79,23 @@ class _ProfilesState extends State<Profiles> {
               SizedBox(
                 height: Dimensions.screenHeight * 0.02,
               ),
-              Text('Pedro Miguel',
+              Obx(() => Text(controller.firstname,
                   style: GoogleFonts.montserrat(
                     color: Colors.black,
                     fontSize: Dimensions.screenWidth * 0.05,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.2,
-                  )),
+                  ))),
               SizedBox(
                 height: Dimensions.screenHeight * 0.01,
               ),
-              Text('pedromiguel@gmail.com',
+              Obx(() => Text(controller.email,
                   style: GoogleFonts.montserrat(
                     color: const Color.fromRGBO(67, 67, 67, 1),
                     fontSize: Dimensions.screenWidth * 0.04,
                     fontWeight: FontWeight.w400,
                     letterSpacing: 1.2,
-                  )),
+                  ))),
               SizedBox(
                 height: Dimensions.screenHeight * 0.01,
               ),
@@ -108,14 +103,18 @@ class _ProfilesState extends State<Profiles> {
                   text: 'Datos personales',
                   icon: Icons.arrow_forward_ios_rounded,
                   onPressed: () {
-                    Get.offAll(() => const Details());
+                    Get.toNamed(ProfileRoutes.details);
                   }),
-              CustomButton(
-                  text: 'Información del vehiculo',
-                  icon: Icons.arrow_forward_ios_rounded,
-                  onPressed: () {
-                    Get.offAll(() => const DetailsCar());
-                  })
+              Obx(() {
+                if (controller.isDriver == true) {
+                  return CustomButton(
+                    text: 'Información del vehiculo',
+                    icon: Icons.arrow_forward_ios_rounded,
+                    onPressed: () {},
+                  );
+                }
+                return const SizedBox.shrink();
+              })
             ],
           ),
         ),

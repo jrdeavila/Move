@@ -1,4 +1,4 @@
-import 'automobile.dart';
+import 'package:move_app/lib.dart';
 
 class AutomobileInformation extends StatefulWidget {
   const AutomobileInformation({super.key});

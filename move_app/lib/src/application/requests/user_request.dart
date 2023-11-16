@@ -14,24 +14,35 @@ class LoginRequest {
   }
 }
 
+class LoginWithPhoneRequest {
+  final String phone;
+  final void Function() onCodeSend;
+
+  LoginWithPhoneRequest({
+    required this.phone,
+    required this.onCodeSend,
+  });
+}
+
 class RegisterRequest {
-  final String name;
+  final String firstname;
+  final String lastname;
   final String email;
-  final String password;
-  final String confirmPassword;
 
   RegisterRequest({
-    required this.name,
+    required this.firstname,
+    required this.lastname,
     required this.email,
-    required this.password,
-    required this.confirmPassword,
   });
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "email": email,
-      "password": password,
-      "confirmPassword": confirmPassword,
-    };
-  }
+}
+
+class SendCodeRequest {
+  final String code;
+  final void Function() onLoginSuccessful;
+  final void Function() onShouldRegister;
+  SendCodeRequest({
+    required this.code,
+    required this.onLoginSuccessful,
+    required this.onShouldRegister,
+  });
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -7,6 +9,7 @@ class InputClassic extends StatefulWidget {
   final bool isPassword;
   final bool isNumericKeyboard;
   final bool isDateInput;
+  final List<TextInputFormatter> formatters;
   const InputClassic({
     Key? key,
     required this.labelText,
@@ -14,6 +17,7 @@ class InputClassic extends StatefulWidget {
     required this.isPassword,
     required this.isNumericKeyboard,
     required this.isDateInput,
+    this.formatters = const [],
   }) : super(key: key);
 
   @override
@@ -40,6 +44,7 @@ class _InputClassicState extends State<InputClassic> {
         },
         obscureText: widget.isPassword,
         cursorColor: Colors.black,
+        inputFormatters: widget.formatters,
         style: GoogleFonts.montserrat(
           color: const Color.fromRGBO(30, 30, 30, 1),
         ),
@@ -92,9 +97,27 @@ class InputCode extends StatefulWidget {
 
 class _InputCodeState extends State<InputCode> {
   @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() {
+      if (widget.controller.text.length == 1) {
+        FocusScope.of(context).nextFocus();
+        return;
+      }
+      if (widget.controller.text.isEmpty &&
+          widget.controller.selection.baseOffset == 0) {
+        FocusScope.of(context).previousFocus();
+        return;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.04),
+      margin: EdgeInsets.symmetric(
+        vertical: Dimensions.screenHeight * 0.04,
+      ),
       width: Dimensions.screenWidth * 0.15,
       height: Dimensions.screenHeight * 0.09,
       decoration: BoxDecoration(
@@ -107,10 +130,7 @@ class _InputCodeState extends State<InputCode> {
           ),
         ],
       ),
-      child: Padding(
-        padding: EdgeInsets.only(
-            left: Dimensions.screenWidth * 0.001,
-            bottom: Dimensions.screenHeight * 0.01),
+      child: Center(
         child: TextField(
           cursorColor: Colors.black,
           style: GoogleFonts.montserrat(

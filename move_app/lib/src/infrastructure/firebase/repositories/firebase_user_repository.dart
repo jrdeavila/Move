@@ -13,14 +13,14 @@ class FirebaseUserRepository implements IUserRepository {
   Future<AppUser> createUser(AppUser user) {
     return _firestore
         .collection('users')
-        .doc(user.uid)
+        .doc(user.uuid)
         .set(userToJson(user))
         .then((value) => user);
   }
 
   @override
   Future<void> deleteUser(AppUser user) {
-    return _firestore.collection('users').doc(user.uid).delete();
+    return _firestore.collection('users').doc(user.uuid).delete();
   }
 
   @override
@@ -33,29 +33,43 @@ class FirebaseUserRepository implements IUserRepository {
   }
 
   @override
-  Future<AppUser> updateUser(AppUser user) {
+  Future<AppUser> updateUser(AppUser user) async {
+    await _firestore
+        .collection('users')
+        .doc(user.uuid)
+        .update(userToJson(user));
+
+    return getUser(user.uuid);
+  }
+
+  @override
+  Future<bool> isUserExists(String uuid) {
     return _firestore
         .collection('users')
-        .doc(user.uid)
-        .update(userToJson(user))
-        .then((value) => user);
+        .doc(uuid)
+        .get()
+        .then((snapshot) => snapshot.exists);
   }
 }
 
 Map<String, dynamic> userToJson(AppUser user) => <String, dynamic>{
-      'uid': user.uid,
-      'name': user.name,
+      'uuid': user.uuid,
+      'firstname': user.firstname,
+      'lastname': user.lastname,
+      'phone': user.phone,
       'email': user.email,
       'roles': user.roles.map((e) => e.toString().split('.').last).toList(),
     };
 
 AppUser userFromJson(Map<String, dynamic> json) => AppUser(
-      uid: json['uid'] as String,
-      name: json['name'] as String,
+      uuid: json['uuid'] as String,
+      firstname: json['firstname'] as String,
+      lastname: json['lastname'] as String,
+      phone: json['phone'] as String,
       email: json['email'] as String,
       roles: (json['roles'] as List<dynamic>)
           .map((e) => AppUserRole.values.firstWhere(
-                (role) => role.toString() == 'AppUserRole.$e',
+                (element) => element.toString().split('.').last == e,
               ))
           .toList(),
     );

@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -49,6 +46,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBvfZe_CwZ89sYOWUmkihrDx3L_oyMK2cU',
+    appId: '1:64558452563:web:2d6ec1a5dc82b220c55ba6',
+    messagingSenderId: '64558452563',
+    projectId: 'mevo-ceb14',
+    authDomain: 'mevo-ceb14.firebaseapp.com',
+    storageBucket: 'mevo-ceb14.appspot.com',
+    measurementId: 'G-4NX7GWYCGC',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC8tuDvLiRFNDh-pNHmCzNKHjAVbSjI1tw',
     appId: '1:64558452563:android:80b07ca8f9c6d610c55ba6',
@@ -63,6 +70,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '64558452563',
     projectId: 'mevo-ceb14',
     storageBucket: 'mevo-ceb14.appspot.com',
+    iosClientId: '64558452563-r9q7ar2ba31jgh3st6smfs9gbb8ucqqo.apps.googleusercontent.com',
     iosBundleId: 'com.example.moveApp',
   );
 }

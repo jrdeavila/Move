@@ -1,4 +1,4 @@
-import 'personal.dart';
+import 'package:move_app/lib.dart';
 
 class PersonalInformation extends StatefulWidget {
   final TextEditingController controllerDNI;
