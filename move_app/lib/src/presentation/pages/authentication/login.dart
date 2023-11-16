@@ -88,6 +88,7 @@ class _LoginState extends State<Login> {
                               controller: controllerPhone,
                               isPassword: false,
                               isNumericKeyboard: true,
+                              isDateInput: false,
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,

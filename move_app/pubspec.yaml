@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^6.1.0
   google_maps_flutter: ^2.5.0
   injectable: ^2.3.2
+  intl: ^0.18.1
   permission_handler: ^11.0.1
 
 dev_dependencies:

@@ -8,9 +8,9 @@ class InputDownload extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const InputDownload({
+    super.key,
     required this.title,
     this.onPressed,
-    super.key,
     required this.root,
     required this.width,
     required this.height,
@@ -19,7 +19,7 @@ class InputDownload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: Dimensions.screenHeight * 0.01),
+      padding: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.015),
       child: Container(
         constraints: BoxConstraints(
           maxWidth: Dimensions.screenWidth * 0.05,

@@ -1,16 +1,19 @@
 import 'widgets.dart';
+import 'package:intl/intl.dart';
 
 class InputClassic extends StatefulWidget {
   final String labelText;
   final TextEditingController controller;
   final bool isPassword;
-  final bool isNumericKeyboard; // Nuevo atributo
+  final bool isNumericKeyboard;
+  final bool isDateInput;
   const InputClassic({
     Key? key,
     required this.labelText,
     required this.controller,
     required this.isPassword,
     required this.isNumericKeyboard,
+    required this.isDateInput,
   }) : super(key: key);
 
   @override
@@ -30,6 +33,11 @@ class _InputClassicState extends State<InputClassic> {
       margin: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.02),
       width: Dimensions.screenWidth * 0.9,
       child: TextField(
+        onTap: () {
+          if (widget.isDateInput) {
+            _selectDate(context);
+          }
+        },
         obscureText: widget.isPassword,
         cursorColor: Colors.black,
         style: GoogleFonts.montserrat(
@@ -55,6 +63,21 @@ class _InputClassicState extends State<InputClassic> {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+
+    // ignore: unrelated_type_equality_checks
+    if (pickedDate != null && pickedDate != widget.controller.text) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      widget.controller.text = formattedDate;
+    }
   }
 }
 

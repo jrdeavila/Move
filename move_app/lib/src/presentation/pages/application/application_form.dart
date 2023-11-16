@@ -8,9 +8,14 @@ class ApplicationForm extends StatefulWidget {
 }
 
 class _ApplicationFormState extends State<ApplicationForm> {
-  TextEditingController controllerCarBrand = TextEditingController();
-  TextEditingController controllerCarColor = TextEditingController();
-  TextEditingController controllerLicense = TextEditingController();
+  TextEditingController controllerDNI = TextEditingController();
+  TextEditingController controllerDriverLicense = TextEditingController();
+  TextEditingController controllerDriverLicenseConfirmation =
+      TextEditingController();
+
+  TextEditingController controllerDriverLicenseExpirationDate =
+      TextEditingController();
+
   bool showFirstListView = true;
   bool showInfoVehicule = false;
   String title = 'Informacion personal';
@@ -20,108 +25,6 @@ class _ApplicationFormState extends State<ApplicationForm> {
       showFirstListView = !showFirstListView;
       title = showFirstListView ? 'Informacion personal' : 'Datos del vehiculo';
     });
-  }
-
-  Widget buildPersonalInfoListView() {
-    return ListView(
-      children: [
-        InputDownload(
-          title: 'CC',
-          root: 'assets/images/cc.png',
-          onPressed: () {},
-          width: 80,
-          height: 70,
-        ),
-        InputDownload(
-          title: 'Foto tipo carnet',
-          root: 'assets/images/photo.png',
-          onPressed: () {},
-          width: 60,
-          height: 60,
-        ),
-        InputDownload(
-          title: 'Licencia de conducir',
-          root: 'assets/images/driving_license.png',
-          onPressed: () {},
-          width: 80,
-          height: 70,
-        ),
-        InputDownload(
-          title: 'Certificacion cuentas bancarias',
-          root: 'assets/images/account_certification.png',
-          onPressed: () {},
-          width: 80,
-          height: 70,
-        ),
-        InputDownload(
-          title: 'Antecedentes penales',
-          root: 'assets/images/criminal_record.png',
-          onPressed: () {},
-          width: 80,
-          height: 80,
-        ),
-      ],
-    );
-  }
-
-  Widget buildVehicleInfoListView() {
-    return ListView(
-      children: [
-        InputDownload(
-          title: 'Tarjeta de propiedad',
-          root: 'assets/images/property_card.png',
-          onPressed: () {
-            setState(() {
-              showInfoVehicule = !showInfoVehicule;
-            });
-          },
-          width: 90,
-          height: 80,
-        ),
-        showInfoVehicule
-            ? InputClassic(
-                labelText: 'Marca del automovil',
-                controller: controllerCarBrand,
-                isPassword: false,
-                isNumericKeyboard: false,
-              )
-            : InputDownload(
-                title: 'SOAT',
-                root: 'assets/images/soat.png',
-                onPressed: () {},
-                width: 80,
-                height: 70,
-              ),
-        showInfoVehicule
-            ? InputClassic(
-                labelText: 'Placa',
-                controller: controllerLicense,
-                isPassword: false,
-                isNumericKeyboard: false,
-              )
-            : InputDownload(
-                title: 'Tecnomecanica',
-                root: 'assets/images/technomechanical.png',
-                onPressed: () {},
-                width: 80,
-                height: 70,
-              ),
-        showInfoVehicule
-            ? InputClassic(
-                labelText: 'Color',
-                controller: controllerCarColor,
-                isPassword: false,
-                isNumericKeyboard: false,
-              )
-            : InputDownload(
-                title: 'Foto frontal y trasera',
-                root: 'assets/images/photo_car.png',
-                onPressed: () {},
-                width: 85,
-                height: 100,
-              ),
-      ],
-    );
   }
 
   @override
@@ -174,8 +77,15 @@ class _ApplicationFormState extends State<ApplicationForm> {
               SizedBox(
                 height: Dimensions.screenHeight * 0.7,
                 child: showFirstListView
-                    ? buildPersonalInfoListView()
-                    : buildVehicleInfoListView(),
+                    ? PersonalInformation(
+                        controllerDNI: controllerDNI,
+                        controllerDriverLicense: controllerDriverLicense,
+                        controllerDriverLicenseExpirationDate:
+                            controllerDriverLicenseExpirationDate,
+                        controllerDirverLicenseConfirmation:
+                            controllerDriverLicenseConfirmation,
+                      )
+                    : const AutomobileInformation(),
               ),
               showFirstListView
                   ? ButtonClassic(
