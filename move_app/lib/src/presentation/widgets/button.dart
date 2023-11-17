@@ -83,6 +83,45 @@ class _ButtonClassicSmallState extends State<ButtonClassicSmall> {
   }
 }
 
+class ButtonSmall extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final Color color;
+  final Color colorText;
+  const ButtonSmall({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    required this.color,
+    required this.colorText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        minimumSize:
+            Size(Dimensions.screenWidth * 0.33, Dimensions.screenHeight * 0.07),
+        elevation: 0.0,
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.montserrat(
+          color: colorText,
+          fontSize: Dimensions.screenWidth * 0.04,
+          letterSpacing: 1.6,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
 class CustomButton extends StatefulWidget {
   final String text;
   final IconData icon;
