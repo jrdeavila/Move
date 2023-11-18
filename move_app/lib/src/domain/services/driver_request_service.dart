@@ -1,11 +1,11 @@
 import 'package:move_app/lib.dart';
 
-abstract class DNISectionSectionService {
+abstract class IDNISectionService {
   Future<DNISection> getDNISection(AppUser user);
-  Future<void> setDNISection(AppUser user, DNISection dniSection);
+  Future<DNISection> setDNISection(AppUser user, DNISection dniSection);
 }
 
-abstract class DriverLicenseSectionService {
+abstract class IDriverLicenseSectionService {
   Future<DriverLicenseSection> getDriverLicenseSection(AppUser user);
   Future<DriverLicenseSection> setDriverLicenseSection(
     AppUser user,
@@ -13,7 +13,7 @@ abstract class DriverLicenseSectionService {
   );
 }
 
-abstract class AboutCarSectionService {
+abstract class IAboutCarSectionService {
   Future<AboutCarSection> getAboutCarSection(AppUser user);
   Future<AboutCarSection> setAboutCarSection(
     AppUser user,
@@ -21,7 +21,7 @@ abstract class AboutCarSectionService {
   );
 }
 
-abstract class NoCriminalRecordSectionService {
+abstract class INoCriminalRecordSectionService {
   Future<NoCriminalRecordSection> getNoCriminalRecordSection(AppUser user);
   Future<NoCriminalRecordSection> setNoCriminalRecordSection(
     AppUser user,
@@ -29,10 +29,20 @@ abstract class NoCriminalRecordSectionService {
   );
 }
 
-abstract class AboutMeSectionService {
+abstract class IAboutMeSectionService {
   Future<AboutMeSection> getAboutMeSection(AppUser user);
   Future<AboutMeSection> setAboutMeSection(
     AppUser user,
     AboutMeSection aboutMeSection,
   );
+}
+
+abstract class IFinishDriverRequestService {
+  Future<DriverRequest> setFinishDriverRequestSection(
+    AppUser user,
+  );
+}
+
+abstract class IGetDriverRequestService {
+  Future<DriverRequest> getDriverRequest(AppUser user);
 }

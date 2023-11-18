@@ -1,3 +1,3 @@
-export 'person/details.dart';
-export 'car/details_car.dart';
+export 'car/car.dart';
+export 'person/person.dart';
 export 'profiles.dart';

@@ -12,12 +12,20 @@ class VerificationCode extends StatefulWidget {
 }
 
 class _VerificationCodeState extends State<VerificationCode> {
+  late Timer timer;
   bool _isTimerRunning = false;
   int _timerValue = 0;
   final _controller = Get.find<LoginCtrl>();
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    timer.cancel();
+    super.dispose();
+  }
+
   void _startTimer() {
-    Timer.periodic(
+    timer = Timer.periodic(
       1.seconds,
       (timer) {
         _timerValue = widget.timer.inSeconds - timer.tick;

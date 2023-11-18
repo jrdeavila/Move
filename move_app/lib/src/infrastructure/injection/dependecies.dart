@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
-
-const host = '10.0.2.2';
 
 @module
 abstract class FirebaseAppModule {
@@ -26,8 +23,9 @@ abstract class FirebaseAuthModule {
 
 @module
 abstract class FirestoreModule {
+  @preResolve
   @lazySingleton
-  FirebaseFirestore get firestore =>
+  Future<FirebaseFirestore> get firestore async =>
       FirebaseFirestore.instanceFor(app: getIt<FirebaseApp>());
 }
 
@@ -42,4 +40,15 @@ abstract class AppCheckModule {
     );
     return appCheck;
   }
+}
+
+@module
+abstract class FirebaseStorageModule {
+  @preResolve
+  @lazySingleton
+  Future<FirebaseStorage> get firebaseStorage async =>
+      FirebaseStorage.instanceFor(
+        app: getIt<FirebaseApp>(),
+        bucket: "gs://mevo-ceb14.appspot.com",
+      );
 }

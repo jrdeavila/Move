@@ -29,18 +29,24 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animate_do: ^3.1.2
+  cached_network_image: ^3.3.0
   cloud_firestore: ^4.12.2
   cupertino_icons: ^1.0.2
   firebase_app_check: ^0.2.1+4
   firebase_auth: ^4.12.1
   firebase_core: ^2.21.0
+  firebase_storage: ^11.5.1
   flutter:
     sdk: flutter
+  flutter_cache_manager: ^3.3.1
+  flutter_keyboard_visibility: ^5.4.1
   flutter_svg: ^2.0.9
   get: ^4.6.6
   get_it: ^7.6.4
   google_fonts: ^6.1.0
   google_maps_flutter: ^2.5.0
+  http: ^1.1.0
+  image_picker: ^1.0.4
   injectable: ^2.3.2
   intl: ^0.18.1
   permission_handler: ^11.0.1
@@ -53,6 +59,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   injectable_generator: ^2.4.1
+  mockito: ^5.4.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

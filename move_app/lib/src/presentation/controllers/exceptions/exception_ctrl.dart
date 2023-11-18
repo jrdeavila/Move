@@ -1,7 +1,14 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:move_app/lib.dart';
 
 class ExceptionCtrl extends GetxController {
+  void onDebugException(Object exception) {
+    log("=========================== EXCEPTION ===========================");
+    log(exception.toString());
+  }
+
   void exception(Object exception) {
     switch (exception.runtimeType) {
       case FirebaseAuthException:
@@ -17,7 +24,7 @@ class ExceptionCtrl extends GetxController {
   }
 
   _firebaseException(FirebaseException exception) {
-    return _showSnackbar(
+    return showSnackbar(
       "Ups! Algo salió mal 😢",
       firebaseExceptionsCodeMap[exception.code] ??
           'Se produjo un error desconocido',
@@ -25,24 +32,9 @@ class ExceptionCtrl extends GetxController {
   }
 
   _defaultException(Object exception) {
-    return _showSnackbar(
+    return showSnackbar(
       "Ups! Error desconocido 😱",
       exception.toString(),
-    );
-  }
-
-  _showSnackbar(String title, String message) {
-    return Get.snackbar(
-      title,
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.black,
-      colorText: Colors.white,
-      icon: const Icon(Icons.error_outline_rounded, color: Colors.white),
-      dismissDirection: DismissDirection.horizontal,
-      duration: const Duration(seconds: 5),
-      forwardAnimationCurve: Curves.easeOutBack,
-      reverseAnimationCurve: Curves.easeInBack,
     );
   }
 }
