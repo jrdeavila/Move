@@ -1,5 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/application/automobile/about_car.dart';
 
 class ApplicationForm extends StatefulWidget {
   const ApplicationForm({super.key});

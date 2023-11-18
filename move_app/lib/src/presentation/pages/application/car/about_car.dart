@@ -1,5 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/widgets/custom_dropdown.dart';
 
 class AboutCar extends StatefulWidget {
   final TextEditingController controllerCarPlate;

@@ -21,14 +21,6 @@ class _RequestServiceState extends State<RequestService> {
 
   String option = 'efectivo';
   String payment = '';
-  int _selectedOption = 0;
-
-  List<String> options = [
-    'Cambio de planes',
-    'Demora excesiva',
-    'Problema con el conductor',
-    'Problema con el vehículo',
-  ];
 
   @override
   void initState() {
@@ -45,416 +37,61 @@ class _RequestServiceState extends State<RequestService> {
   Widget serviceCanceled() {
     return Positioned(
         top: Dimensions.screenHeight * 0.46,
-        child: FadeInUpBig(
-          child: Container(
-            width: Dimensions.screenWidth * 1,
-            height: Dimensions.screenHeight * 0.55,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: Dimensions.screenWidth * 0.02,
-                right: Dimensions.screenWidth * 0.02,
-                top: Dimensions.screenHeight * 0.03,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isServiceCanceledVisible = false;
-                            isServiceAcceptedVisible = true;
-                          });
-                        },
-                        icon: const Icon(Icons.arrow_back_ios_rounded,
-                            color: Colors.black),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: Dimensions.screenWidth * 0.03),
-                        child: Text('Cancelacion de servicio',
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.055,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                            )),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Dimensions.screenWidth * 0.05,
-                        vertical: Dimensions.screenHeight * 0.01),
-                    child: Text(
-                        '¿Por qué desea cancelar tu servicio de transporte?',
-                        style: GoogleFonts.montserrat(
-                          color: Colors.black,
-                          fontSize: Dimensions.screenWidth * 0.04,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1,
-                        )),
-                  ),
-                  Column(
-                    children: options
-                        .asMap()
-                        .entries
-                        .map(
-                          (entry) => RadioListTile(
-                            title: Text(
-                              entry.value,
-                              style: GoogleFonts.montserrat(
-                                fontSize: Dimensions.screenWidth * 0.04,
-                              ),
-                            ),
-                            value: entry.key,
-                            groupValue: _selectedOption,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedOption = value!;
-                              });
-                            },
-                          ),
-                        )
-                        .toList(),
-                  ),
-                  ButtonClassic(
-                    text: "Confirmar cancelación",
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    color: const Color.fromRGBO(224, 26, 25, 1),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ));
+        child: ServiceCanceled(onVisibilityChangedServiceCanceled: (isVisible) {
+          setState(() {
+            isServiceCanceledVisible = isVisible;
+          });
+        }, onVisibilityChangedServiceAccepted: (isVisible) {
+          setState(() {
+            isServiceAcceptedVisible = isVisible;
+          });
+        }));
   }
 
   Widget serviceAccepted() {
     return Positioned(
-      top: Dimensions.screenHeight * 0.53,
-      child: FadeInUpBig(
-          child: Container(
-        width: Dimensions.screenWidth * 1,
-        height: Dimensions.screenHeight * 0.55,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: Dimensions.screenHeight * 0.035,
-                bottom: Dimensions.screenHeight * 0.02,
-              ),
-              child: Row(
-                children: [
-                  const UserProfile(user: 'Pedro Miguel', score: '4,5'),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: Dimensions.screenWidth * 0.6,
-                        child: Text('Su movil llegara aproximadamente en 3 min',
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.04,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1,
-                            )),
-                      ),
-                      Text('Negro Kia Picanto',
-                          style: GoogleFonts.montserrat(
-                            color: Colors.black,
-                            fontSize: Dimensions.screenWidth * 0.04,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1,
-                          )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: Dimensions.screenHeight * 0.01),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: Dimensions.screenWidth * 0.26,
-                              height: Dimensions.screenHeight * 0.035,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color: const Color.fromRGBO(140, 138, 142, 1),
-                              ),
-                              child: Center(
-                                child: Text('IOZ320',
-                                    style: GoogleFonts.montserrat(
-                                      color: Colors.white,
-                                      fontSize: Dimensions.screenWidth * 0.035,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 1,
-                                    )),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: Dimensions.screenWidth * 0.03),
-                              child: Text('COP ${paymentController.text}',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.black,
-                                    fontSize: Dimensions.screenWidth * 0.045,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: 1,
-                                  )),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            CardDetails(
-              color: Colors.blue,
-              adress: controllerInitialLocation.text,
-              title: 'Origen',
-            ),
-            CardDetails(
-              color: const Color.fromRGBO(255, 198, 65, 1),
-              adress: controllerInitialLocation.text,
-              title: 'Destino',
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: Dimensions.screenWidth * 0.1,
-                  right: Dimensions.screenWidth * 0.1,
-                  top: Dimensions.screenHeight * 0.01),
-              child: ButtonClassic(
-                text: "Cancelar",
-                onPressed: () {
-                  setState(() {
-                    isServiceCanceledVisible = true;
-                  });
-                },
-                color: const Color.fromRGBO(224, 26, 25, 1),
-              ),
-            ),
-          ],
-        ),
-      )),
-    );
+        top: Dimensions.screenHeight * 0.53,
+        child: ServiceAccepted(
+            paymentController: paymentController,
+            controllerInitialLocation: controllerInitialLocation,
+            controllerFinalLocation: controllerFinalLocation,
+            onVisibilityChanged: (isVisible) {
+              setState(() {
+                isServiceCanceledVisible = isVisible;
+              });
+            }));
   }
 
   Widget serviceDetails() {
     return Positioned(
-      top: Dimensions.screenHeight * 0.6,
-      child: FadeInUpBig(
-          child: Container(
-        width: Dimensions.screenWidth * 1,
-        height: Dimensions.screenHeight * 0.55,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: Dimensions.screenHeight * 0.035,
-                bottom: Dimensions.screenHeight * 0.02,
-              ),
-              child: Text('Solicitando servicio',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.black,
-                    fontSize: Dimensions.screenWidth * 0.06,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1,
-                  )),
-            ),
-            Text('COP ${paymentController.text}',
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: Dimensions.screenWidth * 0.06,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 1,
-                )),
-            CardDetails(
-              color: Colors.blue,
-              adress: controllerInitialLocation.text,
-              title: 'Origen',
-            ),
-            CardDetails(
-              color: const Color.fromRGBO(255, 198, 65, 1),
-              adress: controllerInitialLocation.text,
-              title: 'Destino',
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: Dimensions.screenWidth * 0.1,
-                  right: Dimensions.screenWidth * 0.1,
-                  top: Dimensions.screenHeight * 0.01),
-              child: ButtonClassic(
-                text: "Cancelar",
-                onPressed: () {
-                  setState(() {
-                    isServiceCanceledVisible = true;
-                  });
-                },
-                color: const Color.fromRGBO(224, 26, 25, 1),
-              ),
-            ),
-          ],
-        ),
-      )),
-    );
+        top: Dimensions.screenHeight * 0.6,
+        child: ServiceDetails(
+            paymentController: paymentController,
+            controllerInitialLocation: controllerInitialLocation,
+            controllerFinalLocation: controllerFinalLocation,
+            onVisibilityChanged: (isVisible) {
+              setState(() {
+                isServiceAcceptedVisible = isVisible;
+              });
+            }));
   }
 
   Widget rateForm() {
     return Positioned(
-      top: Dimensions.screenHeight * 0.6,
-      child: FadeInUpBig(
-        child: Container(
-          width: Dimensions.screenWidth * 1,
-          height: Dimensions.screenHeight * 0.55,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: Dimensions.screenHeight * 0.02,
-                    bottom: Dimensions.screenHeight * 0.002),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isRateFormVisible = false;
-                        });
-                      },
-                      icon: const Icon(Icons.arrow_back_ios_rounded,
-                          color: Colors.black),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: Dimensions.screenWidth * 0.14),
-                      child: Text('Ofrezca su tarifa',
-                          style: GoogleFonts.montserrat(
-                            color: Colors.black,
-                            fontSize: Dimensions.screenWidth * 0.05,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1,
-                          )),
-                    ),
-                  ],
-                ),
-              ),
-              CustomCurrencyInput(controller: paymentController),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: Dimensions.screenHeight * 0.01),
-                child: Text(
-                  'tarifa recomendada COP',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.black,
-                    fontSize: Dimensions.screenWidth * 0.034,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 1.2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: Dimensions.screenHeight * 0.01),
-                child: Container(
-                  width: Dimensions.screenWidth * 0.8,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: DropdownButton<String>(
-                    value: option,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        option = newValue!;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                      size: Dimensions.screenWidth * 0.06,
-                    ),
-                    isExpanded: true,
-                    underline: Container(
-                      height: 2,
-                      color: Colors.transparent,
-                    ),
-                    items: <String>[
-                      'efectivo',
-                      'nequi',
-                      'bancolombia',
-                      'daviplata',
-                      'davivienda'
-                    ].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: Dimensions.screenWidth * 0.06),
-                          child: Text(
-                            value,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.04,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: Dimensions.screenWidth * 0.1,
-                    right: Dimensions.screenWidth * 0.1,
-                    top: Dimensions.screenHeight * 0.02),
-                child: ButtonClassic(
-                  text: "Finalizar",
-                  onPressed: () {
-                    setState(() {
-                      payment = '${paymentController.text} - $option';
-                      isRateFormVisible = false;
-                    });
-                  },
-                  color: const Color.fromRGBO(255, 198, 65, 1),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        top: Dimensions.screenHeight * 0.6,
+        child: RateForm(
+          paymentController: paymentController,
+          onVisibilityChanged: (isVisible) {
+            setState(() {
+              isRateFormVisible = isVisible;
+            });
+          },
+          onPaymentChanged: (newPayment) {
+            setState(() {
+              payment = newPayment;
+            });
+          },
+        ));
   }
 
   @override
