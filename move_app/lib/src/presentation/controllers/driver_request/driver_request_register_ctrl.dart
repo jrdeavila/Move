@@ -133,4 +133,9 @@ class DriverRequestRegisterCtrl extends GetxController {
     _driverRequest.value.aboutMeSection = section;
     _driverRequest.refresh();
   }
+
+  void onUpdateDriverLicenseSection(DriverLicenseSection section) {
+    _driverRequest.value.driverLicenseSection = section;
+    _driverRequest.refresh();
+  }
 }

@@ -145,6 +145,7 @@ class AboutMeCtrl extends GetxController {
       _isLoading.value = false;
       Get.find<DriverRequestRegisterCtrl>()
           .onUpdateAboutMeSection(aboutMeSection);
+      Get.offAndToNamed(DriverRequestRoutes.license);
       Get.find<BannerCtrl>().showSuccess(
         "Datos personales guardados",
         "Los datos personales han sido guardados correctamente",

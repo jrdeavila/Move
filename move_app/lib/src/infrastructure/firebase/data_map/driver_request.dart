@@ -50,7 +50,7 @@ DNISection dniSectionFromJson(Map<String, dynamic>? json) {
 Map<String, dynamic> driverLicenseSectionToJson(
     DriverLicenseSection driverLicenseSection) {
   return {
-    "driver_license": {
+    "driver_license_section": {
       "driver_license": driverLicenseSection.driverLicense,
       "driver_license_front_image":
           driverLicenseSection.driverLicenseFrontImage,
@@ -59,7 +59,7 @@ Map<String, dynamic> driverLicenseSectionToJson(
           driverLicenseSection.driverLicenseConfirmation,
       "driver_license_expiration_date":
           driverLicenseSection.driverLicenseExpirationDate,
-      "status": driverLicenseSection.status,
+      "status": sectionStatusToString(driverLicenseSection.status),
     }
   };
 }

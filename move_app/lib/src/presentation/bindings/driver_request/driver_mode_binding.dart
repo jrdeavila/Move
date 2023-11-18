@@ -13,3 +13,10 @@ class AboutMeBinding extends Bindings {
     Get.lazyPut(() => AboutMeCtrl());
   }
 }
+
+class LicenseBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => LicenseCtrl());
+  }
+}

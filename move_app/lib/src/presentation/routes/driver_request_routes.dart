@@ -18,6 +18,14 @@ abstract class DriverRequestRoutes {
         VerifyAuth(),
       ],
     ),
+    GetPage(
+      name: license,
+      page: () => const LicenseData(),
+      binding: LicenseBinding(),
+      middlewares: [
+        VerifyAuth(),
+      ],
+    ),
     // TODO: add routes
   ];
 }

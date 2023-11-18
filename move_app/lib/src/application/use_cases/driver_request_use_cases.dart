@@ -126,6 +126,7 @@ class SendDriverLicenseSectionUseCase
       driverLicenseBackImage: backImageUrl,
       driverLicenseConfirmation: confirmationImageUrl,
       driverLicenseExpirationDate: request.driverLicenseExpirationDate,
+      status: SectionStatus.complete,
     );
 
     return _driverLicenseSectionService.setDriverLicenseSection(

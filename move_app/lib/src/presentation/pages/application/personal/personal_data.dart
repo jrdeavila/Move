@@ -99,7 +99,8 @@ class PersonalData extends GetView<AboutMeCtrl> {
                   ? const CircularProgressIndicator(
                       color: Colors.white,
                     )
-                  : const Icon(Icons.save, color: Colors.white),
+                  : const Icon(Icons.keyboard_double_arrow_right_sharp,
+                      color: Colors.white),
             );
           }
           return const SizedBox.shrink();
