@@ -31,7 +31,7 @@ Map<String, dynamic> dniSectionToJson(DNISection dniSection) => {
         "dni": dniSection.dni,
         "dni_front_image": dniSection.dniFrontImage,
         "dni_back_image": dniSection.dniBackImage,
-        "status": dniSection.status,
+        "status": sectionStatusToString(dniSection.status),
       }
     };
 

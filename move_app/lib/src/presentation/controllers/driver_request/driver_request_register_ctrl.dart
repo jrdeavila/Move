@@ -42,16 +42,16 @@ class DriverRequestRegisterCtrl extends GetxController {
           onTap: () => Get.toNamed(DriverRequestRoutes.aboutMe),
         ),
         SectionSegment(
-          title: 'Licencia de conducir',
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.driverLicenseSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.license),
-        ),
-        SectionSegment(
           title: "Identificacion",
           status: stepStatusFromSectionStatus(
               _driverRequest.value.dniSection.status),
           onTap: () => Get.toNamed(DriverRequestRoutes.dni),
+        ),
+        SectionSegment(
+          title: 'Licencia de conducir',
+          status: stepStatusFromSectionStatus(
+              _driverRequest.value.driverLicenseSection.status),
+          onTap: () => Get.toNamed(DriverRequestRoutes.license),
         ),
         SectionSegment(
           title: "SOAT",
@@ -136,6 +136,11 @@ class DriverRequestRegisterCtrl extends GetxController {
 
   void onUpdateDriverLicenseSection(DriverLicenseSection section) {
     _driverRequest.value.driverLicenseSection = section;
+    _driverRequest.refresh();
+  }
+
+  void onUpdateDNISection(DNISection dniSection) {
+    _driverRequest.value.dniSection = dniSection;
     _driverRequest.refresh();
   }
 }

@@ -20,3 +20,10 @@ class LicenseBinding extends Bindings {
     Get.lazyPut(() => LicenseCtrl());
   }
 }
+
+class DNIBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => DNICtrl());
+  }
+}

@@ -75,6 +75,7 @@ class SendDNISectionUseCase implements ISendDNISectionUseCase {
       dni: request.dni,
       dniFrontImage: frontImageUrl,
       dniBackImage: backImageUrl,
+      status: SectionStatus.complete,
     );
 
     return _dniSectionService.setDNISection(

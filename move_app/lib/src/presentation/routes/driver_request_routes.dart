@@ -26,6 +26,14 @@ abstract class DriverRequestRoutes {
         VerifyAuth(),
       ],
     ),
+    GetPage(
+      name: dni,
+      page: () => const DNIData(),
+      binding: DNIBinding(),
+      middlewares: [
+        VerifyAuth(),
+      ],
+    ),
     // TODO: add routes
   ];
 }
