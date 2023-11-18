@@ -1,7 +1,7 @@
 import 'package:move_app/lib.dart';
 
 abstract class DashboardRoutes {
-  static const String homeClient = '/';
+  static const String homeClient = '/home_client';
 
   static final routes = [
     GetPage(

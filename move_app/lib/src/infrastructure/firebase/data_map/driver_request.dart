@@ -1,20 +1,51 @@
 import 'package:move_app/lib.dart';
 
+SectionStatus sectionStatusFromString(String? status) {
+  switch (status) {
+    case "complete":
+      return SectionStatus.complete;
+    case "approved":
+      return SectionStatus.approved;
+    case "rejected":
+      return SectionStatus.rejected;
+    default:
+      return SectionStatus.making;
+  }
+}
+
+String sectionStatusToString(SectionStatus status) {
+  switch (status) {
+    case SectionStatus.complete:
+      return "complete";
+    case SectionStatus.approved:
+      return "approved";
+    case SectionStatus.rejected:
+      return "rejected";
+    default:
+      return "making";
+  }
+}
+
 Map<String, dynamic> dniSectionToJson(DNISection dniSection) => {
       "dni_section": {
         "dni": dniSection.dni,
         "dni_front_image": dniSection.dniFrontImage,
         "dni_back_image": dniSection.dniBackImage,
-        "checked": dniSection.checked,
+        "status": dniSection.status,
       }
     };
 
-DNISection dniSectionFromJson(Map<String, dynamic> json) => DNISection(
-      dni: json["dni"],
-      dniFrontImage: json["dni_front_image"],
-      dniBackImage: json["dni_back_image"],
-      checked: json["checked"],
-    );
+DNISection dniSectionFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return DNISection.empty();
+  }
+  return DNISection(
+    dni: json["dni"],
+    dniFrontImage: json["dni_front_image"],
+    dniBackImage: json["dni_back_image"],
+    status: sectionStatusFromString(json["status"]),
+  );
+}
 
 Map<String, dynamic> driverLicenseSectionToJson(
     DriverLicenseSection driverLicenseSection) {
@@ -28,7 +59,7 @@ Map<String, dynamic> driverLicenseSectionToJson(
           driverLicenseSection.driverLicenseConfirmation,
       "driver_license_expiration_date":
           driverLicenseSection.driverLicenseExpirationDate,
-      "checked": driverLicenseSection.checked,
+      "status": driverLicenseSection.status,
     }
   };
 }
@@ -45,19 +76,22 @@ Map<String, dynamic> driverLicenseSectionToJson2(
           driverLicenseSection.driverLicenseConfirmation,
       "driver_license_expiration_date":
           driverLicenseSection.driverLicenseExpirationDate,
-      "checked": driverLicenseSection.checked,
+      "status": driverLicenseSection.status,
     }
   };
 }
 
-DriverLicenseSection driverLicenseSectionFromJson(Map<String, dynamic> json) {
+DriverLicenseSection driverLicenseSectionFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return DriverLicenseSection.empty();
+  }
   return DriverLicenseSection(
     driverLicense: json["driver_license"],
     driverLicenseFrontImage: json["driver_license_front_image"],
     driverLicenseBackImage: json["driver_license_back_image"],
     driverLicenseConfirmation: json["driver_license_confirmation"],
     driverLicenseExpirationDate: json["driver_license_expiration_date"],
-    checked: json["checked"],
+    status: sectionStatusFromString(json["status"]),
   );
 }
 
@@ -67,33 +101,24 @@ Map<String, dynamic> aboutCarSectionToJson(AboutCarSection aboutCarSection) {
       "car_brand": aboutCarSection.carBrand,
       "car_plate": aboutCarSection.carPlate,
       "car_image": aboutCarSection.carImage,
-      "owner_ship_card_section": {
-        "owner_ship_card_front_image":
-            aboutCarSection.ownerShipCardSection?.ownershipCardBackImage,
-        "owner_ship_card_back_image":
-            aboutCarSection.ownerShipCardSection?.ownershipCardBackImage,
-        "owner_ship_card_expiration_year":
-            aboutCarSection.ownerShipCardSection?.ownerShipCardMakeYear
-      },
-      "checked": aboutCarSection.checked,
+      "status": sectionStatusToString(aboutCarSection.status),
     }
   };
 }
 
-AboutCarSection aboutCarSectionFromJson(Map<String, dynamic> json) {
+AboutCarSection aboutCarSectionFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return AboutCarSection.empty();
+  }
+
+  if (json.containsKey("about_car_section") == false) {
+    return AboutCarSection.empty();
+  }
   return AboutCarSection(
     carBrand: json["car_brand"],
     carPlate: json["car_plate"],
     carImage: json["car_image"],
-    ownerShipCardSection: OwnerShipCardSection(
-      ownershipCardFrontImage: json["owner_ship_card_section"]
-          ["owner_ship_card_front_image"],
-      ownershipCardBackImage: json["owner_ship_card_section"]
-          ["owner_ship_card_back_image"],
-      ownerShipCardMakeYear: json["owner_ship_card_section"]
-          ["owner_ship_card_expiration_year"],
-    ),
-    checked: json["checked"],
+    status: sectionStatusFromString(json["status"]),
   );
 }
 
@@ -103,17 +128,24 @@ Map<String, dynamic> noCriminalRecordSectionToJson(
     "no_criminal_record": {
       "no_criminal_record_front_image":
           noCriminalRecordSection.noCriminalRecordFile,
-      "checkd": noCriminalRecordSection.checked,
+      "status": sectionStatusToString(noCriminalRecordSection.status)
     }
   };
 }
 
 NoCriminalRecordSection noCriminalRecordSectionFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic>? json) {
+  if (json == null) {
+    return NoCriminalRecordSection.empty();
+  }
+
+  if (json.containsKey("no_criminal_record_section") == false) {
+    return NoCriminalRecordSection.empty();
+  }
+
   return NoCriminalRecordSection(
-    noCriminalRecordFile: json["no_criminal_record"]
-        ["no_criminal_record_front_image"],
-    checked: json["no_criminal_record"]["checked"],
+    noCriminalRecordFile: json["no_criminal_record_front_image"],
+    status: sectionStatusFromString(json["status"]),
   );
 }
 
@@ -127,23 +159,116 @@ Map<String, dynamic> aboutMeSectionToJson(
       "email": aboutMeSection.email,
       "profile_image": aboutMeSection.profileImage,
       "birth_date": aboutMeSection.birthDate,
-      "checked": aboutMeSection.checked,
+      "status": sectionStatusToString(aboutMeSection.status),
     }
   };
 }
 
-AboutMeSection aboutMeSectionFromJson(Map<String, dynamic> json) {
+AboutMeSection aboutMeSectionFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return AboutMeSection.empty();
+  }
+  if (json.containsKey("about_me_section") == false) {
+    return AboutMeSection.empty();
+  }
   return AboutMeSection(
     firstName: json["about_me_section"]["first_name"],
     lastName: json["about_me_section"]["last_name"],
     email: json["about_me_section"]["email"],
     profileImage: json["about_me_section"]["profile_image"],
     birthDate: json["about_me_section"]["birth_date"],
-    checked: json["about_me_section"]["checked"],
+    status: sectionStatusFromString(json["about_me_section"]["status"]),
   );
 }
 
-DriverRequest driverRequestFromJson(Map<String, dynamic> json) {
+Map<String, dynamic> soatSectionToJson(SoatSection soatSection) {
+  return {
+    "soat_section": {
+      "soat_image": soatSection.soatImage,
+      "soat_expiration_date": soatSection.soatExpirationDate,
+      "status": soatSection.status,
+    }
+  };
+}
+
+SoatSection soatSectionFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return SoatSection.empty();
+  }
+  if (json.containsKey("soat_section") == false) {
+    return SoatSection.empty();
+  }
+  return SoatSection(
+    soatImage: json["soat_section"]["soat_image"],
+    soatExpirationDate: json["soat_section"]["soat_expiration_date"],
+    status: sectionStatusFromString(json["soat_section"]["status"]),
+  );
+}
+
+Map<String, dynamic> technicalReviewSectionToJson(
+    TechnicalReviewSection technicalReviewSection) {
+  return {
+    "technical_review_section": {
+      "technical_review_image": technicalReviewSection.technicalReviewImage,
+      "technical_review_expiration_date":
+          technicalReviewSection.technicalReviewExpirationDate,
+      "status": sectionStatusToString(technicalReviewSection.status),
+    }
+  };
+}
+
+TechnicalReviewSection technicalReviewSectionFromJson(
+    Map<String, dynamic>? json) {
+  if (json == null) {
+    return TechnicalReviewSection.empty();
+  }
+  if (json.containsKey("technical_review_section") == false) {
+    return TechnicalReviewSection.empty();
+  }
+  return TechnicalReviewSection(
+    technicalReviewImage: json["technical_review_section"]
+        ["technical_review_image"],
+    technicalReviewExpirationDate: json["technical_review_section"]
+        ["technical_review_expiration_date"],
+    status: sectionStatusFromString(json["technical_review_section"]["status"]),
+  );
+}
+
+Map<String, dynamic> ownerShipCardSectionToJson(
+    OwnerShipCardSection ownerShipCardSection) {
+  return {
+    "owner_ship_card_section": {
+      "owner_ship_card_make_year": ownerShipCardSection.ownerShipCardMakeYear,
+      "ownership_card_back_image": ownerShipCardSection.ownershipCardBackImage,
+      "ownership_card_front_image":
+          ownerShipCardSection.ownershipCardFrontImage,
+      "status": sectionStatusToString(ownerShipCardSection.status),
+    }
+  };
+}
+
+OwnerShipCardSection ownerShipCardSectionFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return OwnerShipCardSection.empty();
+  }
+  if (json.containsKey("owner_ship_card_section") == false) {
+    return OwnerShipCardSection.empty();
+  }
+  return OwnerShipCardSection(
+    ownerShipCardMakeYear: json["owner_ship_card_section"]
+        ["owner_ship_card_make_year"],
+    ownershipCardBackImage: json["owner_ship_card_section"]
+        ["ownership_card_back_image"],
+    ownershipCardFrontImage: json["owner_ship_card_section"]
+        ["ownership_card_front_image"],
+    status: sectionStatusFromString(json["owner_ship_card_section"]["status"]),
+  );
+}
+
+DriverRequest driverRequestFromJson(Map<String, dynamic>? json) {
+  if (json == null) {
+    return DriverRequest.empty();
+  }
   return DriverRequest(
     userUuid: json["user_uuid"],
     dniSection: dniSectionFromJson(json["dni_section"]),
@@ -152,6 +277,10 @@ DriverRequest driverRequestFromJson(Map<String, dynamic> json) {
     aboutCarSection: aboutCarSectionFromJson(json["about_car_section"]),
     noCriminalRecordSection:
         noCriminalRecordSectionFromJson(json["no_criminal_record_section"]),
-    aboutMeSection: aboutMeSectionFromJson(json["about_me_section"]),
+    aboutMeSection: aboutMeSectionFromJson(json),
+    soatSection: soatSectionFromJson(json["soat_section"]),
+    technicalReviewSection:
+        technicalReviewSectionFromJson(json["technical_review_section"]),
+    ownerShipCardSection: ownerShipCardSectionFromJson(json["owner_ship_card"]),
   );
 }

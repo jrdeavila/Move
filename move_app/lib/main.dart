@@ -7,5 +7,6 @@ void main() async {
     return runApp(const App());
   }, (error, stack) {
     Get.find<ExceptionCtrl>().exception(error);
+    Get.find<ExceptionCtrl>().onDebugException(stack);
   });
 }

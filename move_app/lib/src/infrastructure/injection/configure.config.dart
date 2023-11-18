@@ -16,14 +16,16 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../../lib.dart' as _i6;
 import '../../application/use_cases/authentication_use_case.dart' as _i9;
-import '../../application/use_cases/driver_request_use_cases.dart' as _i13;
-import '../../application/use_cases/profile_use_case.dart' as _i14;
-import '../../src.dart' as _i12;
+import '../../application/use_cases/driver_request_use_cases.dart' as _i14;
+import '../../application/use_cases/fetch_driver_request_use_cases.dart'
+    as _i12;
+import '../../application/use_cases/profile_use_case.dart' as _i15;
+import '../../src.dart' as _i13;
 import '../firebase/repositories/firebase_user_repository.dart' as _i11;
 import '../firebase/services/firebase_auth_service.dart' as _i8;
 import '../firebase/services/firebase_driver_request_service.dart' as _i7;
 import '../firebase/services/firebase_upload_file_service.dart' as _i10;
-import 'dependecies.dart' as _i15;
+import 'dependecies.dart' as _i16;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -89,10 +91,13 @@ extension GetItInjectableX on _i1.GetIt {
         firebaseStorage: gh<_i6.FirebaseStorage>()));
     gh.factory<_i6.IUserRepository>(() =>
         _i11.FirebaseUserRepository(firestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i12.IFinishDriverRequestUseCase>(
-        () => _i13.FinishDriverRequestUseCase(
-              driverRequestService: gh<_i12.IFinishDriverRequestService>(),
-              userService: gh<_i12.IUserRepository>(),
+    gh.factory<_i6.IFetchDriverRequestUseCase>(() =>
+        _i12.FetchDriverRequestUseCase(
+            driverRequestService: gh<_i6.IGetDriverRequestService>()));
+    gh.factory<_i13.IFinishDriverRequestUseCase>(
+        () => _i14.FinishDriverRequestUseCase(
+              driverRequestService: gh<_i13.IFinishDriverRequestService>(),
+              userService: gh<_i13.IUserRepository>(),
             ));
     gh.factory<_i6.IGetUserUseCase>(() => _i9.GetUserUseCase(
           authenticationService: gh<_i6.IAuthenticationService>(),
@@ -107,52 +112,52 @@ extension GetItInjectableX on _i1.GetIt {
           userRepository: gh<_i6.IUserRepository>(),
           authenticationService: gh<_i6.IAuthenticationService>(),
         ));
-    gh.factory<_i12.ISendAboutCarSectionUseCase>(
-        () => _i13.SendAboutCarSectionUseCase(
-              aboutCarSectionService: gh<_i12.IAboutCarSectionService>(),
-              userService: gh<_i12.IUserRepository>(),
-              uploadFile: gh<_i12.IUploadFile>(),
+    gh.factory<_i13.ISendAboutCarSectionUseCase>(
+        () => _i14.SendAboutCarSectionUseCase(
+              aboutCarSectionService: gh<_i13.IAboutCarSectionService>(),
+              userService: gh<_i13.IUserRepository>(),
+              uploadFile: gh<_i13.IUploadFile>(),
             ));
-    gh.factory<_i12.ISendAboutMeSectionUseCase>(
-        () => _i13.SendAboutMeSectionUseCase(
-              aboutMeSectionService: gh<_i12.IAboutMeSectionService>(),
-              userService: gh<_i12.IUserRepository>(),
-              uploadFile: gh<_i12.IUploadFile>(),
+    gh.factory<_i13.ISendAboutMeSectionUseCase>(
+        () => _i14.SendAboutMeSectionUseCase(
+              aboutMeSectionService: gh<_i13.IAboutMeSectionService>(),
+              userService: gh<_i13.IUserRepository>(),
+              uploadFile: gh<_i13.IUploadFile>(),
             ));
     gh.factory<_i6.ISendCodeUseCase>(
         () => _i9.SendCodeUseCase(gh<_i6.IPhoneAuthenticationService>()));
-    gh.factory<_i12.ISendDNISectionUseCase>(() => _i13.SendDNISectionUseCase(
-          dniSectionService: gh<_i12.IDNISectionService>(),
-          userService: gh<_i12.IUserRepository>(),
-          uploadFile: gh<_i12.IUploadFile>(),
+    gh.factory<_i13.ISendDNISectionUseCase>(() => _i14.SendDNISectionUseCase(
+          dniSectionService: gh<_i13.IDNISectionService>(),
+          userService: gh<_i13.IUserRepository>(),
+          uploadFile: gh<_i13.IUploadFile>(),
         ));
-    gh.factory<_i12.ISendDriverLicenseSectionUseCase>(() =>
-        _i13.SendDriverLicenseSectionUseCase(
-          driverLicenseSectionService: gh<_i12.IDriverLicenseSectionService>(),
-          userService: gh<_i12.IUserRepository>(),
-          uploadFile: gh<_i12.IUploadFile>(),
+    gh.factory<_i13.ISendDriverLicenseSectionUseCase>(() =>
+        _i14.SendDriverLicenseSectionUseCase(
+          driverLicenseSectionService: gh<_i13.IDriverLicenseSectionService>(),
+          userService: gh<_i13.IUserRepository>(),
+          uploadFile: gh<_i13.IUploadFile>(),
         ));
-    gh.factory<_i12.ISendNoCriminalRecordSectionUseCase>(
-        () => _i13.SendNoCriminalRecordSectionUseCase(
+    gh.factory<_i13.ISendNoCriminalRecordSectionUseCase>(
+        () => _i14.SendNoCriminalRecordSectionUseCase(
               noCriminalRecordSectionService:
-                  gh<_i12.INoCriminalRecordSectionService>(),
-              userService: gh<_i12.IUserRepository>(),
-              uploadFile: gh<_i12.IUploadFile>(),
+                  gh<_i13.INoCriminalRecordSectionService>(),
+              userService: gh<_i13.IUserRepository>(),
+              uploadFile: gh<_i13.IUploadFile>(),
             ));
     gh.factory<_i6.IUpdateProfileUseCase>(() =>
-        _i14.UpdateProfileUseCase(userRepository: gh<_i6.IUserRepository>()));
+        _i15.UpdateProfileUseCase(userRepository: gh<_i6.IUserRepository>()));
     gh.factory<_i6.ILoginWithPhoneUseCase>(
         () => _i9.LoginWithPhoneUseCase(gh<_i6.IPhoneAuthenticationService>()));
     return this;
   }
 }
 
-class _$FirebaseAppModule extends _i15.FirebaseAppModule {}
+class _$FirebaseAppModule extends _i16.FirebaseAppModule {}
 
-class _$AppCheckModule extends _i15.AppCheckModule {}
+class _$AppCheckModule extends _i16.AppCheckModule {}
 
-class _$FirebaseAuthModule extends _i15.FirebaseAuthModule {}
+class _$FirebaseAuthModule extends _i16.FirebaseAuthModule {}
 
-class _$FirestoreModule extends _i15.FirestoreModule {}
+class _$FirestoreModule extends _i16.FirestoreModule {}
 
-class _$FirebaseStorageModule extends _i15.FirebaseStorageModule {}
+class _$FirebaseStorageModule extends _i16.FirebaseStorageModule {}

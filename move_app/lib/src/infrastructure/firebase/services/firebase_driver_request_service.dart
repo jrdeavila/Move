@@ -157,11 +157,7 @@ class FirebaseAboutMeSectionService implements IAboutMeSectionService {
         .doc(user.uuid)
         .get()
         .then((doc) {
-      if (doc.exists && doc.data()!.containsKey("about_me_section")) {
-        return aboutMeSectionFromJson(doc.data()!["about_me_section"]);
-      } else {
-        return AboutMeSection.empty();
-      }
+      return aboutMeSectionFromJson(doc.data());
     });
   }
 

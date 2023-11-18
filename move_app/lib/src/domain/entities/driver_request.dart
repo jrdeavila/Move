@@ -6,15 +6,25 @@ enum DriverRequestStatus {
   rejected,
 }
 
+enum SectionStatus {
+  making,
+  complete,
+  approved,
+  rejected,
+}
+
 // ------------------ DriverRequest ------------------
 
 class DriverRequest {
   final String? userUuid;
-  final DNISection dniSection;
-  final DriverLicenseSection driverLicenseSection;
-  final AboutCarSection aboutCarSection;
-  final NoCriminalRecordSection noCriminalRecordSection;
-  final AboutMeSection aboutMeSection;
+  DNISection dniSection;
+  DriverLicenseSection driverLicenseSection;
+  AboutCarSection aboutCarSection;
+  NoCriminalRecordSection noCriminalRecordSection;
+  AboutMeSection aboutMeSection;
+  SoatSection soatSection;
+  TechnicalReviewSection technicalReviewSection;
+  OwnerShipCardSection ownerShipCardSection;
 
   DriverRequestStatus status;
 
@@ -25,6 +35,9 @@ class DriverRequest {
     required this.aboutCarSection,
     required this.noCriminalRecordSection,
     required this.aboutMeSection,
+    required this.soatSection,
+    required this.technicalReviewSection,
+    required this.ownerShipCardSection,
     this.status = DriverRequestStatus.making,
   });
 
@@ -35,6 +48,9 @@ class DriverRequest {
         aboutCarSection: AboutCarSection.empty(),
         noCriminalRecordSection: NoCriminalRecordSection.empty(),
         aboutMeSection: AboutMeSection.empty(),
+        soatSection: SoatSection.empty(),
+        technicalReviewSection: TechnicalReviewSection.empty(),
+        ownerShipCardSection: OwnerShipCardSection.empty(),
       );
 
   bool get isMaking => status == DriverRequestStatus.making;
@@ -42,14 +58,15 @@ class DriverRequest {
   // ------------------ Status Callbacks ------------------
 
   void setSended() {
-    List<bool> allSectionsChecked = [
-      dniSection.checked,
-      driverLicenseSection.checked,
-      aboutCarSection.checked,
-      noCriminalRecordSection.checked,
-      aboutMeSection.checked,
+    List<SectionStatus> allSectionsChecked = [
+      dniSection.status,
+      driverLicenseSection.status,
+      aboutCarSection.status,
+      noCriminalRecordSection.status,
+      aboutMeSection.status,
     ];
-    bool allSectionsAreChecked = allSectionsChecked.every((element) => element);
+    bool allSectionsAreChecked = allSectionsChecked
+        .every((element) => element == SectionStatus.complete);
 
     if (allSectionsAreChecked) {
       status = DriverRequestStatus.sended;
@@ -70,12 +87,12 @@ class DriverRequest {
 abstract class DriverRequestSection {
   final String title;
   final String? description;
-  final bool checked;
+  SectionStatus status;
 
   DriverRequestSection({
     required this.title,
     this.description,
-    this.checked = false,
+    this.status = SectionStatus.making,
   });
 }
 
@@ -89,11 +106,10 @@ class DNISection extends DriverRequestSection {
     required this.dni,
     required this.dniFrontImage,
     required this.dniBackImage,
-    bool checked = false,
+    super.status = SectionStatus.making,
   }) : super(
           title: "Documento de Identidad",
           description: null,
-          checked: checked,
         );
 
   factory DNISection.empty() => DNISection(
@@ -107,7 +123,7 @@ class DriverLicenseSection extends DriverRequestSection {
   final String? driverLicense;
   final String? driverLicenseFrontImage;
   final String? driverLicenseBackImage;
-  final DateTime? driverLicenseExpirationDate;
+  final String? driverLicenseExpirationDate;
   final String? driverLicenseConfirmation;
 
   DriverLicenseSection({
@@ -116,11 +132,10 @@ class DriverLicenseSection extends DriverRequestSection {
     required this.driverLicenseBackImage,
     required this.driverLicenseExpirationDate,
     required this.driverLicenseConfirmation,
-    bool checked = false,
+    super.status = SectionStatus.making,
   }) : super(
           title: "Licencia de Conducir",
           description: null,
-          checked: checked,
         );
 
   factory DriverLicenseSection.empty() => DriverLicenseSection(
@@ -136,25 +151,21 @@ class AboutCarSection extends DriverRequestSection {
   final String? carBrand;
   final String? carPlate;
   final String? carImage;
-  final OwnerShipCardSection? ownerShipCardSection;
 
   AboutCarSection({
     required this.carBrand,
     required this.carPlate,
     required this.carImage,
-    required this.ownerShipCardSection,
-    bool checked = false,
+    super.status = SectionStatus.making,
   }) : super(
           title: "Sobre el Vehículo",
           description: "Agrega la información detallada de tu vehículo",
-          checked: checked,
         );
 
   factory AboutCarSection.empty() => AboutCarSection(
         carBrand: null,
         carPlate: null,
         carImage: null,
-        ownerShipCardSection: null,
       );
 }
 
@@ -167,11 +178,10 @@ class OwnerShipCardSection extends DriverRequestSection {
     required this.ownershipCardFrontImage,
     required this.ownershipCardBackImage,
     required this.ownerShipCardMakeYear,
-    bool checked = false,
+    super.status = SectionStatus.making,
   }) : super(
           title: "Tarjeta de Propiedad",
           description: "Agrega la información detallada de tu vehículo",
-          checked: checked,
         );
 
   factory OwnerShipCardSection.empty() => OwnerShipCardSection(
@@ -186,11 +196,10 @@ class NoCriminalRecordSection extends DriverRequestSection {
 
   NoCriminalRecordSection({
     required this.noCriminalRecordFile,
-    bool checked = false,
+    super.status = SectionStatus.making,
   }) : super(
           title: "Carta de Antecedentes Penales",
           description: null,
-          checked: checked,
         );
 
   factory NoCriminalRecordSection.empty() => NoCriminalRecordSection(
@@ -203,7 +212,7 @@ class AboutMeSection extends DriverRequestSection {
   final String? lastName;
   final String? email;
   final String? profileImage;
-  final DateTime? birthDate;
+  final String? birthDate;
 
   AboutMeSection({
     required this.firstName,
@@ -211,11 +220,10 @@ class AboutMeSection extends DriverRequestSection {
     required this.email,
     required this.birthDate,
     required this.profileImage,
-    bool checked = false,
+    super.status = SectionStatus.making,
   }) : super(
           title: "Información Personal",
           description: null,
-          checked: checked,
         );
 
   factory AboutMeSection.empty() => AboutMeSection(
@@ -224,5 +232,43 @@ class AboutMeSection extends DriverRequestSection {
         email: null,
         birthDate: null,
         profileImage: null,
+      );
+}
+
+class SoatSection extends DriverRequestSection {
+  final String? soatImage;
+  final String? soatExpirationDate;
+
+  SoatSection({
+    required this.soatImage,
+    required this.soatExpirationDate,
+    super.status = SectionStatus.making,
+  }) : super(
+          title: "SOAT",
+          description: null,
+        );
+
+  factory SoatSection.empty() => SoatSection(
+        soatImage: null,
+        soatExpirationDate: null,
+      );
+}
+
+class TechnicalReviewSection extends DriverRequestSection {
+  final String? technicalReviewImage;
+  final String? technicalReviewExpirationDate;
+
+  TechnicalReviewSection({
+    required this.technicalReviewImage,
+    required this.technicalReviewExpirationDate,
+    super.status = SectionStatus.making,
+  }) : super(
+          title: "Revisión Técnica",
+          description: null,
+        );
+
+  factory TechnicalReviewSection.empty() => TechnicalReviewSection(
+        technicalReviewImage: null,
+        technicalReviewExpirationDate: null,
       );
 }

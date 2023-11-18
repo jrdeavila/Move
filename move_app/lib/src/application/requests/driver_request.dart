@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:move_app/lib.dart';
+
 abstract class SendSectionRequest {
   final String userUuid;
 
@@ -35,7 +37,7 @@ class SendAboutMeSectionRequest extends SendSectionRequest {
   final String firstname;
   final String lastname;
   final String email;
-  final DateTime birthDate;
+  final String birthDate;
   final Uint8List profileImage;
 
   SendAboutMeSectionRequest({
@@ -56,7 +58,7 @@ class SendDriverLicenseSectionRequest extends SendSectionRequest {
   final Uint8List driverLicenseFrontImage;
   final Uint8List driverLicenseBackImage;
   final Uint8List driverLicenseConfirmation;
-  final DateTime driverLicenseExpirationDate;
+  final String driverLicenseExpirationDate;
   final String driverLicense;
 
   SendDriverLicenseSectionRequest({
@@ -86,4 +88,10 @@ class SendAboutCarSectionRequest extends SendSectionRequest {
     required this.ownerShipCardExpirationYear,
     required super.userUuid,
   });
+}
+
+class FetchDriverRequestRequest {
+  final AppUser user;
+
+  FetchDriverRequestRequest(this.user);
 }

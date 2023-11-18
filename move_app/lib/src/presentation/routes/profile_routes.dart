@@ -23,6 +23,7 @@ abstract class ProfileRoutes {
     GetPage(
         name: driverMode,
         page: () => const ApplicationForm(),
+        binding: DriverModeBinding(),
         middlewares: [
           VerifyAuth(),
           CheckIfUserIsDriver(),

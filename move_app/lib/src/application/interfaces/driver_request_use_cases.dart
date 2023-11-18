@@ -24,3 +24,9 @@ abstract class ISendAboutMeSectionUseCase {
 abstract class IFinishDriverRequestUseCase {
   Future<DriverRequest> call(FinishDriverRequestRequest request);
 }
+
+// --------------------------- FETCHING USE CASES ---------------------------
+
+abstract class IFetchDriverRequestUseCase {
+  Future<DriverRequest> call(FetchDriverRequestRequest request);
+}

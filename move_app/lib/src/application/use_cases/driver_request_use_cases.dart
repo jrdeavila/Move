@@ -31,6 +31,7 @@ class SendAboutMeSectionUseCase implements ISendAboutMeSectionUseCase {
       email: request.email,
       birthDate: request.birthDate,
       profileImage: profileImageUrl,
+      status: SectionStatus.complete,
     );
 
     return _aboutMeSectionService.setAboutMeSection(
@@ -153,15 +154,6 @@ class SendAboutCarSectionUseCase implements ISendAboutCarSectionUseCase {
   @override
   Future<AboutCarSection> call(SendAboutCarSectionRequest request) async {
     final user = await _userService.getUser(request.userUuid);
-    final frontImageUrl = await _uploadFile.uploadFileBytes(
-      request.ownerShipCardFrontImage,
-      "driver_request/${user.uuid}/car_front_image.jpg",
-    );
-
-    final backImageUrl = await _uploadFile.uploadFileBytes(
-      request.ownerShipCardBackImage,
-      "driver_request/${user.uuid}/car_back_image.jpg",
-    );
 
     final carImageUrl = await _uploadFile.uploadFileBytes(
       request.carImage,
@@ -171,11 +163,6 @@ class SendAboutCarSectionUseCase implements ISendAboutCarSectionUseCase {
     final aboutCarSection = AboutCarSection(
       carBrand: request.carBrand,
       carPlate: request.carPlate,
-      ownerShipCardSection: OwnerShipCardSection(
-        ownershipCardBackImage: backImageUrl,
-        ownershipCardFrontImage: frontImageUrl,
-        ownerShipCardMakeYear: request.ownerShipCardExpirationYear,
-      ),
       carImage: carImageUrl,
     );
 

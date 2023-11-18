@@ -9,6 +9,7 @@ class InputClassic extends StatefulWidget {
   final bool isNumericKeyboard;
   final bool isDateInput;
   final List<TextInputFormatter> formatters;
+  final String? error;
   const InputClassic({
     Key? key,
     required this.labelText,
@@ -16,6 +17,7 @@ class InputClassic extends StatefulWidget {
     required this.isPassword,
     required this.isNumericKeyboard,
     required this.isDateInput,
+    this.error,
     this.formatters = const [],
   }) : super(key: key);
 
@@ -63,6 +65,11 @@ class _InputClassicState extends State<InputClassic> {
           labelStyle: GoogleFonts.montserrat(
             fontSize: Dimensions.screenWidth * 0.04,
             color: Colors.black,
+          ),
+          errorText: widget.error,
+          errorStyle: GoogleFonts.montserrat(
+            fontSize: Dimensions.screenWidth * 0.03,
+            color: Colors.red,
           ),
         ),
       ),
