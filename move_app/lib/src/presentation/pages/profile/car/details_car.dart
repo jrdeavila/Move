@@ -65,18 +65,21 @@ class _DetailsCarState extends State<DetailsCar> {
                   controller: controllerCarBrand,
                   isPassword: false,
                   isNumericKeyboard: false,
+                  isDateInput: false,
                 ),
                 InputClassic(
                   labelText: 'Color',
                   controller: controllerCarColor,
                   isPassword: false,
                   isNumericKeyboard: false,
+                  isDateInput: false,
                 ),
                 InputClassic(
                   labelText: 'Placa',
                   controller: controllerLicense,
                   isPassword: false,
                   isNumericKeyboard: true,
+                  isDateInput: false,
                 ),
                 SizedBox(
                   height: Dimensions.screenHeight * 0.04,

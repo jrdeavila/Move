@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
+import 'package:move_app/lib.dart';
+import 'package:intl/intl.dart';
 
 class InputClassic extends StatefulWidget {
   final String labelText;
   final TextEditingController controller;
   final bool isPassword;
-  final bool isNumericKeyboard; // Nuevo atributo
+  final bool isNumericKeyboard;
+  final bool isDateInput;
   final List<TextInputFormatter> formatters;
   const InputClassic({
     Key? key,
@@ -15,6 +15,7 @@ class InputClassic extends StatefulWidget {
     required this.controller,
     required this.isPassword,
     required this.isNumericKeyboard,
+    required this.isDateInput,
     this.formatters = const [],
   }) : super(key: key);
 
@@ -35,6 +36,11 @@ class _InputClassicState extends State<InputClassic> {
       margin: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.02),
       width: Dimensions.screenWidth * 0.9,
       child: TextField(
+        onTap: () {
+          if (widget.isDateInput) {
+            _selectDate(context);
+          }
+        },
         obscureText: widget.isPassword,
         cursorColor: Colors.black,
         inputFormatters: widget.formatters,
@@ -61,6 +67,21 @@ class _InputClassicState extends State<InputClassic> {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+
+    // ignore: unrelated_type_equality_checks
+    if (pickedDate != null && pickedDate != widget.controller.text) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      widget.controller.text = formattedDate;
+    }
   }
 }
 

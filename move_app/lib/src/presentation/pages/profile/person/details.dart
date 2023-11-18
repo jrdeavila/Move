@@ -92,27 +92,28 @@ class _DetailsState extends State<Details> {
                   controller: controllerName,
                   isPassword: false,
                   isNumericKeyboard: false,
+                  isDateInput: false,
                 ),
                 InputClassic(
                   labelText: 'Apellido',
                   controller: controllerLastName,
                   isPassword: false,
                   isNumericKeyboard: false,
+                  isDateInput: false,
                 ),
                 InputClassic(
                   labelText: 'Celular',
                   controller: controllerPhone,
                   isPassword: false,
                   isNumericKeyboard: true,
-                  formatters: [
-                    PhoneInputFormatter(),
-                  ],
+                  isDateInput: false,
                 ),
                 InputClassic(
                   labelText: 'Correo',
                   controller: controllerEmail,
                   isPassword: false,
                   isNumericKeyboard: false,
+                  isDateInput: false,
                 ),
                 SizedBox(
                   height: Dimensions.screenHeight * 0.04,

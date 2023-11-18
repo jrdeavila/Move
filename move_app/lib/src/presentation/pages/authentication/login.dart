@@ -84,13 +84,13 @@ class Login extends GetView<LoginCtrl> {
                               ),
                             ),
                             InputClassic(
-                                labelText: 'Telefono',
-                                controller: controllerPhone,
-                                isPassword: false,
-                                isNumericKeyboard: true,
-                                formatters: [
-                                  PhoneInputFormatter(),
-                                ]),
+                              labelText: 'Telefono',
+                              controller: controllerPhone,
+                              isPassword: false,
+                              isNumericKeyboard: true,
+                              isDateInput: false,
+                              formatters: [PhoneInputFormatter()],
+                            ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,
                             ),

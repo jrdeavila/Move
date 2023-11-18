@@ -89,18 +89,21 @@ class _RegisterState extends State<Register> {
                               controller: _controllerFirstName,
                               isPassword: false,
                               isNumericKeyboard: false,
+                              isDateInput: false,
                             ),
                             InputClassic(
                               labelText: 'Apellido',
                               controller: _controllerLastName,
                               isPassword: false,
                               isNumericKeyboard: false,
+                              isDateInput: false,
                             ),
                             InputClassic(
                               labelText: 'Correo',
                               controller: _controllerEmail,
                               isPassword: false,
                               isNumericKeyboard: false,
+                              isDateInput: false,
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,
