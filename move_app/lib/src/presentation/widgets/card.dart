@@ -6,6 +6,7 @@ class CardClassic extends StatelessWidget {
   final Color? color;
   final String? root;
   final VoidCallback onPressed;
+  final double size;
 
   const CardClassic({
     super.key,
@@ -14,6 +15,7 @@ class CardClassic extends StatelessWidget {
     this.color,
     required this.root,
     required this.onPressed,
+    required this.size,
   });
 
   @override
@@ -35,7 +37,7 @@ class CardClassic extends StatelessWidget {
             child: Text(title!,
                 style: GoogleFonts.montserrat(
                   color: colorTitle,
-                  fontSize: Dimensions.screenWidth * 0.12,
+                  fontSize: size,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.5,
                 )),
@@ -63,6 +65,10 @@ class CardDescription extends StatelessWidget {
   final Color? color;
   final String? root;
   final VoidCallback onPressed;
+  final double width;
+  final double height;
+  final double top;
+  final double left;
 
   const CardDescription({
     super.key,
@@ -72,6 +78,10 @@ class CardDescription extends StatelessWidget {
     required this.root,
     this.description,
     required this.onPressed,
+    required this.width,
+    required this.height,
+    required this.top,
+    required this.left,
   });
 
   @override
@@ -102,7 +112,7 @@ class CardDescription extends StatelessWidget {
             top: Dimensions.screenHeight * 0.093,
             left: Dimensions.screenWidth * 0.09,
             child: SizedBox(
-              width: Dimensions.width40,
+              width: Dimensions.width50,
               child: Text(description!,
                   style: GoogleFonts.montserrat(
                     color: colorTitle,
@@ -113,12 +123,12 @@ class CardDescription extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: Dimensions.screenHeight * 0.095,
-            left: Dimensions.screenWidth * 0.59,
+            top: top,
+            left: left,
             child: Image.asset(
               root!,
-              width: 96,
-              height: 80,
+              width: width,
+              height: height,
               fit: BoxFit.cover,
             ),
           ),
@@ -399,5 +409,31 @@ class CardService extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CardRequest extends StatelessWidget {
+  final String photo;
+  final String score;
+  final String price;
+  final String paymentType;
+  final String time;
+  final String carName;
+  final String license;
+  final VoidCallback onPressed;
+  const CardRequest(
+      {super.key,
+      required this.photo,
+      required this.score,
+      required this.price,
+      required this.paymentType,
+      required this.time,
+      required this.carName,
+      required this.license,
+      required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

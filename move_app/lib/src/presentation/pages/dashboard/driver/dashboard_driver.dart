@@ -1,8 +1,7 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
 
-class DashboardClient extends GetView<SessionCtrl> {
-  const DashboardClient({super.key});
+class DashboardDriver extends GetView<SessionCtrl> {
+  const DashboardDriver({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,39 +56,40 @@ class DashboardClient extends GetView<SessionCtrl> {
                         )),
                   ),
                   CardDescription(
-                    title: 'Solicitar servicio',
+                    title: 'Servicios',
                     color: const Color.fromRGBO(255, 198, 65, 1),
                     colorTitle: Colors.white,
-                    root: 'assets/images/car.png',
-                    description: '¿Necesitas un viaje? ¡Estamos en camino!',
+                    root: 'assets/images/person.png',
+                    description:
+                        'Descubre las solicitudes de viaje de los pasajeros',
                     onPressed: () {
-                      //Get.to(() => const RequestService());
-                      Get.to(() => const DashboardDriver());
+                      // Get.to(() => const RequestService());
+                      Get.to(() => const RequestService());
                     },
-                    width: 96,
-                    height: 80,
-                    top: Dimensions.screenHeight * 0.095,
-                    left: Dimensions.screenWidth * 0.59,
-                  ),
-                  CardCompound(
-                    title: 'Modo',
-                    secondTitle: 'Conductor',
-                    color: const Color.fromRGBO(217, 217, 217, 1),
-                    colorTitle: Colors.white,
-                    root: 'assets/images/steering.png',
-                    onPressed: () {
-                      Get.toNamed(ProfileRoutes.driverMode);
-                    },
+                    width: 70,
+                    height: 100,
+                    top: Dimensions.screenHeight * 0.035,
+                    left: Dimensions.screenWidth * 0.6,
                   ),
                   CardClassic(
                     title: 'Perfil',
-                    color: Colors.black,
+                    color: const Color.fromRGBO(217, 217, 217, 1),
                     colorTitle: Colors.white,
                     root: 'assets/images/profile.png',
                     onPressed: () {
-                      Get.toNamed(ProfileRoutes.profile);
+                      //Get.toNamed(ProfileRoutes.profile);
                     },
                     size: Dimensions.screenWidth * 0.12,
+                  ),
+                  CardClassic(
+                    title: 'Cuenta',
+                    color: Colors.black,
+                    colorTitle: Colors.white,
+                    root: 'assets/images/cash-coin.png',
+                    onPressed: () {
+                      //Get.toNamed(ProfileRoutes.profile);
+                    },
+                    size: Dimensions.screenWidth * 0.09,
                   ),
                 ]),
               ),

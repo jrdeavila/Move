@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:move_app/lib.dart';
 import 'package:intl/intl.dart';
 
-class InputClassic extends StatefulWidget {
+class InputClassic extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
   final bool isPassword;
@@ -20,15 +20,10 @@ class InputClassic extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<InputClassic> createState() => _InputClassicState();
-}
-
-class _InputClassicState extends State<InputClassic> {
-  @override
   Widget build(BuildContext context) {
     TextInputType keyboardType = TextInputType.text;
 
-    if (widget.isNumericKeyboard) {
+    if (isNumericKeyboard) {
       keyboardType = TextInputType.number;
     }
 
@@ -37,18 +32,18 @@ class _InputClassicState extends State<InputClassic> {
       width: Dimensions.screenWidth * 0.9,
       child: TextField(
         onTap: () {
-          if (widget.isDateInput) {
+          if (isDateInput) {
             _selectDate(context);
           }
         },
-        obscureText: widget.isPassword,
+        obscureText: isPassword,
         cursorColor: Colors.black,
-        inputFormatters: widget.formatters,
+        inputFormatters: formatters,
         style: GoogleFonts.montserrat(
           color: const Color.fromRGBO(30, 30, 30, 1),
         ),
         autofocus: false,
-        controller: widget.controller,
+        controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 30),
@@ -59,7 +54,7 @@ class _InputClassicState extends State<InputClassic> {
             borderSide: BorderSide.none,
           ),
           focusColor: Colors.black,
-          labelText: widget.labelText,
+          labelText: labelText,
           labelStyle: GoogleFonts.montserrat(
             fontSize: Dimensions.screenWidth * 0.04,
             color: Colors.black,
@@ -78,9 +73,9 @@ class _InputClassicState extends State<InputClassic> {
     );
 
     // ignore: unrelated_type_equality_checks
-    if (pickedDate != null && pickedDate != widget.controller.text) {
+    if (pickedDate != null && pickedDate != controller.text) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      widget.controller.text = formattedDate;
+      controller.text = formattedDate;
     }
   }
 }
@@ -155,7 +150,7 @@ class _InputCodeState extends State<InputCode> {
   }
 }
 
-class InputIcon extends StatefulWidget {
+class InputIcon extends StatelessWidget {
   final String title;
   final TextEditingController controller;
   final bool isNumericKeyboard;
@@ -172,15 +167,10 @@ class InputIcon extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<InputIcon> createState() => _InputIconState();
-}
-
-class _InputIconState extends State<InputIcon> {
-  @override
   Widget build(BuildContext context) {
     TextInputType keyboardType = TextInputType.text;
 
-    if (widget.isNumericKeyboard) {
+    if (isNumericKeyboard) {
       keyboardType = TextInputType.number;
     }
 
@@ -193,7 +183,7 @@ class _InputIconState extends State<InputIcon> {
           color: const Color.fromRGBO(30, 30, 30, 1),
         ),
         autofocus: false,
-        controller: widget.controller,
+        controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 30),
@@ -204,14 +194,12 @@ class _InputIconState extends State<InputIcon> {
             borderSide: BorderSide.none,
           ),
           focusColor: Colors.black,
-          labelText: widget.title,
+          labelText: title,
           labelStyle: GoogleFonts.montserrat(
             fontSize: Dimensions.screenWidth * 0.04,
             color: Colors.black,
           ),
-          prefixIcon: widget.icon != null
-              ? Icon(widget.icon, color: widget.colorIcon)
-              : null,
+          prefixIcon: icon != null ? Icon(icon, color: colorIcon) : null,
         ),
       ),
     );

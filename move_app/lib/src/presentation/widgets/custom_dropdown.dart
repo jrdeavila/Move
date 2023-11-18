@@ -1,6 +1,6 @@
 import 'package:move_app/lib.dart';
 
-class CustomDropdown extends StatefulWidget {
+class CustomDropdown extends StatelessWidget {
   final List<String> options;
   final String selectedOption;
   final ValueChanged<String?> onChanged;
@@ -12,11 +12,6 @@ class CustomDropdown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomDropdown> createState() => _CustomDropdownState();
-}
-
-class _CustomDropdownState extends State<CustomDropdown> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: Dimensions.screenHeight * 0.01),
@@ -27,8 +22,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
           borderRadius: BorderRadius.circular(15),
         ),
         child: DropdownButton<String>(
-          value: widget.selectedOption,
-          onChanged: widget.onChanged,
+          value: selectedOption,
+          onChanged: onChanged,
           icon: Icon(
             Icons.arrow_drop_down,
             color: Colors.black,
@@ -39,7 +34,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             height: 2,
             color: Colors.transparent,
           ),
-          items: widget.options.map((String value) {
+          items: options.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Padding(

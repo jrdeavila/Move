@@ -1,6 +1,6 @@
 import 'package:move_app/lib.dart';
 
-class ButtonClassic extends StatefulWidget {
+class ButtonClassic extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color color;
@@ -13,23 +13,18 @@ class ButtonClassic extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ButtonClassic> createState() => _ButtonClassicState();
-}
-
-class _ButtonClassicState extends State<ButtonClassic> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: widget.onPressed,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: widget.color,
+        backgroundColor: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
         minimumSize: Size(Dimensions.width90, Dimensions.buttonHeight),
       ),
       child: Text(
-        widget.text,
+        text,
         style: GoogleFonts.montserrat(
           color: Colors.white,
           fontSize: Dimensions.screenWidth * 0.05,
@@ -41,7 +36,7 @@ class _ButtonClassicState extends State<ButtonClassic> {
   }
 }
 
-class ButtonClassicSmall extends StatefulWidget {
+class ButtonClassicSmall extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color color;
@@ -54,16 +49,11 @@ class ButtonClassicSmall extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ButtonClassicSmall> createState() => _ButtonClassicSmallState();
-}
-
-class _ButtonClassicSmallState extends State<ButtonClassicSmall> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: widget.onPressed,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: widget.color,
+        backgroundColor: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -71,7 +61,7 @@ class _ButtonClassicSmallState extends State<ButtonClassicSmall> {
             Size(Dimensions.screenWidth * 0.37, Dimensions.buttonHeight),
       ),
       child: Text(
-        widget.text,
+        text,
         style: GoogleFonts.montserrat(
           color: Colors.white,
           fontSize: Dimensions.screenWidth * 0.05,
@@ -122,7 +112,7 @@ class ButtonSmall extends StatelessWidget {
   }
 }
 
-class CustomButton extends StatefulWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
@@ -135,16 +125,11 @@ class CustomButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomButton> createState() => _CustomButtonState();
-}
-
-class _CustomButtonState extends State<CustomButton> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.02),
       child: TextButton(
-        onPressed: widget.onPressed,
+        onPressed: onPressed,
         style: TextButton.styleFrom(
           backgroundColor: const Color.fromRGBO(234, 234, 234, 1),
           padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 20),
@@ -156,7 +141,7 @@ class _CustomButtonState extends State<CustomButton> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              widget.text,
+              text,
               style: GoogleFonts.montserrat(
                 color: Colors.black,
                 fontSize: 16,
@@ -164,7 +149,7 @@ class _CustomButtonState extends State<CustomButton> {
               ),
             ),
             Icon(
-              widget.icon,
+              icon,
               color: Colors.black,
             ),
           ],
@@ -174,7 +159,7 @@ class _CustomButtonState extends State<CustomButton> {
   }
 }
 
-class ButtonIcon extends StatefulWidget {
+class ButtonIcon extends StatelessWidget {
   final String text;
   final bool isPrice;
   final IconData icon;
@@ -191,18 +176,13 @@ class ButtonIcon extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ButtonIcon> createState() => _ButtonIconState();
-}
-
-class _ButtonIconState extends State<ButtonIcon> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: Dimensions.screenHeight * 0.001,
           horizontal: Dimensions.screenWidth * 0.1),
       child: TextButton(
-        onPressed: widget.onPressed,
+        onPressed: onPressed,
         style: TextButton.styleFrom(
           backgroundColor: const Color.fromRGBO(234, 234, 234, 1),
           padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 20),
@@ -216,24 +196,24 @@ class _ButtonIconState extends State<ButtonIcon> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(
-              widget.icon,
-              color: widget.colorIcon,
+              icon,
+              color: colorIcon,
             ),
             Column(
               children: [
                 Text(
-                  widget.text,
+                  text,
                   style: GoogleFonts.montserrat(
                     color: Colors.black,
                     fontSize: 16,
                   ),
                 ),
-                widget.isPrice
+                isPrice
                     ? Padding(
                         padding: EdgeInsets.only(
                             top: Dimensions.screenHeight * 0.01),
                         child: Text(
-                          widget.text,
+                          text,
                           style: GoogleFonts.montserrat(
                             color: Colors.black,
                             fontSize: 16,
