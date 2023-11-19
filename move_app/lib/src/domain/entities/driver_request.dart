@@ -252,12 +252,10 @@ class SoatSection extends DriverRequestSection {
 }
 
 class TechnicalReviewSection extends DriverRequestSection {
-  final String? technicalReviewImage;
-  final String? technicalReviewExpirationDate;
+  final String? technicalReviewUrl;
 
   TechnicalReviewSection({
-    required this.technicalReviewImage,
-    required this.technicalReviewExpirationDate,
+    required this.technicalReviewUrl,
     super.status = SectionStatus.making,
   }) : super(
           title: "Revisión Técnica",
@@ -265,7 +263,6 @@ class TechnicalReviewSection extends DriverRequestSection {
         );
 
   factory TechnicalReviewSection.empty() => TechnicalReviewSection(
-        technicalReviewImage: null,
-        technicalReviewExpirationDate: null,
+        technicalReviewUrl: null,
       );
 }

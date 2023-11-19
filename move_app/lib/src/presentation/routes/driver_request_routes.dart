@@ -42,6 +42,11 @@ abstract class DriverRequestRoutes {
         VerifyAuth(),
       ],
     ),
+    GetPage(
+      name: technicalReview,
+      page: () => const TechnicalPreviewData(),
+      binding: TechnicalPreviewBinding(),
+    ),
     // TODO: add routes
   ];
 }

@@ -34,3 +34,10 @@ class SoatBinding extends Bindings {
     Get.lazyPut(() => SoatCtrl());
   }
 }
+
+class TechnicalPreviewBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => TechnicalPreviewCtrl());
+  }
+}

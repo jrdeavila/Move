@@ -36,6 +36,7 @@ class _ButtonClassicState extends State<ButtonClassic> {
           letterSpacing: 1.6,
           fontWeight: FontWeight.w600,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }

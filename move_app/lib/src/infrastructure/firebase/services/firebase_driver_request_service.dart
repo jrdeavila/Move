@@ -125,6 +125,51 @@ class FirebaseSoatSectionService implements ISoatSectionService {
   }
 }
 
+// --------------------------- OWNER SHIP SECTION SERVICE ---------------------------
+
+@Injectable(as: IOwnerShipCardSectionService)
+class FirebaseOwnerShipSectionService implements IOwnerShipCardSectionService {
+  final FirebaseFirestore _firebaseFirestore;
+
+  FirebaseOwnerShipSectionService({
+    required FirebaseFirestore firebaseFirestore,
+  }) : _firebaseFirestore = firebaseFirestore;
+
+  @override
+  Future<OwnerShipCardSection> setOwnerShipCardSection(
+      AppUser user, OwnerShipCardSection ownerShipCardSection) {
+    return _firebaseFirestore
+        .collection("driver_request")
+        .doc(user.uuid)
+        .set(ownerShipCardSectionToJson(ownerShipCardSection),
+            SetOptions(merge: true))
+        .then((value) => ownerShipCardSection);
+  }
+}
+
+// --------------------------- TECHNICAL REVIEW SECTION SERVICE ---------------------------
+
+@Injectable(as: ITechnicalReviewSectionService)
+class FirebaseTechnicalReviewSectionService
+    implements ITechnicalReviewSectionService {
+  final FirebaseFirestore _firebaseFirestore;
+
+  FirebaseTechnicalReviewSectionService({
+    required FirebaseFirestore firebaseFirestore,
+  }) : _firebaseFirestore = firebaseFirestore;
+
+  @override
+  Future<TechnicalReviewSection> setTechnicalReviewSection(
+      AppUser user, TechnicalReviewSection technicalReviewSection) {
+    return _firebaseFirestore
+        .collection("driver_request")
+        .doc(user.uuid)
+        .set(technicalReviewSectionToJson(technicalReviewSection),
+            SetOptions(merge: true))
+        .then((value) => technicalReviewSection);
+  }
+}
+
 // --------------------------- FINISH DRIVER REQUEST SERVICE ---------------------------
 
 @Injectable(as: IFinishDriverRequestService)

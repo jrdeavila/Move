@@ -218,9 +218,7 @@ Map<String, dynamic> technicalReviewSectionToJson(
     TechnicalReviewSection technicalReviewSection) {
   return {
     "technical_review_section": {
-      "technical_review_image": technicalReviewSection.technicalReviewImage,
-      "technical_review_expiration_date":
-          technicalReviewSection.technicalReviewExpirationDate,
+      "technical_review_url": technicalReviewSection.technicalReviewUrl,
       "status": sectionStatusToString(technicalReviewSection.status),
     }
   };
@@ -235,10 +233,8 @@ TechnicalReviewSection technicalReviewSectionFromJson(
     return TechnicalReviewSection.empty();
   }
   return TechnicalReviewSection(
-    technicalReviewImage: json["technical_review_section"]
-        ["technical_review_image"],
-    technicalReviewExpirationDate: json["technical_review_section"]
-        ["technical_review_expiration_date"],
+    technicalReviewUrl: json["technical_review_section"]
+        ["technical_review_url"],
     status: sectionStatusFromString(json["technical_review_section"]["status"]),
   );
 }

@@ -133,4 +133,9 @@ class DriverRequestRegisterCtrl extends GetxController {
     _driverRequest.value.soatSection = soatSection;
     _driverRequest.refresh();
   }
+
+  void onUpdateTechnicalReviewSection(TechnicalReviewSection soatSection) {
+    _driverRequest.value.technicalReviewSection = soatSection;
+    _driverRequest.refresh();
+  }
 }

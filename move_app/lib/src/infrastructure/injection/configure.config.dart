@@ -92,8 +92,14 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i6.INoCriminalRecordSectionService>(() =>
         _i7.FirebaseNoCriminalRecordSectionService(
             firebaseFirestore: gh<_i6.FirebaseFirestore>()));
+    gh.factory<_i6.IOwnerShipCardSectionService>(() =>
+        _i7.FirebaseOwnerShipSectionService(
+            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
     gh.factory<_i6.ISoatSectionService>(() => _i7.FirebaseSoatSectionService(
         firebaseFirestore: gh<_i6.FirebaseFirestore>()));
+    gh.factory<_i6.ITechnicalReviewSectionService>(() =>
+        _i7.FirebaseTechnicalReviewSectionService(
+            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
     gh.factory<_i6.IUploadFile>(() => _i12.FirebaseUploadFileService(
         firebaseStorage: gh<_i6.FirebaseStorage>()));
     gh.factory<_i6.IUserRepository>(() =>
@@ -151,11 +157,24 @@ extension GetItInjectableX on _i1.GetIt {
               userService: gh<_i15.IUserRepository>(),
               uploadFile: gh<_i15.IUploadFile>(),
             ));
+    gh.factory<_i15.ISendOwnerShipCardSectionUseCase>(() =>
+        _i16.SendOwnerShipCardSectionUseCase(
+          ownerShipCardSectionService: gh<_i15.IOwnerShipCardSectionService>(),
+          userService: gh<_i15.IUserRepository>(),
+          uploadFile: gh<_i15.IUploadFile>(),
+        ));
     gh.factory<_i15.ISendSoatSectionUseCase>(() => _i16.SendSoatSectionUseCase(
           soatSectionService: gh<_i15.ISoatSectionService>(),
           userService: gh<_i15.IUserRepository>(),
           uploadFile: gh<_i15.IUploadFile>(),
         ));
+    gh.factory<_i15.ISendTechnicalReviewSectionUseCase>(
+        () => _i16.SendTechnicalReviewSectionUseCase(
+              technicalReviewSectionService:
+                  gh<_i15.ITechnicalReviewSectionService>(),
+              userService: gh<_i15.IUserRepository>(),
+              uploadFile: gh<_i15.IUploadFile>(),
+            ));
     gh.factory<_i6.IUpdateProfileUseCase>(() =>
         _i17.UpdateProfileUseCase(userRepository: gh<_i6.IUserRepository>()));
     gh.factory<_i6.ILoginWithPhoneUseCase>(() =>
