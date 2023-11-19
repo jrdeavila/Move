@@ -91,16 +91,28 @@ class PersonalData extends GetView<AboutMeCtrl> {
         ),
         floatingActionButton: Obx(() {
           if (controller.isValid) {
-            return FloatingActionButton(
+            return FloatingActionButton.extended(
               onPressed: () {
                 controller.save();
               },
-              child: controller.isLoading
-                  ? const CircularProgressIndicator(
-                      color: Colors.white,
+              icon: controller.isLoading
+                  ? const SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
                     )
-                  : const Icon(Icons.keyboard_double_arrow_right_sharp,
-                      color: Colors.white),
+                  : const Icon(Icons.save, color: Colors.white),
+              label: controller.isLoading
+                  ? const Text(
+                      "Guardando...",
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : const Text(
+                      "Guardar",
+                      style: TextStyle(color: Colors.white),
+                    ),
             );
           }
           return const SizedBox.shrink();

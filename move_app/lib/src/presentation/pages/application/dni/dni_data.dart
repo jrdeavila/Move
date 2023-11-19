@@ -87,17 +87,27 @@ class DNIData extends GetView<DNICtrl> {
       ),
       floatingActionButton: Obx(
         () => controller.isValid
-            ? FloatingActionButton(
+            ? FloatingActionButton.extended(
                 onPressed: () {
                   controller.save();
                 },
-                child: controller.isLoading
-                    ? const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                icon: controller.isLoading
+                    ? const SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
                       )
-                    : const Icon(Icons.keyboard_double_arrow_right,
-                        color: Colors.white),
-              )
+                    : const Icon(Icons.save, color: Colors.white),
+                label: controller.isLoading
+                    ? const Text("Guardando...",
+                        style: TextStyle(color: Colors.white))
+                    : const Text(
+                        "Guardar",
+                        style: TextStyle(color: Colors.white),
+                      ))
             : const SizedBox.shrink(),
       ),
     );

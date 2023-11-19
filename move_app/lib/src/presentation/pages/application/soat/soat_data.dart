@@ -52,7 +52,7 @@ class SoatData extends GetView<SoatCtrl> {
                         )
                       ],
                     )),
-          floatingActionButton: controller.soatFile != null
+          floatingActionButton: hasSoatFile
               ? FloatingActionButton.extended(
                   onPressed: () {
                     controller.save();

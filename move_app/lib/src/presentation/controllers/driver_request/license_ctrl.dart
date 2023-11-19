@@ -156,8 +156,6 @@ class LicenseCtrl extends GetxController {
         "Opeación exitosa! 🎉",
         "Se ha guardado correctamente la sección de licencia",
       );
-
-      Get.offAndToNamed(DriverRequestRoutes.soat);
     }
   }
 }
