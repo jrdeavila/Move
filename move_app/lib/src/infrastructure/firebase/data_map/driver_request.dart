@@ -184,9 +184,8 @@ AboutMeSection aboutMeSectionFromJson(Map<String, dynamic>? json) {
 Map<String, dynamic> soatSectionToJson(SoatSection soatSection) {
   return {
     "soat_section": {
-      "soat_image": soatSection.soatImage,
-      "soat_expiration_date": soatSection.soatExpirationDate,
-      "status": soatSection.status,
+      "soat_file": soatSection.soatFile,
+      "status": sectionStatusToString(soatSection.status),
     }
   };
 }
@@ -199,8 +198,7 @@ SoatSection soatSectionFromJson(Map<String, dynamic>? json) {
     return SoatSection.empty();
   }
   return SoatSection(
-    soatImage: json["soat_section"]["soat_image"],
-    soatExpirationDate: json["soat_section"]["soat_expiration_date"],
+    soatFile: json["soat_section"]["soat_file"],
     status: sectionStatusFromString(json["soat_section"]["status"]),
   );
 }

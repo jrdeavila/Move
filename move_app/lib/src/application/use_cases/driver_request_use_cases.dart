@@ -233,3 +233,37 @@ class FinishDriverRequestUseCase implements IFinishDriverRequestUseCase {
     );
   }
 }
+
+// ----------------------------- SOAT SECTION ------------------------------
+
+@Injectable(as: ISendSoatSectionUseCase)
+class SendSoatSectionUseCase implements ISendSoatSectionUseCase {
+  final ISoatSectionService _soatSectionService;
+  final IUserRepository _userService;
+  final IUploadFile _uploadFile;
+
+  SendSoatSectionUseCase({
+    required ISoatSectionService soatSectionService,
+    required IUserRepository userService,
+    required IUploadFile uploadFile,
+  })  : _soatSectionService = soatSectionService,
+        _userService = userService,
+        _uploadFile = uploadFile;
+
+  @override
+  Future<SoatSection> call(SendSoatSectionRequest request) async {
+    final user = await _userService.getUser(request.userUuid);
+    final soatFileUrl = await _uploadFile.uploadFile(
+      request.soatFile,
+      "driver_request/${user.uuid}/soat_file.pdf",
+    );
+
+    final soatSection =
+        SoatSection(soatFile: soatFileUrl, status: SectionStatus.complete);
+
+    return _soatSectionService.setSoatSection(
+      user,
+      soatSection,
+    );
+  }
+}

@@ -34,6 +34,14 @@ abstract class DriverRequestRoutes {
         VerifyAuth(),
       ],
     ),
+    GetPage(
+      name: soat,
+      page: () => const SoatData(),
+      binding: SoatBinding(),
+      middlewares: [
+        VerifyAuth(),
+      ],
+    ),
     // TODO: add routes
   ];
 }

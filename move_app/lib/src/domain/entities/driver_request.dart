@@ -236,12 +236,10 @@ class AboutMeSection extends DriverRequestSection {
 }
 
 class SoatSection extends DriverRequestSection {
-  final String? soatImage;
-  final String? soatExpirationDate;
+  final String? soatFile;
 
   SoatSection({
-    required this.soatImage,
-    required this.soatExpirationDate,
+    required this.soatFile,
     super.status = SectionStatus.making,
   }) : super(
           title: "SOAT",
@@ -249,8 +247,7 @@ class SoatSection extends DriverRequestSection {
         );
 
   factory SoatSection.empty() => SoatSection(
-        soatImage: null,
-        soatExpirationDate: null,
+        soatFile: null,
       );
 }
 

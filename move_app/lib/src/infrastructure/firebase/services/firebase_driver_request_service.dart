@@ -9,20 +9,6 @@ class FirebaseDNISectionService implements IDNISectionService {
   FirebaseDNISectionService({
     required FirebaseFirestore firebaseFirestore,
   }) : _firebaseFirestore = firebaseFirestore;
-  @override
-  Future<DNISection> getDNISection(AppUser user) {
-    return _firebaseFirestore
-        .collection("driver_request")
-        .doc(user.uuid)
-        .get()
-        .then((doc) {
-      if (doc.exists && doc.data()!.containsKey("dni_section")) {
-        return dniSectionFromJson(doc.data()!["dni_section"]);
-      } else {
-        return DNISection.empty();
-      }
-    });
-  }
 
   @override
   Future<DNISection> setDNISection(AppUser user, DNISection dniSection) async {
@@ -44,21 +30,6 @@ class FirebaseDriverLicenseSectionService
   FirebaseDriverLicenseSectionService({
     required FirebaseFirestore firebaseFirestore,
   }) : _firebaseFirestore = firebaseFirestore;
-  @override
-  Future<DriverLicenseSection> getDriverLicenseSection(AppUser user) {
-    return _firebaseFirestore
-        .collection("driver_request")
-        .doc(user.uuid)
-        .get()
-        .then((doc) {
-      if (doc.exists && doc.data()!.containsKey("driver_license_section")) {
-        return driverLicenseSectionFromJson(
-            doc.data()!["driver_license_section"]);
-      } else {
-        return DriverLicenseSection.empty();
-      }
-    });
-  }
 
   @override
   Future<DriverLicenseSection> setDriverLicenseSection(
@@ -79,20 +50,6 @@ class FirebaseAboutCarSectionService implements IAboutCarSectionService {
   FirebaseAboutCarSectionService({
     required FirebaseFirestore firebaseFirestore,
   }) : _firebaseFirestore = firebaseFirestore;
-  @override
-  Future<AboutCarSection> getAboutCarSection(AppUser user) {
-    return _firebaseFirestore
-        .collection("driver_request")
-        .doc(user.uuid)
-        .get()
-        .then((doc) {
-      if (doc.exists && doc.data()!.containsKey("about_car_section")) {
-        return aboutCarSectionFromJson(doc.data()!["about_car_section"]);
-      } else {
-        return AboutCarSection.empty();
-      }
-    });
-  }
 
   @override
   Future<AboutCarSection> setAboutCarSection(
@@ -115,21 +72,6 @@ class FirebaseNoCriminalRecordSectionService
   FirebaseNoCriminalRecordSectionService({
     required FirebaseFirestore firebaseFirestore,
   }) : _firebaseFirestore = firebaseFirestore;
-  @override
-  Future<NoCriminalRecordSection> getNoCriminalRecordSection(AppUser user) {
-    return _firebaseFirestore
-        .collection("driver_request")
-        .doc(user.uuid)
-        .get()
-        .then((doc) {
-      if (doc.exists && doc.data()!.containsKey("no_criminal_record_section")) {
-        return noCriminalRecordSectionFromJson(
-            doc.data()!["no_criminal_record_section"]);
-      } else {
-        return NoCriminalRecordSection.empty();
-      }
-    });
-  }
 
   @override
   Future<NoCriminalRecordSection> setNoCriminalRecordSection(
@@ -150,16 +92,6 @@ class FirebaseAboutMeSectionService implements IAboutMeSectionService {
   FirebaseAboutMeSectionService({
     required FirebaseFirestore firebaseFirestore,
   }) : _firebaseFirestore = firebaseFirestore;
-  @override
-  Future<AboutMeSection> getAboutMeSection(AppUser user) {
-    return _firebaseFirestore
-        .collection("driver_request")
-        .doc(user.uuid)
-        .get()
-        .then((doc) {
-      return aboutMeSectionFromJson(doc.data());
-    });
-  }
 
   @override
   Future<AboutMeSection> setAboutMeSection(
@@ -169,6 +101,27 @@ class FirebaseAboutMeSectionService implements IAboutMeSectionService {
         .doc(user.uuid)
         .set(aboutMeSectionToJson(aboutMeSection), SetOptions(merge: true));
     return aboutMeSection;
+  }
+}
+
+// --------------------------- SOAT SECTION SERVICE ---------------------------
+
+@Injectable(as: ISoatSectionService)
+class FirebaseSoatSectionService implements ISoatSectionService {
+  final FirebaseFirestore _firebaseFirestore;
+
+  FirebaseSoatSectionService({
+    required FirebaseFirestore firebaseFirestore,
+  }) : _firebaseFirestore = firebaseFirestore;
+
+  @override
+  Future<SoatSection> setSoatSection(
+      AppUser user, SoatSection soatSection) async {
+    await _firebaseFirestore
+        .collection("driver_request")
+        .doc(user.uuid)
+        .set(soatSectionToJson(soatSection), SetOptions(merge: true));
+    return soatSection;
   }
 }
 

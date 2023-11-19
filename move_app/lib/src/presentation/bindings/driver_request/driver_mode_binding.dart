@@ -27,3 +27,10 @@ class DNIBinding extends Bindings {
     Get.lazyPut(() => DNICtrl());
   }
 }
+
+class SoatBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => SoatCtrl());
+  }
+}

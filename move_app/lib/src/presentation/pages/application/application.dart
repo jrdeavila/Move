@@ -4,3 +4,4 @@ export 'car/car.dart';
 export 'dni/dni.dart';
 export 'license/license.dart';
 export 'personal/personal.dart';
+export 'soat/soat.dart';

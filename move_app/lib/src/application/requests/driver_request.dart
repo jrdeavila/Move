@@ -90,6 +90,37 @@ class SendAboutCarSectionRequest extends SendSectionRequest {
   });
 }
 
+class SendSoatSectionRequest extends SendSectionRequest {
+  final File soatFile;
+
+  SendSoatSectionRequest({
+    required this.soatFile,
+    required super.userUuid,
+  });
+}
+
+class SendTechnicalReviewSectionRequest extends SendSectionRequest {
+  final File technicalReviewFile;
+
+  SendTechnicalReviewSectionRequest({
+    required this.technicalReviewFile,
+    required super.userUuid,
+  });
+}
+
+class SendOwnerShipCardSectionRequest extends SendSectionRequest {
+  final Uint8List ownerShipCardFrontImage;
+  final Uint8List ownerShipCardBackImage;
+  final int ownerShipCardExpirationYear;
+
+  SendOwnerShipCardSectionRequest({
+    required this.ownerShipCardFrontImage,
+    required this.ownerShipCardBackImage,
+    required this.ownerShipCardExpirationYear,
+    required super.userUuid,
+  });
+}
+
 class FetchDriverRequestRequest {
   final AppUser user;
 
