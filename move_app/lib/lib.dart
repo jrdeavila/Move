@@ -1,4 +1,5 @@
 export 'dart:async';
+export 'dart:typed_data';
 
 export 'package:animate_do/animate_do.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';

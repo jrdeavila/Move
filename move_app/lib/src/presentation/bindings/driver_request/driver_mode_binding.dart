@@ -41,3 +41,10 @@ class TechnicalPreviewBinding extends Bindings {
     Get.lazyPut(() => TechnicalPreviewCtrl());
   }
 }
+
+class OwnerShipBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => OwnerShipCtrl());
+  }
+}

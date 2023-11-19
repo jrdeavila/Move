@@ -138,4 +138,9 @@ class DriverRequestRegisterCtrl extends GetxController {
     _driverRequest.value.technicalReviewSection = soatSection;
     _driverRequest.refresh();
   }
+
+  void onUpdateOwnerShipCardSection(OwnerShipCardSection onwerShipSection) {
+    _driverRequest.value.ownerShipCardSection = onwerShipSection;
+    _driverRequest.refresh();
+  }
 }

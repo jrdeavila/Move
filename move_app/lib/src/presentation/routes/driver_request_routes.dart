@@ -47,6 +47,10 @@ abstract class DriverRequestRoutes {
       page: () => const TechnicalPreviewData(),
       binding: TechnicalPreviewBinding(),
     ),
+    GetPage(
+        name: onwerShip,
+        page: () => const OwnerShipData(),
+        binding: OwnerShipBinding()),
     // TODO: add routes
   ];
 }
