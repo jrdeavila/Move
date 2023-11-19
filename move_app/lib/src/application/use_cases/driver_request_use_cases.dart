@@ -163,9 +163,11 @@ class SendAboutCarSectionUseCase implements ISendAboutCarSectionUseCase {
     );
 
     final aboutCarSection = AboutCarSection(
+      carModel: request.carModel,
       carBrand: request.carBrand,
       carPlate: request.carPlate,
       carImage: carImageUrl,
+      status: SectionStatus.complete,
     );
 
     return _aboutCarSectionService.setAboutCarSection(

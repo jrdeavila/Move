@@ -51,6 +51,13 @@ abstract class DriverRequestRoutes {
         name: onwerShip,
         page: () => const OwnerShipData(),
         binding: OwnerShipBinding()),
-    // TODO: add routes
+    GetPage(
+      name: aboutCar,
+      page: () => const AboutCar(),
+      binding: AboutCarBinding(),
+      middlewares: [
+        VerifyAuth(),
+      ],
+    ),
   ];
 }

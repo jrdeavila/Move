@@ -149,11 +149,13 @@ class DriverLicenseSection extends DriverRequestSection {
 
 class AboutCarSection extends DriverRequestSection {
   final String? carBrand;
+  final String? carModel;
   final String? carPlate;
   final String? carImage;
 
   AboutCarSection({
     required this.carBrand,
+    required this.carModel,
     required this.carPlate,
     required this.carImage,
     super.status = SectionStatus.making,
@@ -163,6 +165,7 @@ class AboutCarSection extends DriverRequestSection {
         );
 
   factory AboutCarSection.empty() => AboutCarSection(
+        carModel: null,
         carBrand: null,
         carPlate: null,
         carImage: null,

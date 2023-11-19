@@ -74,18 +74,14 @@ class SendDriverLicenseSectionRequest extends SendSectionRequest {
 class SendAboutCarSectionRequest extends SendSectionRequest {
   final String carBrand;
   final String carPlate;
+  final String carModel;
   final Uint8List carImage;
-  final Uint8List ownerShipCardFrontImage;
-  final Uint8List ownerShipCardBackImage;
-  final int ownerShipCardExpirationYear;
 
   SendAboutCarSectionRequest({
     required this.carBrand,
     required this.carPlate,
     required this.carImage,
-    required this.ownerShipCardFrontImage,
-    required this.ownerShipCardBackImage,
-    required this.ownerShipCardExpirationYear,
+    required this.carModel,
     required super.userUuid,
   });
 }

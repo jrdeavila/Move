@@ -48,3 +48,10 @@ class OwnerShipBinding extends Bindings {
     Get.lazyPut(() => OwnerShipCtrl());
   }
 }
+
+class AboutCarBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => AboutCarCtrl());
+  }
+}

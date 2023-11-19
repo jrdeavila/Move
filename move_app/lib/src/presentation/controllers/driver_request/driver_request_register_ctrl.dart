@@ -143,4 +143,9 @@ class DriverRequestRegisterCtrl extends GetxController {
     _driverRequest.value.ownerShipCardSection = onwerShipSection;
     _driverRequest.refresh();
   }
+
+  void setAboutCarSection(AboutCarSection aboutCarSection) {
+    _driverRequest.value.aboutCarSection = aboutCarSection;
+    _driverRequest.refresh();
+  }
 }

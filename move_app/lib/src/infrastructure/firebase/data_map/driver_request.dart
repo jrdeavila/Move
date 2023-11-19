@@ -110,6 +110,7 @@ Map<String, dynamic> aboutCarSectionToJson(AboutCarSection aboutCarSection) {
   return {
     "about_car": {
       "car_brand": aboutCarSection.carBrand,
+      "car_model": aboutCarSection.carModel,
       "car_plate": aboutCarSection.carPlate,
       "car_image": aboutCarSection.carImage,
       "status": sectionStatusToString(aboutCarSection.status),
@@ -127,6 +128,7 @@ AboutCarSection aboutCarSectionFromJson(Map<String, dynamic>? json) {
   }
   return AboutCarSection(
     carBrand: json["car_brand"],
+    carModel: json["car_model"],
     carPlate: json["car_plate"],
     carImage: json["car_image"],
     status: sectionStatusFromString(json["status"]),
