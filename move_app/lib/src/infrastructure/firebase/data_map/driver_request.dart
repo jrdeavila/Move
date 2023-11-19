@@ -39,11 +39,15 @@ DNISection dniSectionFromJson(Map<String, dynamic>? json) {
   if (json == null) {
     return DNISection.empty();
   }
+
+  if (json.containsKey("dni_section") == false) {
+    return DNISection.empty();
+  }
   return DNISection(
-    dni: json["dni"],
-    dniFrontImage: json["dni_front_image"],
-    dniBackImage: json["dni_back_image"],
-    status: sectionStatusFromString(json["status"]),
+    dni: json["dni_section"]["dni"],
+    dniFrontImage: json["dni_section"]["dni_front_image"],
+    dniBackImage: json["dni_section"]["dni_back_image"],
+    status: sectionStatusFromString(json["dni_section"]["status"]),
   );
 }
 
@@ -85,13 +89,20 @@ DriverLicenseSection driverLicenseSectionFromJson(Map<String, dynamic>? json) {
   if (json == null) {
     return DriverLicenseSection.empty();
   }
+  if (json.containsKey("driver_license_section") == false) {
+    return DriverLicenseSection.empty();
+  }
   return DriverLicenseSection(
-    driverLicense: json["driver_license"],
-    driverLicenseFrontImage: json["driver_license_front_image"],
-    driverLicenseBackImage: json["driver_license_back_image"],
-    driverLicenseConfirmation: json["driver_license_confirmation"],
-    driverLicenseExpirationDate: json["driver_license_expiration_date"],
-    status: sectionStatusFromString(json["status"]),
+    driverLicense: json["driver_license_section"]["driver_license"],
+    driverLicenseFrontImage: json["driver_license_section"]
+        ["driver_license_front_image"],
+    driverLicenseBackImage: json["driver_license_section"]
+        ["driver_license_back_image"],
+    driverLicenseConfirmation: json["driver_license_section"]
+        ["driver_license_confirmation"],
+    driverLicenseExpirationDate: json["driver_license_section"]
+        ["driver_license_expiration_date"],
+    status: sectionStatusFromString(json["driver_license_section"]["status"]),
   );
 }
 
@@ -269,16 +280,13 @@ DriverRequest driverRequestFromJson(Map<String, dynamic>? json) {
   }
   return DriverRequest(
     userUuid: json["user_uuid"],
-    dniSection: dniSectionFromJson(json["dni_section"]),
-    driverLicenseSection:
-        driverLicenseSectionFromJson(json["driver_license_section"]),
-    aboutCarSection: aboutCarSectionFromJson(json["about_car_section"]),
-    noCriminalRecordSection:
-        noCriminalRecordSectionFromJson(json["no_criminal_record_section"]),
+    dniSection: dniSectionFromJson(json),
+    driverLicenseSection: driverLicenseSectionFromJson(json),
+    aboutCarSection: aboutCarSectionFromJson(json),
+    noCriminalRecordSection: noCriminalRecordSectionFromJson(json),
     aboutMeSection: aboutMeSectionFromJson(json),
-    soatSection: soatSectionFromJson(json["soat_section"]),
-    technicalReviewSection:
-        technicalReviewSectionFromJson(json["technical_review_section"]),
-    ownerShipCardSection: ownerShipCardSectionFromJson(json["owner_ship_card"]),
+    soatSection: soatSectionFromJson(json),
+    technicalReviewSection: technicalReviewSectionFromJson(json),
+    ownerShipCardSection: ownerShipCardSectionFromJson(json),
   );
 }
