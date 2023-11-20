@@ -108,7 +108,7 @@ DriverLicenseSection driverLicenseSectionFromJson(Map<String, dynamic>? json) {
 
 Map<String, dynamic> aboutCarSectionToJson(AboutCarSection aboutCarSection) {
   return {
-    "about_car": {
+    "about_car_section": {
       "car_brand": aboutCarSection.carBrand,
       "car_model": aboutCarSection.carModel,
       "car_plate": aboutCarSection.carPlate,
@@ -122,7 +122,6 @@ AboutCarSection aboutCarSectionFromJson(Map<String, dynamic>? json) {
   if (json == null) {
     return AboutCarSection.empty();
   }
-
   if (json.containsKey("about_car_section") == false) {
     return AboutCarSection.empty();
   }
