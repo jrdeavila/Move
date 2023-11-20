@@ -1,5 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
 
 class RechargeAccount extends StatelessWidget {
   const RechargeAccount({super.key});
@@ -17,7 +16,7 @@ class RechargeAccount extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offAll(() => const DashboardDriver());
+            Get.offAll(() => const ViewAccount());
           },
           icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black),
         ),
