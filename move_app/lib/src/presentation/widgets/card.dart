@@ -423,112 +423,127 @@ class CardRequest extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         bottom: Dimensions.screenHeight * 0.025,
+        left: Dimensions.screenWidth * 0.05,
+        right: Dimensions.screenWidth * 0.05,
       ),
       child: GestureDetector(
         onTap: onPressed,
         onTapCancel: onTapCancel,
         child: Container(
           width: Dimensions.screenWidth * 0.85,
-          height: Dimensions.screenHeight * 0.21,
-          padding: EdgeInsets.symmetric(
-              horizontal: Dimensions.screenWidth * 0.03,
-              vertical: Dimensions.screenHeight * 0.02),
+          height: Dimensions.screenHeight * 0.19,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(255, 198, 65, 1),
+            color: const Color.fromRGBO(169, 131, 44, 1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: Dimensions.screenHeight * 0.02,
-                    right: Dimensions.screenWidth * 0.02),
-                child: UserClassic(
-                  user: user,
-                  colorText: colorText,
+              Container(
+                width: Dimensions.screenWidth * 0.86,
+                height: Dimensions.screenHeight * 0.19,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(255, 198, 65, 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: Dimensions.screenWidth * 0.02,
+                      top: Dimensions.screenHeight * 0.02),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: Dimensions.screenHeight * 0.02,
+                            right: Dimensions.screenWidth * 0.02),
+                        child: UserClassic(
+                          user: user,
+                          colorText: colorText,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(price,
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: Dimensions.screenWidth * 0.07,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 1.2,
+                                  )),
+                              SizedBox(
+                                width: Dimensions.screenWidth * 0.03,
+                              ),
+                              Text(paymentType,
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: Dimensions.screenWidth * 0.05,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 1.2,
+                                  )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: Dimensions.screenHeight * 0.005,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.place,
+                                size: 28,
+                                color: Colors.red,
+                              ),
+                              SizedBox(
+                                width: Dimensions.screenWidth * 0.02,
+                              ),
+                              SizedBox(
+                                width: Dimensions.screenWidth * 0.47,
+                                child: Text(initialAdress,
+                                    style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize: Dimensions.screenWidth * 0.04,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.2,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: Dimensions.screenHeight * 0.005,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.map_rounded,
+                                size: 28,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: Dimensions.screenWidth * 0.02,
+                              ),
+                              SizedBox(
+                                width: Dimensions.screenWidth * 0.47,
+                                child: Text(endAdress,
+                                    style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize: Dimensions.screenWidth * 0.04,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.2,
+                                    )),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(price,
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: Dimensions.screenWidth * 0.07,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.2,
-                          )),
-                      SizedBox(
-                        width: Dimensions.screenWidth * 0.03,
-                      ),
-                      Text(paymentType,
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: Dimensions.screenWidth * 0.05,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1.2,
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: Dimensions.screenHeight * 0.005,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.map_rounded,
-                        size: 28,
-                        color: Colors.red,
-                      ),
-                      SizedBox(
-                        width: Dimensions.screenWidth * 0.02,
-                      ),
-                      SizedBox(
-                        width: Dimensions.screenWidth * 0.47,
-                        child: Text(initialAdress,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
-                              fontSize: Dimensions.screenWidth * 0.04,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
-                            )),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: Dimensions.screenHeight * 0.005,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.map_rounded,
-                        size: 28,
-                        color: Colors.red,
-                      ),
-                      SizedBox(
-                        width: Dimensions.screenWidth * 0.02,
-                      ),
-                      SizedBox(
-                        width: Dimensions.screenWidth * 0.47,
-                        child: Text(endAdress,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
-                              fontSize: Dimensions.screenWidth * 0.04,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
-                            )),
-                      ),
-                    ],
-                  )
-                ],
-              )
             ],
           ),
         ),

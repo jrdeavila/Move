@@ -1,5 +1,6 @@
 import 'package:move_app/lib.dart';
 import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
+import 'package:move_app/src/presentation/pages/dashboard/driver/tariff/rate_form.dart';
 
 class ListService extends StatefulWidget {
   const ListService({Key? key}) : super(key: key);
@@ -9,38 +10,33 @@ class ListService extends StatefulWidget {
 }
 
 class _ListServiceState extends State<ListService> {
-  final List<Map<String, dynamic>> cardDataList = [
-    {
-      'photo': '',
-      'price': '8000',
-      'paymentType': 'efectivo',
-      'onPressed': () {
-        print('click');
-      },
-      'user': 'Pedro Miguel',
-      'colorText': Colors.white,
-      'initialAdress': 'cll 7A.24 -31 la nueva esperanza',
-      'endAdress': 'cll 6D.21-35 la esperanza',
-      'onTapCancel': () {
-        print('cancel');
-      },
-    },
-    {
-      'photo': '',
-      'price': '8000',
-      'paymentType': 'efectivo',
-      'onPressed': () {
-        print('click');
-      },
-      'user': 'Pedro Miguel',
-      'colorText': Colors.white,
-      'initialAdress': 'cll 7A.24 -31 la nueva esperanza',
-      'endAdress': 'cll 6D.21-35 la esperanza',
-      'onTapCancel': () {
-        print('cancel');
-      },
-    },
-  ];
+  final TextEditingController paymentSuggestController =
+      TextEditingController();
+
+  bool isRateFormVisible = false;
+
+  void toggleRateFormVisible() {
+    setState(() {
+      isRateFormVisible = !isRateFormVisible;
+    });
+  }
+
+//fill list of services in firebase
+  final List<Map<String, dynamic>> cardDataList = [];
+
+  Widget rateForm() {
+    return Positioned(
+        top: Dimensions.screenHeight * 0.5,
+        child: RateFormDriver(
+          paymentSuggestController: paymentSuggestController,
+          priceOffered: '8.000',
+          onVisibilityChanged: (isVisible) {
+            setState(() {
+              isRateFormVisible = isVisible;
+            });
+          },
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +63,69 @@ class _ListServiceState extends State<ListService> {
               )),
         ),
       ),
-      body: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: Dimensions.screenWidth * 0.05),
-        child: SizedBox(
-          height: Dimensions.screenHeight * 0.82,
-          child: listCardExample(context),
+      body: SizedBox(
+        height: Dimensions.screenHeight * 1,
+        child: Stack(
+          children: [
+            SizedBox(
+              height: Dimensions.screenHeight * 0.82,
+              child: ListView(children: [
+                CardRequest(
+                  photo: '',
+                  price: '8000',
+                  paymentType: 'efectivo',
+                  onPressed: toggleRateFormVisible,
+                  user: 'Pedro Miguel',
+                  colorText: Colors.white,
+                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
+                  endAdress: 'cll 6D.21-35 la esperanza',
+                  onTapCancel: () {
+                    print('cancel');
+                  },
+                ),
+                CardRequest(
+                  photo: '',
+                  price: '5000',
+                  paymentType: 'efectivo',
+                  onPressed: toggleRateFormVisible,
+                  user: 'Pedro Miguel',
+                  colorText: Colors.white,
+                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
+                  endAdress: 'cll 6D.21-35 la esperanza',
+                  onTapCancel: () {
+                    print('cancel');
+                  },
+                ),
+                CardRequest(
+                  photo: '',
+                  price: '3000',
+                  paymentType: 'efectivo',
+                  onPressed: toggleRateFormVisible,
+                  user: 'Pedro Miguel',
+                  colorText: Colors.white,
+                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
+                  endAdress: 'cll 6D.21-35 la esperanza',
+                  onTapCancel: () {
+                    print('cancel');
+                  },
+                ),
+                CardRequest(
+                  photo: '',
+                  price: '9000',
+                  paymentType: 'efectivo',
+                  onPressed: toggleRateFormVisible,
+                  user: 'Pedro Miguel',
+                  colorText: Colors.white,
+                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
+                  endAdress: 'cll 6D.21-35 la esperanza',
+                  onTapCancel: () {
+                    print('cancel');
+                  },
+                ),
+              ]),
+            ),
+            isRateFormVisible ? rateForm() : const SizedBox(),
+          ],
         ),
       ),
     );
