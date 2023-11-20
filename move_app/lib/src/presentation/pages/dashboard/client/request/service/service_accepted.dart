@@ -45,7 +45,11 @@ class _ServiceAcceptedState extends State<ServiceAccepted> {
             ),
             child: Row(
               children: [
-                const UserProfile(user: 'Pedro Miguel', score: '4,5'),
+                const UserProfile(
+                  user: 'Pedro Miguel',
+                  score: '4,5',
+                  colorText: Colors.black,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -1,4 +1,5 @@
 import 'package:move_app/lib.dart';
+import 'package:move_app/src/presentation/pages/dashboard/driver/service/list_service.dart';
 
 class DashboardDriver extends GetView<SessionCtrl> {
   const DashboardDriver({super.key});
@@ -64,7 +65,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
                         'Descubre las solicitudes de viaje de los pasajeros',
                     onPressed: () {
                       // Get.to(() => const RequestService());
-                      Get.to(() => const RequestService());
+                      Get.to(() => const ListService());
                     },
                     width: 70,
                     height: 100,
@@ -77,7 +78,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/profile.png',
                     onPressed: () {
-                      //Get.toNamed(ProfileRoutes.profile);
+                      Get.toNamed(ProfileRoutes.profile);
                     },
                     size: Dimensions.screenWidth * 0.12,
                   ),

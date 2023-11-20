@@ -215,6 +215,7 @@ class CardService extends StatelessWidget {
   final String time;
   final String carName;
   final String license;
+  final Color colorTextUser;
   final VoidCallback onPressed;
   const CardService(
       {super.key,
@@ -225,7 +226,8 @@ class CardService extends StatelessWidget {
       required this.time,
       required this.carName,
       required this.license,
-      required this.onPressed});
+      required this.onPressed,
+      required this.colorTextUser});
 
   @override
   Widget build(BuildContext context) {
@@ -258,29 +260,10 @@ class CardService extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey,
-                          ),
-                          child: const Icon(
-                            Icons.person,
-                            size: 40,
-                            color: Colors.white,
-                          ),
+                        UserClassic(
+                          user: user,
+                          colorText: colorTextUser,
                         ),
-                        SizedBox(
-                          height: Dimensions.screenHeight * 0.01,
-                        ),
-                        Text(user,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.03,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
-                            )),
                         SizedBox(
                           height: Dimensions.screenHeight * 0.01,
                         ),
@@ -414,26 +397,142 @@ class CardService extends StatelessWidget {
 
 class CardRequest extends StatelessWidget {
   final String photo;
-  final String score;
+  final String user;
   final String price;
   final String paymentType;
-  final String time;
-  final String carName;
-  final String license;
+  final Color colorText;
+  final String initialAdress;
+  final String endAdress;
   final VoidCallback onPressed;
+  final VoidCallback onTapCancel;
+
   const CardRequest(
       {super.key,
       required this.photo,
-      required this.score,
       required this.price,
       required this.paymentType,
-      required this.time,
-      required this.carName,
-      required this.license,
-      required this.onPressed});
+      required this.onPressed,
+      required this.user,
+      required this.colorText,
+      required this.initialAdress,
+      required this.endAdress,
+      required this.onTapCancel});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: Dimensions.screenHeight * 0.025,
+      ),
+      child: GestureDetector(
+        onTap: onPressed,
+        onTapCancel: onTapCancel,
+        child: Container(
+          width: Dimensions.screenWidth * 0.85,
+          height: Dimensions.screenHeight * 0.21,
+          padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.screenWidth * 0.03,
+              vertical: Dimensions.screenHeight * 0.02),
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(255, 198, 65, 1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: Dimensions.screenHeight * 0.02,
+                    right: Dimensions.screenWidth * 0.02),
+                child: UserClassic(
+                  user: user,
+                  colorText: colorText,
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(price,
+                          style: GoogleFonts.montserrat(
+                            color: Colors.white,
+                            fontSize: Dimensions.screenWidth * 0.07,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.2,
+                          )),
+                      SizedBox(
+                        width: Dimensions.screenWidth * 0.03,
+                      ),
+                      Text(paymentType,
+                          style: GoogleFonts.montserrat(
+                            color: Colors.white,
+                            fontSize: Dimensions.screenWidth * 0.05,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.2,
+                          )),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Dimensions.screenHeight * 0.005,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.map_rounded,
+                        size: 28,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: Dimensions.screenWidth * 0.02,
+                      ),
+                      SizedBox(
+                        width: Dimensions.screenWidth * 0.47,
+                        child: Text(initialAdress,
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: Dimensions.screenWidth * 0.04,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.2,
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Dimensions.screenHeight * 0.005,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.map_rounded,
+                        size: 28,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: Dimensions.screenWidth * 0.02,
+                      ),
+                      SizedBox(
+                        width: Dimensions.screenWidth * 0.47,
+                        child: Text(endAdress,
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: Dimensions.screenWidth * 0.04,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.2,
+                            )),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

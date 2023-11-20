@@ -61,7 +61,7 @@ class InputClassic extends StatelessWidget {
             fontSize: Dimensions.screenWidth * 0.04,
             color: Colors.black,
           ),
-          errorText: widget.error,
+          errorText: error,
           errorStyle: GoogleFonts.montserrat(
             fontSize: Dimensions.screenWidth * 0.03,
             color: Colors.red,

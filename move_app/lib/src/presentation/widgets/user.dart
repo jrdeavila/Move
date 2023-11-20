@@ -3,7 +3,14 @@ import 'package:move_app/lib.dart';
 class UserProfile extends StatelessWidget {
   final String user;
   final String score;
-  const UserProfile({super.key, required this.user, required this.score});
+  final String? picture;
+  final Color colorText;
+  const UserProfile(
+      {super.key,
+      required this.user,
+      required this.score,
+      this.picture,
+      required this.colorText});
 
   @override
   Widget build(BuildContext context) {
@@ -12,29 +19,10 @@ class UserProfile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-            ),
-            child: const Icon(
-              Icons.person,
-              size: 40,
-              color: Colors.white,
-            ),
+          UserClassic(
+            user: user,
+            colorText: colorText,
           ),
-          SizedBox(
-            height: Dimensions.screenHeight * 0.01,
-          ),
-          Text(user,
-              style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: Dimensions.screenWidth * 0.03,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 1.2,
-              )),
           SizedBox(
             height: Dimensions.screenHeight * 0.01,
           ),
@@ -65,6 +53,48 @@ class UserProfile extends StatelessWidget {
               )),
         ],
       ),
+    );
+  }
+}
+
+class UserClassic extends StatelessWidget {
+  final String user;
+  final String? picture;
+  final Color colorText;
+
+  const UserClassic(
+      {super.key, required this.user, this.picture, required this.colorText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey,
+          ),
+          child: picture != null
+              ? const SizedBox()
+              : const Icon(
+                  Icons.person,
+                  size: 40,
+                  color: Colors.white,
+                ),
+        ),
+        SizedBox(
+          height: Dimensions.screenHeight * 0.01,
+        ),
+        Text(user,
+            style: GoogleFonts.montserrat(
+              color: colorText,
+              fontSize: Dimensions.screenWidth * 0.03,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 1.2,
+            )),
+      ],
     );
   }
 }

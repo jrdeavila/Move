@@ -214,6 +214,7 @@ class _RequestServiceState extends State<RequestService> {
                       isServiceAcceptedVisible = true;
                     });
                   },
+                  colorTextUser: Colors.black,
                 )),
             if (isRateFormVisible)
               BackdropFilter(
