@@ -74,15 +74,42 @@ class SendDriverLicenseSectionRequest extends SendSectionRequest {
 class SendAboutCarSectionRequest extends SendSectionRequest {
   final String carBrand;
   final String carPlate;
+  final String carModel;
   final Uint8List carImage;
-  final Uint8List ownerShipCardFrontImage;
-  final Uint8List ownerShipCardBackImage;
-  final int ownerShipCardExpirationYear;
 
   SendAboutCarSectionRequest({
     required this.carBrand,
     required this.carPlate,
     required this.carImage,
+    required this.carModel,
+    required super.userUuid,
+  });
+}
+
+class SendSoatSectionRequest extends SendSectionRequest {
+  final File soatFile;
+
+  SendSoatSectionRequest({
+    required this.soatFile,
+    required super.userUuid,
+  });
+}
+
+class SendTechnicalReviewSectionRequest extends SendSectionRequest {
+  final File technicalReviewFile;
+
+  SendTechnicalReviewSectionRequest({
+    required this.technicalReviewFile,
+    required super.userUuid,
+  });
+}
+
+class SendOwnerShipCardSectionRequest extends SendSectionRequest {
+  final Uint8List ownerShipCardFrontImage;
+  final Uint8List ownerShipCardBackImage;
+  final int ownerShipCardExpirationYear;
+
+  SendOwnerShipCardSectionRequest({
     required this.ownerShipCardFrontImage,
     required this.ownerShipCardBackImage,
     required this.ownerShipCardExpirationYear,

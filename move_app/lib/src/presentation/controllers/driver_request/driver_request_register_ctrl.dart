@@ -21,11 +21,13 @@ StepStatus stepStatusFromSectionStatus(SectionStatus status) {
 
 class SectionSegment {
   final String title;
+  final String? description;
   StepStatus status;
   final VoidCallback onTap;
 
   SectionSegment({
     required this.title,
+    this.description,
     required this.onTap,
     required this.status,
   });
@@ -35,49 +37,32 @@ class DriverRequestRegisterCtrl extends GetxController {
   // ------------------------------------------------------------
 
   List<SectionSegment> get steps => [
-        SectionSegment(
-          title: 'Informacion Personal',
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.aboutMeSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.aboutMe),
-        ),
-        SectionSegment(
-          title: "Identificacion",
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.dniSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.dni),
-        ),
-        SectionSegment(
-          title: 'Licencia de conducir',
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.driverLicenseSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.license),
-        ),
-        SectionSegment(
-          title: "SOAT",
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.soatSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.soat),
-        ),
-        SectionSegment(
-          title: "Tecnico Mecanica",
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.technicalReviewSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.technicalReview),
-        ),
-        SectionSegment(
-          title: "Tarjeta de Propiedad",
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.ownerShipCardSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.onwerShip),
-        ),
-        SectionSegment(
-          title: "Informacion del Vehiculo",
-          status: stepStatusFromSectionStatus(
-              _driverRequest.value.aboutCarSection.status),
-          onTap: () => Get.toNamed(DriverRequestRoutes.aboutCar),
-        ),
-      ];
+        _driverRequest.value.aboutMeSection,
+        _driverRequest.value.dniSection,
+        _driverRequest.value.driverLicenseSection,
+        _driverRequest.value.soatSection,
+        _driverRequest.value.technicalReviewSection,
+        _driverRequest.value.ownerShipCardSection,
+        _driverRequest.value.aboutCarSection,
+      ]
+          .map((e) => SectionSegment(
+                title: e.title,
+                description: e.description,
+                status: stepStatusFromSectionStatus(e.status),
+                onTap: () =>
+                    Get.toNamed(redirectBySectionClass[e.runtimeType]!),
+              ))
+          .toList();
+
+  final redirectBySectionClass = {
+    AboutMeSection: DriverRequestRoutes.aboutMe,
+    DNISection: DriverRequestRoutes.dni,
+    DriverLicenseSection: DriverRequestRoutes.license,
+    SoatSection: DriverRequestRoutes.soat,
+    TechnicalReviewSection: DriverRequestRoutes.technicalReview,
+    OwnerShipCardSection: DriverRequestRoutes.onwerShip,
+    AboutCarSection: DriverRequestRoutes.aboutCar,
+  };
 
   // ------------------------------------------------------------
   @override
@@ -141,6 +126,26 @@ class DriverRequestRegisterCtrl extends GetxController {
 
   void onUpdateDNISection(DNISection dniSection) {
     _driverRequest.value.dniSection = dniSection;
+    _driverRequest.refresh();
+  }
+
+  void onUpdateSoatSection(SoatSection soatSection) {
+    _driverRequest.value.soatSection = soatSection;
+    _driverRequest.refresh();
+  }
+
+  void onUpdateTechnicalReviewSection(TechnicalReviewSection soatSection) {
+    _driverRequest.value.technicalReviewSection = soatSection;
+    _driverRequest.refresh();
+  }
+
+  void onUpdateOwnerShipCardSection(OwnerShipCardSection onwerShipSection) {
+    _driverRequest.value.ownerShipCardSection = onwerShipSection;
+    _driverRequest.refresh();
+  }
+
+  void setAboutCarSection(AboutCarSection aboutCarSection) {
+    _driverRequest.value.aboutCarSection = aboutCarSection;
     _driverRequest.refresh();
   }
 }

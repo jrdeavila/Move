@@ -153,7 +153,7 @@ class LicenseCtrl extends GetxController {
       Get.find<DriverRequestRegisterCtrl>()
           .onUpdateDriverLicenseSection(licenseSection);
       Get.find<BannerCtrl>().showSuccess(
-        "Se ha guardado correctamente",
+        "Opeación exitosa! 🎉",
         "Se ha guardado correctamente la sección de licencia",
       );
     }

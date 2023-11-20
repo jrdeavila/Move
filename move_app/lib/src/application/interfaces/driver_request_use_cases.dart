@@ -25,6 +25,19 @@ abstract class IFinishDriverRequestUseCase {
   Future<DriverRequest> call(FinishDriverRequestRequest request);
 }
 
+abstract class ISendSoatSectionUseCase {
+  Future<SoatSection> call(SendSoatSectionRequest request);
+}
+
+abstract class ISendTechnicalReviewSectionUseCase {
+  Future<TechnicalReviewSection> call(
+      SendTechnicalReviewSectionRequest request);
+}
+
+abstract class ISendOwnerShipCardSectionUseCase {
+  Future<OwnerShipCardSection> call(SendOwnerShipCardSectionRequest request);
+}
+
 // --------------------------- FETCHING USE CASES ---------------------------
 
 abstract class IFetchDriverRequestUseCase {

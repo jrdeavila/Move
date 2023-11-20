@@ -112,7 +112,6 @@ class DNICtrl extends GetxController {
         'Operación exitosa! 🥳',
         "Se ha guardado correctamente la información de la identificación",
       );
-      Get.offAndToNamed(DriverRequestRoutes.license);
     }
   }
 }

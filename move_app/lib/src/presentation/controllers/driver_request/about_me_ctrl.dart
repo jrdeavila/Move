@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/utils/image_download.dart';
 
 class AboutMeCtrl extends GetxController {
   // ------------------------------------------------------------
@@ -145,7 +144,6 @@ class AboutMeCtrl extends GetxController {
       _isLoading.value = false;
       Get.find<DriverRequestRegisterCtrl>()
           .onUpdateAboutMeSection(aboutMeSection);
-      Get.offAndToNamed(DriverRequestRoutes.license);
       Get.find<BannerCtrl>().showSuccess(
         "Datos personales guardados",
         "Los datos personales han sido guardados correctamente",

@@ -27,3 +27,31 @@ class DNIBinding extends Bindings {
     Get.lazyPut(() => DNICtrl());
   }
 }
+
+class SoatBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => SoatCtrl());
+  }
+}
+
+class TechnicalPreviewBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => TechnicalPreviewCtrl());
+  }
+}
+
+class OwnerShipBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => OwnerShipCtrl());
+  }
+}
+
+class AboutCarBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => AboutCarCtrl());
+  }
+}

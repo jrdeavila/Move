@@ -39,11 +39,15 @@ DNISection dniSectionFromJson(Map<String, dynamic>? json) {
   if (json == null) {
     return DNISection.empty();
   }
+
+  if (json.containsKey("dni_section") == false) {
+    return DNISection.empty();
+  }
   return DNISection(
-    dni: json["dni"],
-    dniFrontImage: json["dni_front_image"],
-    dniBackImage: json["dni_back_image"],
-    status: sectionStatusFromString(json["status"]),
+    dni: json["dni_section"]["dni"],
+    dniFrontImage: json["dni_section"]["dni_front_image"],
+    dniBackImage: json["dni_section"]["dni_back_image"],
+    status: sectionStatusFromString(json["dni_section"]["status"]),
   );
 }
 
@@ -85,13 +89,20 @@ DriverLicenseSection driverLicenseSectionFromJson(Map<String, dynamic>? json) {
   if (json == null) {
     return DriverLicenseSection.empty();
   }
+  if (json.containsKey("driver_license_section") == false) {
+    return DriverLicenseSection.empty();
+  }
   return DriverLicenseSection(
-    driverLicense: json["driver_license"],
-    driverLicenseFrontImage: json["driver_license_front_image"],
-    driverLicenseBackImage: json["driver_license_back_image"],
-    driverLicenseConfirmation: json["driver_license_confirmation"],
-    driverLicenseExpirationDate: json["driver_license_expiration_date"],
-    status: sectionStatusFromString(json["status"]),
+    driverLicense: json["driver_license_section"]["driver_license"],
+    driverLicenseFrontImage: json["driver_license_section"]
+        ["driver_license_front_image"],
+    driverLicenseBackImage: json["driver_license_section"]
+        ["driver_license_back_image"],
+    driverLicenseConfirmation: json["driver_license_section"]
+        ["driver_license_confirmation"],
+    driverLicenseExpirationDate: json["driver_license_section"]
+        ["driver_license_expiration_date"],
+    status: sectionStatusFromString(json["driver_license_section"]["status"]),
   );
 }
 
@@ -99,6 +110,7 @@ Map<String, dynamic> aboutCarSectionToJson(AboutCarSection aboutCarSection) {
   return {
     "about_car": {
       "car_brand": aboutCarSection.carBrand,
+      "car_model": aboutCarSection.carModel,
       "car_plate": aboutCarSection.carPlate,
       "car_image": aboutCarSection.carImage,
       "status": sectionStatusToString(aboutCarSection.status),
@@ -116,6 +128,7 @@ AboutCarSection aboutCarSectionFromJson(Map<String, dynamic>? json) {
   }
   return AboutCarSection(
     carBrand: json["car_brand"],
+    carModel: json["car_model"],
     carPlate: json["car_plate"],
     carImage: json["car_image"],
     status: sectionStatusFromString(json["status"]),
@@ -184,9 +197,8 @@ AboutMeSection aboutMeSectionFromJson(Map<String, dynamic>? json) {
 Map<String, dynamic> soatSectionToJson(SoatSection soatSection) {
   return {
     "soat_section": {
-      "soat_image": soatSection.soatImage,
-      "soat_expiration_date": soatSection.soatExpirationDate,
-      "status": soatSection.status,
+      "soat_file": soatSection.soatFile,
+      "status": sectionStatusToString(soatSection.status),
     }
   };
 }
@@ -199,8 +211,7 @@ SoatSection soatSectionFromJson(Map<String, dynamic>? json) {
     return SoatSection.empty();
   }
   return SoatSection(
-    soatImage: json["soat_section"]["soat_image"],
-    soatExpirationDate: json["soat_section"]["soat_expiration_date"],
+    soatFile: json["soat_section"]["soat_file"],
     status: sectionStatusFromString(json["soat_section"]["status"]),
   );
 }
@@ -209,9 +220,7 @@ Map<String, dynamic> technicalReviewSectionToJson(
     TechnicalReviewSection technicalReviewSection) {
   return {
     "technical_review_section": {
-      "technical_review_image": technicalReviewSection.technicalReviewImage,
-      "technical_review_expiration_date":
-          technicalReviewSection.technicalReviewExpirationDate,
+      "technical_review_url": technicalReviewSection.technicalReviewUrl,
       "status": sectionStatusToString(technicalReviewSection.status),
     }
   };
@@ -226,10 +235,8 @@ TechnicalReviewSection technicalReviewSectionFromJson(
     return TechnicalReviewSection.empty();
   }
   return TechnicalReviewSection(
-    technicalReviewImage: json["technical_review_section"]
-        ["technical_review_image"],
-    technicalReviewExpirationDate: json["technical_review_section"]
-        ["technical_review_expiration_date"],
+    technicalReviewUrl: json["technical_review_section"]
+        ["technical_review_url"],
     status: sectionStatusFromString(json["technical_review_section"]["status"]),
   );
 }
@@ -271,16 +278,13 @@ DriverRequest driverRequestFromJson(Map<String, dynamic>? json) {
   }
   return DriverRequest(
     userUuid: json["user_uuid"],
-    dniSection: dniSectionFromJson(json["dni_section"]),
-    driverLicenseSection:
-        driverLicenseSectionFromJson(json["driver_license_section"]),
-    aboutCarSection: aboutCarSectionFromJson(json["about_car_section"]),
-    noCriminalRecordSection:
-        noCriminalRecordSectionFromJson(json["no_criminal_record_section"]),
+    dniSection: dniSectionFromJson(json),
+    driverLicenseSection: driverLicenseSectionFromJson(json),
+    aboutCarSection: aboutCarSectionFromJson(json),
+    noCriminalRecordSection: noCriminalRecordSectionFromJson(json),
     aboutMeSection: aboutMeSectionFromJson(json),
-    soatSection: soatSectionFromJson(json["soat_section"]),
-    technicalReviewSection:
-        technicalReviewSectionFromJson(json["technical_review_section"]),
-    ownerShipCardSection: ownerShipCardSectionFromJson(json["owner_ship_card"]),
+    soatSection: soatSectionFromJson(json),
+    technicalReviewSection: technicalReviewSectionFromJson(json),
+    ownerShipCardSection: ownerShipCardSectionFromJson(json),
   );
 }

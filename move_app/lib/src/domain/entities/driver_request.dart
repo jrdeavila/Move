@@ -149,11 +149,13 @@ class DriverLicenseSection extends DriverRequestSection {
 
 class AboutCarSection extends DriverRequestSection {
   final String? carBrand;
+  final String? carModel;
   final String? carPlate;
   final String? carImage;
 
   AboutCarSection({
     required this.carBrand,
+    required this.carModel,
     required this.carPlate,
     required this.carImage,
     super.status = SectionStatus.making,
@@ -163,6 +165,7 @@ class AboutCarSection extends DriverRequestSection {
         );
 
   factory AboutCarSection.empty() => AboutCarSection(
+        carModel: null,
         carBrand: null,
         carPlate: null,
         carImage: null,
@@ -236,12 +239,10 @@ class AboutMeSection extends DriverRequestSection {
 }
 
 class SoatSection extends DriverRequestSection {
-  final String? soatImage;
-  final String? soatExpirationDate;
+  final String? soatFile;
 
   SoatSection({
-    required this.soatImage,
-    required this.soatExpirationDate,
+    required this.soatFile,
     super.status = SectionStatus.making,
   }) : super(
           title: "SOAT",
@@ -249,18 +250,15 @@ class SoatSection extends DriverRequestSection {
         );
 
   factory SoatSection.empty() => SoatSection(
-        soatImage: null,
-        soatExpirationDate: null,
+        soatFile: null,
       );
 }
 
 class TechnicalReviewSection extends DriverRequestSection {
-  final String? technicalReviewImage;
-  final String? technicalReviewExpirationDate;
+  final String? technicalReviewUrl;
 
   TechnicalReviewSection({
-    required this.technicalReviewImage,
-    required this.technicalReviewExpirationDate,
+    required this.technicalReviewUrl,
     super.status = SectionStatus.making,
   }) : super(
           title: "Revisión Técnica",
@@ -268,7 +266,6 @@ class TechnicalReviewSection extends DriverRequestSection {
         );
 
   factory TechnicalReviewSection.empty() => TechnicalReviewSection(
-        technicalReviewImage: null,
-        technicalReviewExpirationDate: null,
+        technicalReviewUrl: null,
       );
 }

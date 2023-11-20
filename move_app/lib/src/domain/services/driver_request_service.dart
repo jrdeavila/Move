@@ -1,12 +1,10 @@
 import 'package:move_app/lib.dart';
 
 abstract class IDNISectionService {
-  Future<DNISection> getDNISection(AppUser user);
   Future<DNISection> setDNISection(AppUser user, DNISection dniSection);
 }
 
 abstract class IDriverLicenseSectionService {
-  Future<DriverLicenseSection> getDriverLicenseSection(AppUser user);
   Future<DriverLicenseSection> setDriverLicenseSection(
     AppUser user,
     DriverLicenseSection driverLicenseSection,
@@ -14,7 +12,6 @@ abstract class IDriverLicenseSectionService {
 }
 
 abstract class IAboutCarSectionService {
-  Future<AboutCarSection> getAboutCarSection(AppUser user);
   Future<AboutCarSection> setAboutCarSection(
     AppUser user,
     AboutCarSection aboutCarSection,
@@ -22,7 +19,6 @@ abstract class IAboutCarSectionService {
 }
 
 abstract class INoCriminalRecordSectionService {
-  Future<NoCriminalRecordSection> getNoCriminalRecordSection(AppUser user);
   Future<NoCriminalRecordSection> setNoCriminalRecordSection(
     AppUser user,
     NoCriminalRecordSection noCriminalRecordSection,
@@ -30,10 +26,27 @@ abstract class INoCriminalRecordSectionService {
 }
 
 abstract class IAboutMeSectionService {
-  Future<AboutMeSection> getAboutMeSection(AppUser user);
   Future<AboutMeSection> setAboutMeSection(
     AppUser user,
     AboutMeSection aboutMeSection,
+  );
+}
+
+abstract class ISoatSectionService {
+  Future<SoatSection> setSoatSection(AppUser user, SoatSection soatSection);
+}
+
+abstract class ITechnicalReviewSectionService {
+  Future<TechnicalReviewSection> setTechnicalReviewSection(
+    AppUser user,
+    TechnicalReviewSection technicalReviewSection,
+  );
+}
+
+abstract class IOwnerShipCardSectionService {
+  Future<OwnerShipCardSection> setOwnerShipCardSection(
+    AppUser user,
+    OwnerShipCardSection ownerShipCardSection,
   );
 }
 

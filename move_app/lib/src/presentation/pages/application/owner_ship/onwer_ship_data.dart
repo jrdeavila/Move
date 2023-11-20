@@ -1,25 +1,26 @@
 import 'package:flutter/services.dart';
 import 'package:move_app/lib.dart';
 
-class DNIData extends GetView<DNICtrl> {
-  const DNIData({super.key});
+class OwnerShipData extends GetView<OwnerShipCtrl> {
+  const OwnerShipData({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final dniNumberCtrl = TextEditingController();
+    final ownerShipNumber = TextEditingController();
 
-    dniNumberCtrl.addListener(() {
-      controller.setDniNumber(dniNumberCtrl.text);
+    ownerShipNumber.addListener(() {
+      controller.setYearOfExpiration(int.parse(ownerShipNumber.text));
     });
 
     Future.delayed(Duration.zero, () {
-      dniNumberCtrl.text = controller.dniNumber;
+      ownerShipNumber.text =
+          controller.ownerShipCardYearOfExpiration.toString();
     });
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Identificación'),
+        title: const Text('Tarjeta de propiedad'),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -30,24 +31,24 @@ class DNIData extends GetView<DNICtrl> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   InputClassic(
-                    labelText: 'Número de indentificación',
-                    controller: dniNumberCtrl,
+                    labelText: 'Año de expiración',
+                    controller: ownerShipNumber,
                     isPassword: false,
                     isNumericKeyboard: true,
                     isDateInput: false,
-                    error: controller.errorDniNumber,
+                    error: controller.errorOnwerShipNumber,
                     formatters: [
                       FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10),
+                      LengthLimitingTextInputFormatter(4),
                     ],
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Foto Frontal de la identificacion ${controller.errorFrontDNI != null ? '(${controller.errorFrontDNI})' : ''}',
+                    'Foto Frontal de la tarjeta de propiedad ${controller.errorOnwerShipNumber != null ? '(${controller.errorOnwerShipNumber})' : ''}',
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: controller.errorFrontDNI != null
+                      color: controller.errorOnwerShipNumber != null
                           ? Colors.red
                           : Colors.black,
                     ),
@@ -55,7 +56,7 @@ class DNIData extends GetView<DNICtrl> {
                   SizedBox(
                     height: 200,
                     child: ImagePicker(
-                      image: controller.frontDNI,
+                      image: controller.ownerShipCardFront,
                       onImageSelected: (image) {
                         controller.setFrontLicense(image);
                       },
@@ -63,7 +64,7 @@ class DNIData extends GetView<DNICtrl> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Foto Posterior de la identificacion ${controller.errorBackDNI != null ? '(${controller.errorBackDNI})' : ''}',
+                    'Foto Posterior de la tarjeta de propiedad ${controller.errorBackDNI != null ? '(${controller.errorBackDNI})' : ''}',
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class DNIData extends GetView<DNICtrl> {
                   SizedBox(
                     height: 200,
                     child: ImagePicker(
-                      image: controller.backDNI,
+                      image: controller.ownerShipCardBack,
                       onImageSelected: (image) {
                         controller.setBackLicense(image);
                       },

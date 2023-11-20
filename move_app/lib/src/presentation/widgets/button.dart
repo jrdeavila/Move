@@ -31,6 +31,7 @@ class ButtonClassic extends StatelessWidget {
           letterSpacing: 1.6,
           fontWeight: FontWeight.w600,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }

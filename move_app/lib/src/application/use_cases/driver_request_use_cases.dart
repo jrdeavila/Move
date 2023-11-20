@@ -163,9 +163,11 @@ class SendAboutCarSectionUseCase implements ISendAboutCarSectionUseCase {
     );
 
     final aboutCarSection = AboutCarSection(
+      carModel: request.carModel,
       carBrand: request.carBrand,
       carPlate: request.carPlate,
       carImage: carImageUrl,
+      status: SectionStatus.complete,
     );
 
     return _aboutCarSectionService.setAboutCarSection(
@@ -230,6 +232,121 @@ class FinishDriverRequestUseCase implements IFinishDriverRequestUseCase {
 
     return _driverRequestService.setFinishDriverRequestSection(
       user,
+    );
+  }
+}
+
+// ----------------------------- SOAT SECTION ------------------------------
+
+@Injectable(as: ISendSoatSectionUseCase)
+class SendSoatSectionUseCase implements ISendSoatSectionUseCase {
+  final ISoatSectionService _soatSectionService;
+  final IUserRepository _userService;
+  final IUploadFile _uploadFile;
+
+  SendSoatSectionUseCase({
+    required ISoatSectionService soatSectionService,
+    required IUserRepository userService,
+    required IUploadFile uploadFile,
+  })  : _soatSectionService = soatSectionService,
+        _userService = userService,
+        _uploadFile = uploadFile;
+
+  @override
+  Future<SoatSection> call(SendSoatSectionRequest request) async {
+    final user = await _userService.getUser(request.userUuid);
+    final soatFileUrl = await _uploadFile.uploadFile(
+      request.soatFile,
+      "driver_request/${user.uuid}/soat_file.pdf",
+    );
+
+    final soatSection =
+        SoatSection(soatFile: soatFileUrl, status: SectionStatus.complete);
+
+    return _soatSectionService.setSoatSection(
+      user,
+      soatSection,
+    );
+  }
+}
+
+// ----------------------------- TECHNICAL REVIEW SECTION ------------------------------
+
+@Injectable(as: ISendTechnicalReviewSectionUseCase)
+class SendTechnicalReviewSectionUseCase
+    implements ISendTechnicalReviewSectionUseCase {
+  final ITechnicalReviewSectionService _technicalReviewSectionService;
+  final IUserRepository _userService;
+  final IUploadFile _uploadFile;
+
+  SendTechnicalReviewSectionUseCase({
+    required ITechnicalReviewSectionService technicalReviewSectionService,
+    required IUserRepository userService,
+    required IUploadFile uploadFile,
+  })  : _technicalReviewSectionService = technicalReviewSectionService,
+        _userService = userService,
+        _uploadFile = uploadFile;
+
+  @override
+  Future<TechnicalReviewSection> call(
+      SendTechnicalReviewSectionRequest request) async {
+    final user = await _userService.getUser(request.userUuid);
+    final technicalReviewFileUrl = await _uploadFile.uploadFile(
+      request.technicalReviewFile,
+      "driver_request/${user.uuid}/technical_review_file.pdf",
+    );
+
+    final technicalReviewSection = TechnicalReviewSection(
+      technicalReviewUrl: technicalReviewFileUrl,
+      status: SectionStatus.complete,
+    );
+
+    return _technicalReviewSectionService.setTechnicalReviewSection(
+      user,
+      technicalReviewSection,
+    );
+  }
+}
+
+// ----------------------------- OWNER SHIP SECTION ------------------------------
+@Injectable(as: ISendOwnerShipCardSectionUseCase)
+class SendOwnerShipCardSectionUseCase
+    implements ISendOwnerShipCardSectionUseCase {
+  final IOwnerShipCardSectionService _ownerShipCardSectionService;
+  final IUserRepository _userService;
+  final IUploadFile _uploadFile;
+
+  SendOwnerShipCardSectionUseCase({
+    required IOwnerShipCardSectionService ownerShipCardSectionService,
+    required IUserRepository userService,
+    required IUploadFile uploadFile,
+  })  : _ownerShipCardSectionService = ownerShipCardSectionService,
+        _userService = userService,
+        _uploadFile = uploadFile;
+
+  @override
+  Future<OwnerShipCardSection> call(
+      SendOwnerShipCardSectionRequest request) async {
+    final user = await _userService.getUser(request.userUuid);
+    final ownerShipCardFrontImageUrl = await _uploadFile.uploadFileBytes(
+      request.ownerShipCardFrontImage,
+      "driver_request/${user.uuid}/owner_ship_card_front_image.jpg",
+    );
+    final ownerShipCardBackImageUrl = await _uploadFile.uploadFileBytes(
+      request.ownerShipCardBackImage,
+      "driver_request/${user.uuid}/owner_ship_card_back_image.jpg",
+    );
+
+    final ownerShipCardSection = OwnerShipCardSection(
+      ownershipCardBackImage: ownerShipCardBackImageUrl,
+      ownershipCardFrontImage: ownerShipCardFrontImageUrl,
+      ownerShipCardMakeYear: request.ownerShipCardExpirationYear,
+      status: SectionStatus.complete,
+    );
+
+    return _ownerShipCardSectionService.setOwnerShipCardSection(
+      user,
+      ownerShipCardSection,
     );
   }
 }
