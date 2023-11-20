@@ -1,5 +1,6 @@
 import 'package:move_app/lib.dart';
 import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
+import 'package:move_app/src/presentation/pages/dashboard/driver/service/service_accepted.dart';
 import 'package:move_app/src/presentation/pages/dashboard/driver/tariff/rate_form.dart';
 
 class ListService extends StatefulWidget {
@@ -72,55 +73,55 @@ class _ListServiceState extends State<ListService> {
               child: ListView(children: [
                 CardRequest(
                   photo: '',
-                  price: '8000',
+                  price: '9000',
                   paymentType: 'efectivo',
-                  onPressed: toggleRateFormVisible,
+                  onPressedAccepted: () {
+                    Get.to(() => const ServiceAcceptedDriver());
+                  },
                   user: 'Pedro Miguel',
                   colorText: Colors.white,
                   initialAdress: 'cll 7A.24 -31 la nueva esperanza',
                   endAdress: 'cll 6D.21-35 la esperanza',
-                  onTapCancel: () {
-                    print('cancel');
-                  },
-                ),
-                CardRequest(
-                  photo: '',
-                  price: '5000',
-                  paymentType: 'efectivo',
-                  onPressed: toggleRateFormVisible,
-                  user: 'Pedro Miguel',
-                  colorText: Colors.white,
-                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
-                  endAdress: 'cll 6D.21-35 la esperanza',
-                  onTapCancel: () {
-                    print('cancel');
-                  },
-                ),
-                CardRequest(
-                  photo: '',
-                  price: '3000',
-                  paymentType: 'efectivo',
-                  onPressed: toggleRateFormVisible,
-                  user: 'Pedro Miguel',
-                  colorText: Colors.white,
-                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
-                  endAdress: 'cll 6D.21-35 la esperanza',
-                  onTapCancel: () {
-                    print('cancel');
-                  },
+                  onPressedOffer: toggleRateFormVisible,
                 ),
                 CardRequest(
                   photo: '',
                   price: '9000',
                   paymentType: 'efectivo',
-                  onPressed: toggleRateFormVisible,
+                  onPressedAccepted: () {
+                    Get.to(() => const ServiceAcceptedDriver());
+                  },
                   user: 'Pedro Miguel',
                   colorText: Colors.white,
                   initialAdress: 'cll 7A.24 -31 la nueva esperanza',
                   endAdress: 'cll 6D.21-35 la esperanza',
-                  onTapCancel: () {
-                    print('cancel');
+                  onPressedOffer: toggleRateFormVisible,
+                ),
+                CardRequest(
+                  photo: '',
+                  price: '9000',
+                  paymentType: 'efectivo',
+                  onPressedAccepted: () {
+                    Get.to(() => const ServiceAcceptedDriver());
                   },
+                  user: 'Pedro Miguel',
+                  colorText: Colors.white,
+                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
+                  endAdress: 'cll 6D.21-35 la esperanza',
+                  onPressedOffer: toggleRateFormVisible,
+                ),
+                CardRequest(
+                  photo: '',
+                  price: '9000',
+                  paymentType: 'efectivo',
+                  onPressedAccepted: () {
+                    Get.to(() => const ServiceAcceptedDriver());
+                  },
+                  user: 'Pedro Miguel',
+                  colorText: Colors.white,
+                  initialAdress: 'cll 7A.24 -31 la nueva esperanza',
+                  endAdress: 'cll 6D.21-35 la esperanza',
+                  onPressedOffer: toggleRateFormVisible,
                 ),
               ]),
             ),
@@ -141,12 +142,12 @@ class _ListServiceState extends State<ListService> {
           photo: cardData['photo'],
           price: cardData['price'],
           paymentType: cardData['paymentType'],
-          onPressed: cardData['onPressed'],
+          onPressedAccepted: cardData['onPressed'],
           user: cardData['user'],
           colorText: cardData['colorText'],
           initialAdress: cardData['initialAdress'],
           endAdress: cardData['endAdress'],
-          onTapCancel: cardData['onTapCancel'],
+          onPressedOffer: cardData['onTapCancel'],
         );
       },
     );

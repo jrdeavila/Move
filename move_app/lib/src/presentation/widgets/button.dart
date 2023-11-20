@@ -37,6 +37,45 @@ class ButtonClassic extends StatelessWidget {
   }
 }
 
+class ButtonBorderClassic extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final Color borderColor;
+
+  const ButtonBorderClassic({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    required this.borderColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        onPrimary: borderColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(color: borderColor, width: 4),
+        ),
+        minimumSize: Size(Dimensions.width90, Dimensions.buttonHeight),
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.montserrat(
+          color: borderColor,
+          fontSize: Dimensions.screenWidth * 0.05,
+          letterSpacing: 1.6,
+          fontWeight: FontWeight.w600,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
+
 class ButtonClassicSmall extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -79,12 +118,16 @@ class ButtonSmall extends StatelessWidget {
   final VoidCallback onPressed;
   final Color color;
   final Color colorText;
+  final double width;
+  final double height;
   const ButtonSmall({
     super.key,
     required this.text,
     required this.onPressed,
     required this.color,
     required this.colorText,
+    required this.width,
+    required this.height,
   });
 
   @override
@@ -96,15 +139,14 @@ class ButtonSmall extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        minimumSize:
-            Size(Dimensions.screenWidth * 0.33, Dimensions.screenHeight * 0.07),
+        minimumSize: Size(width, height),
         elevation: 0.0,
       ),
       child: Text(
         text,
         style: GoogleFonts.montserrat(
           color: colorText,
-          fontSize: Dimensions.screenWidth * 0.04,
+          fontSize: Dimensions.screenWidth * 0.034,
           letterSpacing: 1.6,
           fontWeight: FontWeight.w600,
         ),
