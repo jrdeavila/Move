@@ -1,4 +1,5 @@
 import 'package:move_app/lib.dart';
+import 'package:move_app/src/presentation/pages/dashboard/driver/account/view_account.dart';
 import 'package:move_app/src/presentation/pages/dashboard/driver/service/list_service.dart';
 
 class DashboardDriver extends GetView<SessionCtrl> {
@@ -89,6 +90,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
                     root: 'assets/images/cash-coin.png',
                     onPressed: () {
                       //Get.toNamed(ProfileRoutes.profile);
+                      Get.to(() => const ViewAccount());
                     },
                     size: Dimensions.screenWidth * 0.09,
                   ),
