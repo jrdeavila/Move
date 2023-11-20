@@ -46,9 +46,12 @@ class _PaymentPreferenceState extends State<PaymentPreference> {
                 style: GoogleFonts.montserrat(
                   color: Colors.black,
                   fontSize: Dimensions.screenWidth * 0.04,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   letterSpacing: 1,
                 )),
+            SizedBox(
+              height: Dimensions.screenHeight * 0.01,
+            ),
             Column(
               children: options
                   .asMap()
@@ -71,6 +74,9 @@ class _PaymentPreferenceState extends State<PaymentPreference> {
                     ),
                   )
                   .toList(),
+            ),
+            SizedBox(
+              height: Dimensions.screenHeight * 0.03,
             ),
             ButtonClassic(
               text: "Guardar",

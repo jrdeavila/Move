@@ -58,7 +58,9 @@ class ViewAccount extends StatelessWidget {
               CustomButton(
                 text: 'Preferencia de pago',
                 icon: Icons.arrow_forward_ios_rounded,
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const PaymentPreference());
+                },
               )
             ],
           ),
