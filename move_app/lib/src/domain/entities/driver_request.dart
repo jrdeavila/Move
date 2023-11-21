@@ -54,6 +54,22 @@ class DriverRequest {
       );
 
   bool get isMaking => status == DriverRequestStatus.making;
+  bool get isSended => status == DriverRequestStatus.sended;
+  bool get isApproved => status == DriverRequestStatus.approved;
+  bool get isFinalized => status == DriverRequestStatus.finalized;
+  bool get isRejected => status == DriverRequestStatus.rejected;
+
+  bool get isComplete {
+    var list = [
+      dniSection.status,
+      driverLicenseSection.status,
+      aboutMeSection.status,
+      aboutCarSection.status,
+      noCriminalRecordSection.status,
+      aboutMeSection.status,
+    ];
+    return list.every((element) => element == SectionStatus.complete);
+  }
 
   // ------------------ Status Callbacks ------------------
 

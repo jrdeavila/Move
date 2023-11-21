@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:move_app/lib.dart';
 
 class ExceptionCtrl extends GetxController {
-  void onDebugException(Object exception) {
+  void onDebugException(Object exception, StackTrace stackTrace) {
     log("=========================== EXCEPTION ===========================");
-    log(exception.toString());
+    log(exception.toString(), stackTrace: stackTrace);
   }
 
   void exception(Object exception) {

@@ -3,6 +3,21 @@ import 'package:move_app/lib.dart';
 class AboutCarCtrl extends GetxController {
   // ------------------------------------------------------------
 
+  @override
+  void onReady() {
+    super.onReady();
+    final aboutCarSection =
+        Get.find<DriverRequestRegisterCtrl>().aboutCarSection;
+    _carBrand.value = aboutCarSection.carBrand ?? '';
+    _carModel.value = aboutCarSection.carModel ?? '';
+    _carPlate.value = aboutCarSection.carPlate ?? '';
+    imageFromNetworkImage(
+      aboutCarSection.carImage!,
+    ).then((value) => _carFront.value = value);
+  }
+
+  // ------------------------------------------------------------
+
   final RxString _carBrand = ''.obs;
   final RxString _carModel = ''.obs;
   final RxString _carPlate = ''.obs;

@@ -3,7 +3,6 @@ import 'package:move_app/lib.dart';
 abstract class ProfileRoutes {
   static const String profile = '/profile';
   static const String details = '/details';
-  static const String driverMode = '/driverMode';
 
   static final routes = [
     GetPage(
@@ -20,13 +19,9 @@ abstract class ProfileRoutes {
         middlewares: [
           VerifyAuth(),
         ]),
-    GetPage(
-        name: driverMode,
-        page: () => const ApplicationForm(),
-        binding: DriverModeBinding(),
-        middlewares: [
-          VerifyAuth(),
-          CheckIfUserIsDriver(),
-        ]),
+    // ------------------------------------------------------------
+    DriverRequestRoutes.routes.firstWhere(
+      (element) => element.name == DriverRequestRoutes.driverMode,
+    ),
   ];
 }

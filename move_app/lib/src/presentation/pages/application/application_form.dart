@@ -5,44 +5,84 @@ class ApplicationForm extends GetView<DriverRequestRegisterCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black),
+    return WillPopScope(
+      onWillPop: () {
+        Get.delete<DriverRequestRegisterCtrl>();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text('Registro conductor')),
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.screenWidth * 0.04,
+              vertical: Dimensions.screenHeight * 0.03),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Obx(() => Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...controller.steps.map((e) => _Step(
+                          key: Key(e.title),
+                          title: e.title,
+                          status: e.status,
+                          onTap: () => e.onTap(),
+                        ))
+                  ],
+                )),
+          ),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Padding(
-          padding: EdgeInsets.only(left: Dimensions.screenWidth * 0.07),
-          child: Text('Registro conductor',
-              style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: Dimensions.screenWidth * 0.05,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1,
-              )),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.screenWidth * 0.04,
+              vertical: Dimensions.screenHeight * 0.01),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Obx(() => ButtonClassic(
+                    color: controller.isComplete
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.grey[300]!,
+                    text: 'Enviar solicitud',
+                    onPressed: () {
+                      if (controller.isComplete) {
+                        controller.sendRequest();
+                      }
+                    },
+                  )),
+              const SizedBox(height: 10),
+              Text(
+                'Al enviar la solicitud, aceptas los términos y condiciones de uso.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: Dimensions.screenWidth * 0.03,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  controller.showTermsAndConditions();
+                },
+                child: Text(
+                  'Ver términos y condiciones',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.montserrat(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: Dimensions.screenWidth * 0.03,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: Dimensions.screenWidth * 0.04,
-            vertical: Dimensions.screenHeight * 0.03),
-        child: Obx(() => Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...controller.steps.map((e) => _Step(
-                      key: Key(e.title),
-                      title: e.title,
-                      status: e.status,
-                      onTap: () => e.onTap(),
-                    ))
-              ],
-            )),
       ),
     );
   }

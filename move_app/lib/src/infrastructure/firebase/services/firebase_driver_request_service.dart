@@ -170,14 +170,13 @@ class FirebaseTechnicalReviewSectionService
   }
 }
 
-// --------------------------- FINISH DRIVER REQUEST SERVICE ---------------------------
+// --------------------------- SEND DRIVER REQUEST SERVICE ---------------------------
 
-@Injectable(as: IFinishDriverRequestService)
-class FirebaseFinishDriverRequestService
-    implements IFinishDriverRequestService {
+@Injectable(as: ISendDriverRequestService)
+class FirebaseSendDriverRequestService implements ISendDriverRequestService {
   final FirebaseFirestore _firebaseFirestore;
 
-  FirebaseFinishDriverRequestService({
+  FirebaseSendDriverRequestService({
     required FirebaseFirestore firebaseFirestore,
   }) : _firebaseFirestore = firebaseFirestore;
   @override
@@ -186,7 +185,7 @@ class FirebaseFinishDriverRequestService
         .collection("driver_request")
         .doc(user.uuid)
         .update({
-      "status": DriverRequestStatus.finalized,
+      "status": driverRequestStatusToString(DriverRequestStatus.sended),
     });
 
     return _firebaseFirestore

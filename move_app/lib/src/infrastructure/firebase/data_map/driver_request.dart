@@ -1,5 +1,35 @@
 import 'package:move_app/lib.dart';
 
+DriverRequestStatus driverRequestStatusFromString(String? status) {
+  switch (status) {
+    case "finalized":
+      return DriverRequestStatus.finalized;
+    case "approved":
+      return DriverRequestStatus.approved;
+    case "rejected":
+      return DriverRequestStatus.rejected;
+    case "sended":
+      return DriverRequestStatus.sended;
+    default:
+      return DriverRequestStatus.making;
+  }
+}
+
+String driverRequestStatusToString(DriverRequestStatus status) {
+  switch (status) {
+    case DriverRequestStatus.sended:
+      return "sended";
+    case DriverRequestStatus.finalized:
+      return "finalized";
+    case DriverRequestStatus.approved:
+      return "approved";
+    case DriverRequestStatus.rejected:
+      return "rejected";
+    default:
+      return "making";
+  }
+}
+
 SectionStatus sectionStatusFromString(String? status) {
   switch (status) {
     case "complete":
@@ -108,7 +138,7 @@ DriverLicenseSection driverLicenseSectionFromJson(Map<String, dynamic>? json) {
 
 Map<String, dynamic> aboutCarSectionToJson(AboutCarSection aboutCarSection) {
   return {
-    "about_car": {
+    "about_car_section": {
       "car_brand": aboutCarSection.carBrand,
       "car_model": aboutCarSection.carModel,
       "car_plate": aboutCarSection.carPlate,
@@ -122,23 +152,22 @@ AboutCarSection aboutCarSectionFromJson(Map<String, dynamic>? json) {
   if (json == null) {
     return AboutCarSection.empty();
   }
-
   if (json.containsKey("about_car_section") == false) {
     return AboutCarSection.empty();
   }
   return AboutCarSection(
-    carBrand: json["car_brand"],
-    carModel: json["car_model"],
-    carPlate: json["car_plate"],
-    carImage: json["car_image"],
-    status: sectionStatusFromString(json["status"]),
+    carBrand: json["about_car_section"]["car_brand"],
+    carModel: json["about_car_section"]["car_model"],
+    carPlate: json["about_car_section"]["car_plate"],
+    carImage: json["about_car_section"]["car_image"],
+    status: sectionStatusFromString(json["about_car_section"]["status"]),
   );
 }
 
 Map<String, dynamic> noCriminalRecordSectionToJson(
     NoCriminalRecordSection noCriminalRecordSection) {
   return {
-    "no_criminal_record": {
+    "no_criminal_record_section": {
       "no_criminal_record_front_image":
           noCriminalRecordSection.noCriminalRecordFile,
       "status": sectionStatusToString(noCriminalRecordSection.status)
@@ -157,8 +186,10 @@ NoCriminalRecordSection noCriminalRecordSectionFromJson(
   }
 
   return NoCriminalRecordSection(
-    noCriminalRecordFile: json["no_criminal_record_front_image"],
-    status: sectionStatusFromString(json["status"]),
+    noCriminalRecordFile: json["no_criminal_record_section"]
+        ["no_criminal_record_front_image"],
+    status:
+        sectionStatusFromString(json["no_criminal_record_section"]["status"]),
   );
 }
 
@@ -278,6 +309,7 @@ DriverRequest driverRequestFromJson(Map<String, dynamic>? json) {
   }
   return DriverRequest(
     userUuid: json["user_uuid"],
+    status: driverRequestStatusFromString(json["status"]),
     dniSection: dniSectionFromJson(json),
     driverLicenseSection: driverLicenseSectionFromJson(json),
     aboutCarSection: aboutCarSectionFromJson(json),

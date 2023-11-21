@@ -50,7 +50,7 @@ abstract class IOwnerShipCardSectionService {
   );
 }
 
-abstract class IFinishDriverRequestService {
+abstract class ISendDriverRequestService {
   Future<DriverRequest> setFinishDriverRequestSection(
     AppUser user,
   );
