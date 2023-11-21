@@ -1,9 +1,7 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/account/view_account.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/service/list_service.dart';
 
-class DashboardDriver extends GetView<SessionCtrl> {
-  const DashboardDriver({super.key});
+class DashboardAdmin extends GetView<SessionCtrl> {
+  const DashboardAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,43 +56,64 @@ class DashboardDriver extends GetView<SessionCtrl> {
                         )),
                   ),
                   CardDescription(
-                    title: 'Servicios',
+                    title: 'Solicitudes de\nregistro',
                     color: const Color.fromRGBO(255, 198, 65, 1),
                     colorTitle: Colors.white,
-                    root: 'assets/images/person.png',
-                    description:
-                        'Descubre las solicitudes de viaje de los pasajeros',
+                    root: 'assets/images/two-people.png',
+                    description: '',
                     onPressed: () {
-                      // Get.to(() => const RequestService());
-                      Get.to(() => const ListService());
+                      //Get.to(() => const DashboardDriver());
                     },
-                    width: 70,
-                    height: 100,
-                    top: Dimensions.screenHeight * 0.035,
-                    left: Dimensions.screenWidth * 0.6,
+                    width: 120,
+                    height: 120,
+                    top: Dimensions.screenHeight * 0.06,
+                    left: Dimensions.screenWidth * 0.62,
                   ),
                   CardClassic(
-                    title: 'Perfil',
+                    title: 'Porcentaje\ndescuento',
                     color: const Color.fromRGBO(217, 217, 217, 1),
                     colorTitle: Colors.white,
-                    root: 'assets/images/profile.png',
+                    root: 'assets/images/percent.png',
                     onPressed: () {
-                      Get.toNamed(ProfileRoutes.profile);
+                      //Get.toNamed(ProfileRoutes.profile);
                     },
-                    size: Dimensions.screenWidth * 0.12,
+                    size: Dimensions.screenWidth * 0.06,
                     width: 100,
                     height: 100,
                   ),
                   CardClassic(
-                    title: 'Cuenta',
+                    title: 'Clientes',
                     color: Colors.black,
                     colorTitle: Colors.white,
-                    root: 'assets/images/cash-coin.png',
+                    root: 'assets/images/people-client.png',
                     onPressed: () {
                       //Get.toNamed(ProfileRoutes.profile);
-                      Get.to(() => const ViewAccount());
                     },
-                    size: Dimensions.screenWidth * 0.09,
+                    size: Dimensions.screenWidth * 0.081,
+                    width: 120,
+                    height: 100,
+                  ),
+                  CardClassic(
+                    title: 'Valor por\nKILOMETRO',
+                    color: const Color.fromRGBO(255, 198, 65, 1),
+                    colorTitle: Colors.white,
+                    root: 'assets/images/speedometer.png',
+                    onPressed: () {
+                      //Get.toNamed(ProfileRoutes.profile);
+                    },
+                    size: Dimensions.screenWidth * 0.054,
+                    width: 105,
+                    height: 100,
+                  ),
+                  CardClassic(
+                    title: 'configuración\nPLATAFORMA',
+                    color: const Color.fromRGBO(217, 217, 217, 1),
+                    colorTitle: Colors.white,
+                    root: 'assets/images/gear-fill.png',
+                    onPressed: () {
+                      //Get.toNamed(ProfileRoutes.profile);
+                    },
+                    size: Dimensions.screenWidth * 0.053,
                     width: 100,
                     height: 100,
                   ),

@@ -7,6 +7,8 @@ class CardClassic extends StatelessWidget {
   final String? root;
   final VoidCallback onPressed;
   final double size;
+  final double width;
+  final double height;
 
   const CardClassic({
     super.key,
@@ -16,6 +18,8 @@ class CardClassic extends StatelessWidget {
     required this.root,
     required this.onPressed,
     required this.size,
+    required this.width,
+    required this.height,
   });
 
   @override
@@ -47,8 +51,8 @@ class CardClassic extends StatelessWidget {
             left: Dimensions.screenWidth * 0.59,
             child: Image.asset(
               root!,
-              width: 100,
-              height: 100,
+              width: width,
+              height: height,
               fit: BoxFit.cover,
             ),
           ),

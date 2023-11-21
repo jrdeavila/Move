@@ -1,5 +1,5 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
+import 'package:move_app/src/presentation/pages/dashboard/admin/dashboard_admin.dart';
 
 class DashboardClient extends GetView<SessionCtrl> {
   const DashboardClient({super.key});
@@ -64,7 +64,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     description: '¿Necesitas un viaje? ¡Estamos en camino!',
                     onPressed: () {
                       //Get.to(() => const RequestService());
-                      Get.to(() => const DashboardDriver());
+                      Get.to(() => const DashboardAdmin());
                     },
                     width: 96,
                     height: 80,
@@ -90,6 +90,8 @@ class DashboardClient extends GetView<SessionCtrl> {
                       Get.toNamed(ProfileRoutes.profile);
                     },
                     size: Dimensions.screenWidth * 0.12,
+                    width: 100,
+                    height: 100,
                   ),
                 ]),
               ),
