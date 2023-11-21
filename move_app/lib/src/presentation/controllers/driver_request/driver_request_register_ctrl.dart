@@ -44,6 +44,7 @@ class DriverRequestRegisterCtrl extends GetxController {
         _driverRequest.value.technicalReviewSection,
         _driverRequest.value.ownerShipCardSection,
         _driverRequest.value.aboutCarSection,
+        _driverRequest.value.noCriminalRecordSection,
       ]
           .map((e) => SectionSegment(
                 title: e.title,
@@ -62,13 +63,25 @@ class DriverRequestRegisterCtrl extends GetxController {
     TechnicalReviewSection: DriverRequestRoutes.technicalReview,
     OwnerShipCardSection: DriverRequestRoutes.onwerShip,
     AboutCarSection: DriverRequestRoutes.aboutCar,
+    NoCriminalRecordSection: DriverRequestRoutes.noCriminalRecord,
   };
 
   // ------------------------------------------------------------
   @override
   void onReady() {
     super.onReady();
+    ever(_driverRequest, (value) async {
+      await Future.delayed(1.seconds);
+
+      if (value.isSended) {
+        Get.offAndToNamed(DriverRequestRoutes.sended);
+      }
+      if (value.isMaking) {
+        Get.offAndToNamed(DriverRequestRoutes.steps);
+      }
+    });
     _fetchDriverRequest();
+
     Get.addPages(DriverRequestRoutes.routes);
   }
 
@@ -92,24 +105,20 @@ class DriverRequestRegisterCtrl extends GetxController {
   NoCriminalRecordSection get noCriminalRecordSection =>
       _driverRequest.value.noCriminalRecordSection;
 
-  bool get hasAboutMeSectionComplete =>
-      _driverRequest.value.aboutMeSection.status == SectionStatus.complete;
-
-  bool get hasLicenseSectionComplete =>
-      _driverRequest.value.driverLicenseSection.status ==
-      SectionStatus.complete;
-
-  bool get hasDNISectionComplete =>
-      _driverRequest.value.dniSection.status == SectionStatus.complete;
+  bool get isComplete => _driverRequest.value.isComplete;
+  bool get isSended => _driverRequest.value.isSended;
 
   // ------------------------------------------------------------
 
-  void _fetchDriverRequest() async {
-    final driverRequest = await getIt<IFetchDriverRequestUseCase>()
+  void _fetchDriverRequest() {
+    final useCase = getIt<IFetchDriverRequestUseCase>();
+    useCase
         .call(FetchDriverRequestRequest(
       Get.find<SessionCtrl>().user!,
-    ));
-    _driverRequest.value = driverRequest;
+    ))
+        .then((value) {
+      _driverRequest.value = value;
+    });
   }
 
   // ------------------------------------------------------------
@@ -144,8 +153,26 @@ class DriverRequestRegisterCtrl extends GetxController {
     _driverRequest.refresh();
   }
 
+  void onUpdateNoCriminalRecordSection(
+      NoCriminalRecordSection noCriminalRecordSection) {
+    _driverRequest.value.noCriminalRecordSection = noCriminalRecordSection;
+    _driverRequest.refresh();
+  }
+
   void setAboutCarSection(AboutCarSection aboutCarSection) {
     _driverRequest.value.aboutCarSection = aboutCarSection;
     _driverRequest.refresh();
+  }
+
+  void showTermsAndConditions() {
+    // TODO: implement showTermsAndConditions
+  }
+
+  void sendRequest() async {
+    final useCase = getIt<ISendDriverRequestService>();
+    final driverRequest = await useCase
+        .setFinishDriverRequestSection(Get.find<SessionCtrl>().user!);
+    _driverRequest.value = driverRequest;
+    Get.offAndToNamed(DriverRequestRoutes.sended);
   }
 }

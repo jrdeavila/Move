@@ -3,7 +3,7 @@ import 'package:move_app/lib.dart';
 class DriverModeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => DriverRequestRegisterCtrl());
+    Get.put(DriverRequestRegisterCtrl());
   }
 }
 
@@ -53,5 +53,12 @@ class AboutCarBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => AboutCarCtrl());
+  }
+}
+
+class NoCriminalRecordBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => NoCriminalRecordCtrl());
   }
 }

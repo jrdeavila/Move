@@ -21,7 +21,7 @@ abstract class ISendAboutMeSectionUseCase {
   Future<AboutMeSection> call(SendAboutMeSectionRequest request);
 }
 
-abstract class IFinishDriverRequestUseCase {
+abstract class ISendDriverRequestUseCase {
   Future<DriverRequest> call(FinishDriverRequestRequest request);
 }
 

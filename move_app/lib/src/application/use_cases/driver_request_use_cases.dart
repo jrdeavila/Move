@@ -203,8 +203,10 @@ class SendNoCriminalRecordSectionUseCase
       "driver_request/${user.uuid}/criminal_record.pdf",
     );
 
-    final noCriminalRecordSection =
-        NoCriminalRecordSection(noCriminalRecordFile: criminalRecordFileUrl);
+    final noCriminalRecordSection = NoCriminalRecordSection(
+      noCriminalRecordFile: criminalRecordFileUrl,
+      status: SectionStatus.complete,
+    );
 
     return _noCriminalRecordSectionService.setNoCriminalRecordSection(
       user,
@@ -215,13 +217,13 @@ class SendNoCriminalRecordSectionUseCase
 
 // ----------------------------- FINISH DRIVER REQUEST ------------------------------
 
-@Injectable(as: IFinishDriverRequestUseCase)
-class FinishDriverRequestUseCase implements IFinishDriverRequestUseCase {
-  final IFinishDriverRequestService _driverRequestService;
+@Injectable(as: ISendDriverRequestUseCase)
+class SendDriverRequestUseCase implements ISendDriverRequestUseCase {
+  final ISendDriverRequestService _driverRequestService;
   final IUserRepository _userService;
 
-  FinishDriverRequestUseCase({
-    required IFinishDriverRequestService driverRequestService,
+  SendDriverRequestUseCase({
+    required ISendDriverRequestService driverRequestService,
     required IUserRepository userService,
   })  : _driverRequestService = driverRequestService,
         _userService = userService;
