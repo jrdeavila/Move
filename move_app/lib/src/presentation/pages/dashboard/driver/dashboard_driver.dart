@@ -1,6 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/account/view_account.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/service/list_service.dart';
 
 class DashboardDriver extends GetView<SessionCtrl> {
   const DashboardDriver({super.key});

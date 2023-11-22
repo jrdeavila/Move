@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/utils/image_download.dart';
 
 class LicenseCtrl extends GetxController {
   // ------------------------------------------------------------

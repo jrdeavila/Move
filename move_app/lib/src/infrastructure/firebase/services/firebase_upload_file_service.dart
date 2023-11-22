@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';

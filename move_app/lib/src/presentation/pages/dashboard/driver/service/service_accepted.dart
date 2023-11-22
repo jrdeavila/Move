@@ -1,6 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/service/service_canceled.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/service/service_details.dart';
 
 class ServiceAcceptedDriver extends StatefulWidget {
   const ServiceAcceptedDriver({Key? key}) : super(key: key);

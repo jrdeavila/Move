@@ -1,7 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/account/recharge_account.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
-import 'package:move_app/src/presentation/widgets/card_account.dart';
 
 class ViewAccount extends StatelessWidget {
   const ViewAccount({super.key});

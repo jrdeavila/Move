@@ -1,5 +1,6 @@
 export 'button.dart';
 export 'card.dart';
+export 'card_account.dart';
 export 'card_details.dart';
 export 'custom_dropdown.dart';
 export 'download.dart';

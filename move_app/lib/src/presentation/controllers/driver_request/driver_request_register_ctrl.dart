@@ -79,6 +79,9 @@ class DriverRequestRegisterCtrl extends GetxController {
       if (value.isMaking) {
         Get.offAndToNamed(DriverRequestRoutes.steps);
       }
+      if (value.isApproved) {
+        // TODO: Redirect to driver home
+      }
     });
     _fetchDriverRequest();
 

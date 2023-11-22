@@ -1,5 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/admin/dashboard_admin.dart';
 
 class DashboardClient extends GetView<SessionCtrl> {
   const DashboardClient({super.key});

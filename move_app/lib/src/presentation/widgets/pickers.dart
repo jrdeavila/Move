@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:move_app/lib.dart';
 
 class ImagePicker extends StatefulWidget {

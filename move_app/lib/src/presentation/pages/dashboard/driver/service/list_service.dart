@@ -1,7 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/dashboard_driver.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/service/service_accepted.dart';
-import 'package:move_app/src/presentation/pages/dashboard/driver/tariff/rate_form.dart';
 
 class ListService extends StatefulWidget {
   const ListService({Key? key}) : super(key: key);

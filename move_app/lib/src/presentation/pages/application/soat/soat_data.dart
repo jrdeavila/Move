@@ -1,5 +1,4 @@
 import 'package:move_app/lib.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SoatData extends GetView<SoatCtrl> {
   const SoatData({super.key});
