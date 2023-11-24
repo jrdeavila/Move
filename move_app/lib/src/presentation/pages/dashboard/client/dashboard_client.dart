@@ -77,8 +77,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/steering.png',
                     onPressed: () {
-                      Get.put(DriverRequestRegisterCtrl());
-                      Get.toNamed(DriverRequestRoutes.driverMode);
+                      controller.onChangeSessionToDriver();
                     },
                   ),
                   CardClassic(
@@ -87,7 +86,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     colorTitle: Colors.white,
                     root: 'assets/images/profile.png',
                     onPressed: () {
-                      Get.toNamed(ProfileRoutes.profile);
+                      controller.goToProfile();
                     },
                     size: Dimensions.screenWidth * 0.12,
                     width: 100,

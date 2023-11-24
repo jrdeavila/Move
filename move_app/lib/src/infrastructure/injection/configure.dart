@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'configure.config.dart';
+import 'package:move_app/lib.dart';
 
 final getIt = GetIt.instance;
 
@@ -10,5 +10,8 @@ final getIt = GetIt.instance;
   asExtension: true,
 )
 Future<void> configureDependencies() {
-  return getIt.init();
+  return Future.wait([
+    getIt.init(),
+    GetStorage.init(),
+  ]);
 }
