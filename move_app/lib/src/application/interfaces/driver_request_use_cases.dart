@@ -25,6 +25,10 @@ abstract class ISendDriverRequestUseCase {
   Future<DriverRequest> call(FinishDriverRequestRequest request);
 }
 
+abstract class IFinishDriverRequestUseCase {
+  Future<DriverRequest> call(FinishDriverRequestRequest request);
+}
+
 abstract class ISendSoatSectionUseCase {
   Future<SoatSection> call(SendSoatSectionRequest request);
 }

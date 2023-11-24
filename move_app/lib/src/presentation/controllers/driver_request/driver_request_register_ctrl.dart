@@ -80,7 +80,10 @@ class DriverRequestRegisterCtrl extends GetxController {
         Get.offAndToNamed(DriverRequestRoutes.steps);
       }
       if (value.isApproved) {
-        // TODO: Redirect to driver home
+        Get.offAndToNamed(DriverRequestRoutes.approved);
+      }
+      if (value.isFinalized) {
+        Get.offAllNamed(DashboardRoutes.homeDriver);
       }
     });
     _fetchDriverRequest();
@@ -177,5 +180,13 @@ class DriverRequestRegisterCtrl extends GetxController {
         .setFinishDriverRequestSection(Get.find<SessionCtrl>().user!);
     _driverRequest.value = driverRequest;
     Get.offAndToNamed(DriverRequestRoutes.sended);
+  }
+
+  void finishRequest() async {
+    final useCase = getIt<IFinishDriverRequestService>();
+    final driverRequest = await useCase.setFinishDriverRequestSection(
+      Get.find<SessionCtrl>().user!,
+    );
+    _driverRequest.value = driverRequest;
   }
 }

@@ -18,6 +18,7 @@ abstract class DriverRequestRoutes {
   static const String noCriminalRecord = '/no_criminal_record';
   static const String loading = '/driver_request_loading';
   static const String sended = '/driver_request_sended';
+  static const String approved = '/driver_request_approved';
 
   // ------------------------------------------------------------
 
@@ -96,6 +97,10 @@ abstract class DriverRequestRoutes {
     GetPage(
       name: sended,
       page: () => const DriverRequestSended(),
+    ),
+    GetPage(
+      name: approved,
+      page: () => const DriverRequestApproved(),
     ),
   ];
 }

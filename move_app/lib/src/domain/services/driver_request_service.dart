@@ -56,6 +56,12 @@ abstract class ISendDriverRequestService {
   );
 }
 
+abstract class IFinishDriverRequestService {
+  Future<DriverRequest> setFinishDriverRequestSection(
+    AppUser user,
+  );
+}
+
 abstract class IGetDriverRequestService {
   Future<DriverRequest> getDriverRequest(AppUser user);
 }

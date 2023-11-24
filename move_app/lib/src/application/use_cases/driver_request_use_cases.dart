@@ -238,6 +238,29 @@ class SendDriverRequestUseCase implements ISendDriverRequestUseCase {
   }
 }
 
+// ----------------------------- FINISH DRIVER REQUEST ------------------------------
+
+@Injectable(as: IFinishDriverRequestUseCase)
+class FinishDriverRequestUseCase implements IFinishDriverRequestUseCase {
+  final IFinishDriverRequestService _driverRequestService;
+  final IUserRepository _userService;
+
+  FinishDriverRequestUseCase({
+    required IFinishDriverRequestService driverRequestService,
+    required IUserRepository userService,
+  })  : _driverRequestService = driverRequestService,
+        _userService = userService;
+
+  @override
+  Future<DriverRequest> call(FinishDriverRequestRequest request) async {
+    final user = await _userService.getUser(request.userUuid);
+
+    return _driverRequestService.setFinishDriverRequestSection(
+      user,
+    );
+  }
+}
+
 // ----------------------------- SOAT SECTION ------------------------------
 
 @Injectable(as: ISendSoatSectionUseCase)

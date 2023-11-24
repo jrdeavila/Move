@@ -2,6 +2,7 @@ export 'application_form.dart';
 export 'car.dart';
 export 'car/car.dart';
 export 'dni/dni.dart';
+export 'driver_request_approved.dart';
 export 'driver_request_loading.dart';
 export 'driver_request_sended.dart';
 export 'license/license.dart';

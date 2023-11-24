@@ -81,8 +81,8 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i6.IFileSearchService>(() => _i9.FindFileService());
     gh.factory<_i6.IFindFileUseCase>(
         () => _i10.FindFileUseCase(gh<_i6.IFileSearchService>()));
-    gh.factory<_i6.ISendDriverRequestService>(() =>
-        _i7.FirebaseSendDriverRequestService(
+    gh.factory<_i6.IFinishDriverRequestService>(() =>
+        _i7.FirebaseFinishDriverRequestService(
             firebaseFirestore: gh<_i6.FirebaseFirestore>()));
     gh.factory<_i6.IGetDriverRequestService>(() =>
         _i7.FirebaseGetDriverRequestService(
@@ -94,6 +94,9 @@ extension GetItInjectableX on _i1.GetIt {
             firebaseFirestore: gh<_i6.FirebaseFirestore>()));
     gh.factory<_i6.IOwnerShipCardSectionService>(() =>
         _i7.FirebaseOwnerShipSectionService(
+            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
+    gh.factory<_i6.ISendDriverRequestService>(() =>
+        _i7.FirebaseSendDriverRequestService(
             firebaseFirestore: gh<_i6.FirebaseFirestore>()));
     gh.factory<_i6.ISoatSectionService>(() => _i7.FirebaseSoatSectionService(
         firebaseFirestore: gh<_i6.FirebaseFirestore>()));
@@ -107,9 +110,9 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i6.IFetchDriverRequestUseCase>(() =>
         _i14.FetchDriverRequestUseCase(
             driverRequestService: gh<_i6.IGetDriverRequestService>()));
-    gh.factory<_i15.ISendDriverRequestUseCase>(
-        () => _i16.SendDriverRequestUseCase(
-              driverRequestService: gh<_i15.ISendDriverRequestService>(),
+    gh.factory<_i15.IFinishDriverRequestUseCase>(
+        () => _i16.FinishDriverRequestUseCase(
+              driverRequestService: gh<_i15.IFinishDriverRequestService>(),
               userService: gh<_i15.IUserRepository>(),
             ));
     gh.factory<_i6.IGetUserUseCase>(() => _i11.GetUserUseCase(
@@ -150,6 +153,11 @@ extension GetItInjectableX on _i1.GetIt {
           userService: gh<_i15.IUserRepository>(),
           uploadFile: gh<_i15.IUploadFile>(),
         ));
+    gh.factory<_i15.ISendDriverRequestUseCase>(
+        () => _i16.SendDriverRequestUseCase(
+              driverRequestService: gh<_i15.ISendDriverRequestService>(),
+              userService: gh<_i15.IUserRepository>(),
+            ));
     gh.factory<_i15.ISendNoCriminalRecordSectionUseCase>(
         () => _i16.SendNoCriminalRecordSectionUseCase(
               noCriminalRecordSectionService:

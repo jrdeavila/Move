@@ -202,6 +202,39 @@ class FirebaseSendDriverRequestService implements ISendDriverRequestService {
   }
 }
 
+// --------------------------- FINISH DRIVER REQUEST SERVICE ---------------------------
+
+@Injectable(as: IFinishDriverRequestService)
+class FirebaseFinishDriverRequestService
+    implements IFinishDriverRequestService {
+  final FirebaseFirestore _firebaseFirestore;
+
+  FirebaseFinishDriverRequestService({
+    required FirebaseFirestore firebaseFirestore,
+  }) : _firebaseFirestore = firebaseFirestore;
+  @override
+  Future<DriverRequest> setFinishDriverRequestSection(AppUser user) async {
+    await _firebaseFirestore
+        .collection("driver_request")
+        .doc(user.uuid)
+        .update({
+      "status": driverRequestStatusToString(DriverRequestStatus.finalized),
+    });
+
+    return _firebaseFirestore
+        .collection("driver_request")
+        .doc(user.uuid)
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        return driverRequestFromJson(doc.data()!);
+      } else {
+        return DriverRequest.empty();
+      }
+    });
+  }
+}
+
 // --------------------------- GET DRIVER REQUEST SERVICE ---------------------------
 
 @Injectable(as: IGetDriverRequestService)
