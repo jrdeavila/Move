@@ -62,7 +62,7 @@ class DashboardClient extends GetView<SessionCtrl> {
                     root: 'assets/images/car.png',
                     description: '¿Necesitas un viaje? ¡Estamos en camino!',
                     onPressed: () {
-                      Get.to(() => const RequestService());
+                      controller.goToRequestService();
                     },
                     width: 96,
                     height: 80,

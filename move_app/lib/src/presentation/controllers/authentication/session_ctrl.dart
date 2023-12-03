@@ -21,6 +21,7 @@ class SessionCtrl extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    _getStorage.remove("session_role");
     ever(_user, _routing);
     _authenticationService.isAuthenticated().listen((event) {
       if (event) {
@@ -75,6 +76,8 @@ class SessionCtrl extends GetxController {
   void logout() {
     _authenticationService.logout();
     _user.value = null;
+    _currentSessionRole.value = null;
+    _getStorage.remove("session_role");
   }
 
   // -------------------------------------------------
@@ -91,5 +94,9 @@ class SessionCtrl extends GetxController {
 
   void goToProfile() {
     Get.toNamed(ProfileRoutes.profile);
+  }
+
+  void goToRequestService() {
+    Get.toNamed(ProfileRoutes.requestService);
   }
 }

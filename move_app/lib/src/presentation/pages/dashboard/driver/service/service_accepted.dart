@@ -11,8 +11,7 @@ class _ServiceAcceptedDriverState extends State<ServiceAcceptedDriver> {
   final String controllerInitialLocation = 'Cll 7a.24-31 la esperanza';
   final String controllerFinalLocation = 'los cortijos';
   final String paymentController = '8000';
-  static const LatLng _pGooglePlex =
-      LatLng(10.480301856994629, -73.26976776123047);
+
   bool isServiceDetailVisible = true;
   bool serviceCompleted = false;
   bool isServiceCanceledVisible = false;
@@ -23,11 +22,7 @@ class _ServiceAcceptedDriverState extends State<ServiceAcceptedDriver> {
     requestLocationPermission();
   }
 
-  Future<void> requestLocationPermission() async {
-    var status = await Permission.location.request();
-    if (status.isGranted) {
-    } else {}
-  }
+  Future<void> requestLocationPermission() async {}
 
   Widget serviceCanceled() {
     return Positioned(
@@ -69,17 +64,6 @@ class _ServiceAcceptedDriverState extends State<ServiceAcceptedDriver> {
         height: Dimensions.screenHeight * 1,
         child: Stack(
           children: [
-            SizedBox(
-              height: Dimensions.screenHeight * 0.7,
-              width: Dimensions.screenWidth * 1,
-              child: const GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: _pGooglePlex,
-                  zoom: 14,
-                ),
-                zoomControlsEnabled: false,
-              ),
-            ),
             Positioned(
               top: Dimensions.screenHeight * 0.05,
               left: Dimensions.screenWidth * 0.05,

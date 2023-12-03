@@ -1,4 +1,5 @@
 export 'bindings/bindings.dart';
+export 'config/config.dart';
 export 'controllers/controllers.dart';
 export 'middlewares/middlewares.dart';
 export 'pages/pages.dart';

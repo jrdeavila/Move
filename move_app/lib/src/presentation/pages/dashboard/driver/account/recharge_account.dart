@@ -1,7 +1,17 @@
 import 'package:move_app/lib.dart';
 
-class RechargeAccount extends StatelessWidget {
+class RechargeAccount extends StatefulWidget {
   const RechargeAccount({super.key});
+
+  @override
+  State<RechargeAccount> createState() => _RechargeAccountState();
+}
+
+class _RechargeAccountState extends State<RechargeAccount> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

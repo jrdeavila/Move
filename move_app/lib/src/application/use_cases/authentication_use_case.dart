@@ -55,7 +55,7 @@ class GetUserUseCase implements IGetUserUseCase {
         _userRepository = userRepository;
 
   @override
-  Future<AppUser> getUser() async {
+  Future<AppUser?> getUser() async {
     String uuid = _authenticationService.getUserUuid();
     return _userRepository.getUser(uuid);
   }

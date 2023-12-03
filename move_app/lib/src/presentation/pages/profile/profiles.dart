@@ -11,7 +11,7 @@ class Profiles extends GetView<DetailsCtrl> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offAll(() => const DashboardClient());
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black),
         ),

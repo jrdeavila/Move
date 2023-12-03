@@ -13,7 +13,7 @@ abstract class ILogoutUseCase {
 }
 
 abstract class IGetUserUseCase {
-  Future<AppUser> getUser();
+  Future<AppUser?> getUser();
 }
 
 abstract class IRegisterUseCase {

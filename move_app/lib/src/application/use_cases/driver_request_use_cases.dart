@@ -19,7 +19,7 @@ class SendAboutMeSectionUseCase implements ISendAboutMeSectionUseCase {
 
   @override
   Future<AboutMeSection> call(SendAboutMeSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
     final profileImageUrl = await _uploadFile.uploadFileBytes(
       request.profileImage,
       "driver_request/${user.uuid}/profile_image.jpg",
@@ -59,8 +59,7 @@ class SendDNISectionUseCase implements ISendDNISectionUseCase {
 
   @override
   Future<DNISection> call(SendDNISectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
-
+    final user = (await _userService.getUser(request.userUuid))!;
     final frontImageUrl = await _uploadFile.uploadFileBytes(
       request.dniFrontImage,
       "driver_request/${user.uuid}/dni_front_image.jpg",
@@ -105,7 +104,7 @@ class SendDriverLicenseSectionUseCase
   @override
   Future<DriverLicenseSection> call(
       SendDriverLicenseSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
     final frontImageUrl = await _uploadFile.uploadFileBytes(
       request.driverLicenseFrontImage,
       "driver_request/${user.uuid}/driver_license_front_image.jpg",
@@ -155,8 +154,7 @@ class SendAboutCarSectionUseCase implements ISendAboutCarSectionUseCase {
 
   @override
   Future<AboutCarSection> call(SendAboutCarSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
-
+    final user = (await _userService.getUser(request.userUuid))!;
     final carImageUrl = await _uploadFile.uploadFileBytes(
       request.carImage,
       "driver_request/${user.uuid}/car_image.jpg",
@@ -197,7 +195,7 @@ class SendNoCriminalRecordSectionUseCase
   @override
   Future<NoCriminalRecordSection> call(
       SendNoCriminalRecordSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
     final criminalRecordFileUrl = await _uploadFile.uploadFile(
       request.criminalRecord,
       "driver_request/${user.uuid}/criminal_record.pdf",
@@ -230,7 +228,7 @@ class SendDriverRequestUseCase implements ISendDriverRequestUseCase {
 
   @override
   Future<DriverRequest> call(FinishDriverRequestRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
 
     return _driverRequestService.setFinishDriverRequestSection(
       user,
@@ -253,7 +251,7 @@ class FinishDriverRequestUseCase implements IFinishDriverRequestUseCase {
 
   @override
   Future<DriverRequest> call(FinishDriverRequestRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
 
     return _driverRequestService.setFinishDriverRequestSection(
       user,
@@ -279,7 +277,7 @@ class SendSoatSectionUseCase implements ISendSoatSectionUseCase {
 
   @override
   Future<SoatSection> call(SendSoatSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
     final soatFileUrl = await _uploadFile.uploadFile(
       request.soatFile,
       "driver_request/${user.uuid}/soat_file.pdf",
@@ -315,7 +313,7 @@ class SendTechnicalReviewSectionUseCase
   @override
   Future<TechnicalReviewSection> call(
       SendTechnicalReviewSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
     final technicalReviewFileUrl = await _uploadFile.uploadFile(
       request.technicalReviewFile,
       "driver_request/${user.uuid}/technical_review_file.pdf",
@@ -352,7 +350,7 @@ class SendOwnerShipCardSectionUseCase
   @override
   Future<OwnerShipCardSection> call(
       SendOwnerShipCardSectionRequest request) async {
-    final user = await _userService.getUser(request.userUuid);
+    final user = (await _userService.getUser(request.userUuid))!;
     final ownerShipCardFrontImageUrl = await _uploadFile.uploadFileBytes(
       request.ownerShipCardFrontImage,
       "driver_request/${user.uuid}/owner_ship_card_front_image.jpg",
