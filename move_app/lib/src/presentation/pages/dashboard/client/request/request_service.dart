@@ -15,24 +15,24 @@ class RequestService extends GetView<RequestServiceCtrl> {
           ),
           Positioned(
             right: 16.0,
-            top: MediaQuery.of(context).size.height / 2 + 16.0,
-            child: _buildBackButton(),
+            top: MediaQuery.of(context).size.height / 2.2 + 16.0,
+            child: _buildLocationButton(),
           ),
           Positioned(
             left: 16.0,
             top: MediaQuery.of(context).padding.top + 16.0,
-            child: _buildLocationButton(),
+            child: _buildBackButton(),
           ),
           Positioned.fill(
-            top: MediaQuery.of(context).size.height / 2 + 86.0,
-            child: _buildRequestForm(),
+            top: MediaQuery.of(context).size.height / 2.2 + 86.0,
+            child: _buildRequestForm(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRequestForm() {
+  Widget _buildRequestForm(context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -62,16 +62,22 @@ class RequestService extends GetView<RequestServiceCtrl> {
             AddressField(
               color: Colors.blue,
               address: 'Calle 1 # 2 - 3',
-              onTap: () {},
+              onTap: () {
+                controller.openSearchAddress(context);
+              },
             ),
             const SizedBox(height: 10.0),
             AddressField(
               color: Colors.redAccent,
               address: 'Calle 1 # 2 - 3',
-              onTap: () {},
+              onTap: () {
+                controller.openSearchAddress(context);
+              },
             ),
             const SizedBox(height: 10.0),
-            const FeeButton(),
+            FeeButton(onTap: () {
+              controller.openSetTee(context);
+            }),
             const Spacer(),
             SizedBox(
               width: double.infinity,
@@ -88,10 +94,9 @@ class RequestService extends GetView<RequestServiceCtrl> {
   }
 
   FloatingActionButton _buildBackButton() {
-    final locationCtrl = Get.find<LocationCtrl>();
     return FloatingActionButton(
       onPressed: () {
-        locationCtrl.moveCameraToCurrentLocation();
+        Get.back();
       },
       child: const Icon(Icons.arrow_back),
     );
@@ -100,6 +105,7 @@ class RequestService extends GetView<RequestServiceCtrl> {
   FloatingActionButton _buildLocationButton() {
     final locationCtrl = Get.find<LocationCtrl>();
     return FloatingActionButton(
+      heroTag: "navigation_button",
       onPressed: () {
         locationCtrl.moveCameraToCurrentLocation();
       },
@@ -136,93 +142,5 @@ class RequestService extends GetView<RequestServiceCtrl> {
             ),
           ],
         ));
-  }
-}
-
-class FeeButton extends StatelessWidget {
-  const FeeButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.payments_rounded,
-            color: Colors.redAccent,
-            size: 30.0,
-          ),
-          const SizedBox(width: 10.0),
-          Text(
-            "Ofrezca su tarifa",
-            style: GoogleFonts.montserrat(
-              color: Colors.black,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          const Spacer(),
-          const Icon(
-            Icons.phone_iphone_sharp,
-            color: Colors.blue,
-            size: 30.0,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AddressField extends StatelessWidget {
-  const AddressField({
-    super.key,
-    required this.color,
-    required this.address,
-    required this.onTap,
-  });
-
-  final Color color;
-  final String address;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Icon(
-            Icons.location_on_rounded,
-            color: color,
-            size: 30.0,
-          ),
-          const SizedBox(width: 10.0),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                address,
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
