@@ -1,3 +1,5 @@
+import 'package:move_app/lib.dart';
+
 class GeoPointRequest {
   GeoPointRequest({
     required this.latitude,
@@ -18,4 +20,14 @@ class QueryAddressRequest {
   final String query;
   final double? latitudeRef;
   final double? longitudeRef;
+}
+
+class SaveAddressRequest {
+  final String tag;
+  final TravelPoint address;
+
+  SaveAddressRequest({
+    required this.tag,
+    required this.address,
+  });
 }

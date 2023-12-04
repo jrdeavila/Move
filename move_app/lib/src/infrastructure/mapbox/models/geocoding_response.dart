@@ -67,7 +67,7 @@ class Feature {
   String text;
   String placeName;
   List<double> center;
-  Geometry geometry;
+  FeatureGeometry geometry;
   List<Context>? context;
   List<double>? bbox;
 
@@ -94,7 +94,7 @@ class Feature {
         text: json["text"],
         placeName: json["place_name"],
         center: List<double>.from(json["center"].map((x) => x?.toDouble())),
-        geometry: Geometry.fromJson(json["geometry"]),
+        geometry: FeatureGeometry.fromJson(json["geometry"]),
         context: json["context"] == null
             ? []
             : List<Context>.from(
@@ -153,16 +153,17 @@ class Context {
       };
 }
 
-class Geometry {
+class FeatureGeometry {
   String type;
   List<double> coordinates;
 
-  Geometry({
+  FeatureGeometry({
     required this.type,
     required this.coordinates,
   });
 
-  factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
+  factory FeatureGeometry.fromJson(Map<String, dynamic> json) =>
+      FeatureGeometry(
         type: json["type"],
         coordinates:
             List<double>.from(json["coordinates"].map((x) => x?.toDouble())),

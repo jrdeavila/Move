@@ -2,8 +2,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:move_app/lib.dart';
 
-class RequestService extends GetView<RequestServiceCtrl> {
-  const RequestService({super.key});
+class RequestServicePage extends GetView<RequestServiceCtrl> {
+  const RequestServicePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -164,9 +164,9 @@ class RequestService extends GetView<RequestServiceCtrl> {
             ),
             rotate: true,
             child: const Icon(
-              Icons.person_pin_circle,
+              Icons.location_on,
               size: 45.0,
-              color: Colors.redAccent,
+              color: Colors.blueAccent,
             ),
           ),
         if (controller.endTravelPoint != null)
@@ -181,7 +181,7 @@ class RequestService extends GetView<RequestServiceCtrl> {
             child: const Icon(
               Icons.location_on,
               size: 45.0,
-              color: Colors.blue,
+              color: Colors.redAccent,
             ),
           ),
       ],

@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:sqflite/sqflite.dart';
 
 // ------------------------------------ Firebase ------------------------------------
 
@@ -79,4 +80,32 @@ abstract class DioModule {
         responseHeader: true,
       ),
     ]);
+}
+
+// ------------------------------------ SQFLite ------------------------------------
+
+@module
+abstract class DatabaseModule {
+  @preResolve
+  @lazySingleton
+  Future<Database> get database async {
+    final dbPath = await getDatabasesPath();
+    final path = "$dbPath/travel_point.db";
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute(
+          "CREATE TABLE IF NOT EXISTS travel_point ("
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          "latitude REAL,"
+          "longitude REAL,"
+          "address TEXT,"
+          "name TEXT,"
+          "tag TEXT"
+          ")",
+        );
+      },
+    );
+  }
 }

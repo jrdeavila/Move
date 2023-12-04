@@ -6,6 +6,13 @@ abstract class IGetKnownAddressesService {
   });
 }
 
+abstract class ISaveAddressService {
+  Future<void> saveAddress({
+    required String tag,
+    required TravelPoint address,
+  });
+}
+
 abstract class IGetAddressByQueryService {
   Future<List<TravelPoint>> getAddresses(
     String query, {

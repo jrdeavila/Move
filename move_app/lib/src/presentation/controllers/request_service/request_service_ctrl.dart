@@ -6,12 +6,12 @@ class RequestServiceCtrl extends GetxController {
   bool editingEndAddress = false;
   // ----------------------- Observables -------------------------------
   final RxList<TravelPoint> _addressessSearched = RxList();
+  final RxList<Payment> _paymentsAbailables = RxList();
 
+  // Fields to request service
   final Rx<TravelPoint?> _beginTravelPoint = Rx(null);
   final Rx<TravelPoint?> _endTravelPoint = Rx(null);
   final RxDouble _teeValue = RxDouble(0);
-
-  final RxList<Payment> _paymentsAbailables = RxList();
   final Rx<Payment> _currentPayment = Rx(payments.first);
 
   // ----------------------- Getters -------------------------------
@@ -54,6 +54,12 @@ class RequestServiceCtrl extends GetxController {
     _currentPayment.value = payments.first;
   }
 
+  void _fetchKnownAddresses(String tag) async {
+    final useCase = getIt<IGetKnownAddressesUseCase>();
+    final res = await useCase.getKnownAddresses(tag: tag);
+    _addressessSearched.value = res;
+  }
+
   // ----------------------- Public Methods -------------------------------
 
   void openSearchAddress(context) {
@@ -90,16 +96,42 @@ class RequestServiceCtrl extends GetxController {
       openSetTee(context);
       return;
     }
+
+    final sendServiceUseCase = getIt<ISendRequestServiceUseCase>();
+    final saveAddressUseCase = getIt<ISaveAddressUseCase>();
+    final request = SendRequestServiceRequest(
+      clientCreator: Get.find<SessionCtrl>().user!,
+      origin: beginTravelPoint!,
+      destination: endTravelPoint!,
+      tee: teeValue,
+      driver: null,
+      payment: currentPayment,
+    );
+    saveAddressUseCase.saveAddress(
+      SaveAddressRequest(
+        tag: 'origin',
+        address: beginTravelPoint!,
+      ),
+    );
+    saveAddressUseCase.saveAddress(
+      SaveAddressRequest(
+        tag: 'destination',
+        address: endTravelPoint!,
+      ),
+    );
+    sendServiceUseCase.sendRequestService(request);
   }
 
   void onEditingBeginAddress() {
     editingBeginAddress = true;
     editingEndAddress = false;
+    _fetchKnownAddresses('origin');
   }
 
   void onEditingEndAddress() {
     editingBeginAddress = false;
     editingEndAddress = true;
+    _fetchKnownAddresses('destination');
   }
 
   void searchTravelPoints(String query) async {
@@ -117,10 +149,12 @@ class RequestServiceCtrl extends GetxController {
   void selectTravelPoint(TravelPoint travelPoint) {
     if (editingBeginAddress) {
       _beginTravelPoint.value = travelPoint;
+      Get.find<LocationCtrl>().focusOnTravelPoint(travelPoint);
       return;
     }
     if (editingEndAddress) {
       _endTravelPoint.value = travelPoint;
+      Get.find<LocationCtrl>().focusOnTravelPoint(travelPoint);
       return;
     }
   }

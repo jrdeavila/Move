@@ -22,7 +22,7 @@ abstract class ProfileRoutes {
         ]),
     GetPage(
         name: requestService,
-        page: () => const RequestService(),
+        page: () => const RequestServicePage(),
         binding: BindingsBuilder(() {
           Get.lazyPut<RequestServiceCtrl>(() => RequestServiceCtrl());
           Get.put<LocationCtrl>(LocationCtrl());

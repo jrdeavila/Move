@@ -42,3 +42,18 @@ class GetKnownAddressesUseCase implements IGetKnownAddressesUseCase {
     return _addressService.getKnownAddresses(tag: tag);
   }
 }
+
+@Injectable(as: ISaveAddressUseCase)
+class SaveAddressUseCase implements ISaveAddressUseCase {
+  final ISaveAddressService _addressService;
+
+  SaveAddressUseCase(this._addressService);
+
+  @override
+  Future<void> saveAddress(SaveAddressRequest request) {
+    return _addressService.saveAddress(
+      tag: request.tag,
+      address: request.address,
+    );
+  }
+}

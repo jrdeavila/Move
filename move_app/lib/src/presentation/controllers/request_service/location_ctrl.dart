@@ -74,4 +74,15 @@ class LocationCtrl extends GetxController {
     mapCtrl.move(currentLocation, 15);
     mapCtrl.rotate(0.0);
   }
+
+  void focusOnTravelPoint(TravelPoint travelPoint) {
+    mapCtrl.moveAndRotate(
+      LatLng(
+        travelPoint.latitude,
+        travelPoint.longitude,
+      ),
+      14.0,
+      0.0,
+    );
+  }
 }

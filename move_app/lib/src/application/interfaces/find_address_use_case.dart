@@ -13,3 +13,7 @@ abstract class IGetKnownAddressesUseCase {
     String tag,
   });
 }
+
+abstract class ISaveAddressUseCase {
+  Future<void> saveAddress(SaveAddressRequest request);
+}

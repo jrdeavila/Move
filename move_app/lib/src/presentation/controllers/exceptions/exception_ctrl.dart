@@ -36,9 +36,8 @@ class ExceptionCtrl extends GetxController {
   }
 
   _dioException(DioException exception) {
-    return showSnackbar(
-      "Ups! Algo salió mal 😢",
-      dioExceptionsCodeMap[exception.response?.statusCode ?? 0] ??
+    return printError(
+      info: dioExceptionsCodeMap[exception.response?.statusCode ?? 0] ??
           'Se produjo un error desconocido',
     );
   }

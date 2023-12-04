@@ -31,6 +31,9 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
           TextInput(
               hintText: "Desde",
               initialValue: controller.beginTravelPoint?.name ?? "",
+              onTap: () {
+                controller.onEditingBeginAddress();
+              },
               prefixIcon: const Icon(
                 Icons.search,
               ),
@@ -39,7 +42,6 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
                 child: const Icon(Icons.cancel),
               ),
               onChanged: (value) {
-                controller.onEditingBeginAddress();
                 controller.searchTravelPoints(value);
               }),
           const SizedBox(
@@ -53,8 +55,10 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
               color: Colors.redAccent,
             ),
             suffixIcon: const Icon(Icons.cancel),
-            onChanged: (value) {
+            onTap: () {
               controller.onEditingEndAddress();
+            },
+            onChanged: (value) {
               controller.searchTravelPoints(value);
             },
           ),
@@ -115,6 +119,17 @@ class TravelPointItem extends GetView<RequestServiceCtrl> {
 
   final TravelPoint travelPoint;
 
+  Icon iconByType(TravelPointType type) => ({
+        TravelPointType.known: const Icon(
+          Icons.lock_clock,
+          color: Colors.grey,
+        ),
+        TravelPointType.searched: const Icon(
+          Icons.location_on,
+          color: Colors.grey,
+        ),
+      }[type]!);
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -124,10 +139,7 @@ class TravelPointItem extends GetView<RequestServiceCtrl> {
       },
       contentPadding: EdgeInsets.zero,
       minLeadingWidth: 0,
-      leading: const Icon(
-        Icons.location_on_outlined,
-        size: 30.0,
-      ),
+      leading: iconByType(travelPoint.type),
       title: Text(
         travelPoint.name,
         style: GoogleFonts.montserrat(
@@ -150,6 +162,7 @@ class TextInput extends StatelessWidget {
     required this.suffixIcon,
     required this.onChanged,
     this.initialValue,
+    this.onTap,
   });
 
   final Widget prefixIcon;
@@ -157,11 +170,13 @@ class TextInput extends StatelessWidget {
   final String hintText;
   final String? initialValue;
   final ValueChanged<String> onChanged;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onChanged: onChanged,
+      onTap: onTap,
       initialValue: initialValue,
       style: GoogleFonts.montserrat(
         fontSize: 18.0,
