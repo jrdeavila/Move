@@ -1,6 +1,7 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:move_app/lib.dart';
 
-class SearchAddressModal extends StatelessWidget {
+class SearchAddressModal extends GetView<RequestServiceCtrl> {
   const SearchAddressModal({
     super.key,
   });
@@ -28,22 +29,34 @@ class SearchAddressModal extends StatelessWidget {
             height: 20.0,
           ),
           TextInput(
-            hintText: "Desde",
-            prefixIcon: Icon(
-              Icons.search,
-            ),
-            suffixIcon: Icon(Icons.cancel),
-          ),
+              hintText: "Desde",
+              initialValue: controller.beginTravelPoint?.name ?? "",
+              prefixIcon: const Icon(
+                Icons.search,
+              ),
+              suffixIcon: GestureDetector(
+                onTap: () {},
+                child: const Icon(Icons.cancel),
+              ),
+              onChanged: (value) {
+                controller.onEditingBeginAddress();
+                controller.searchTravelPoints(value);
+              }),
           const SizedBox(
             height: 10.0,
           ),
           TextInput(
             hintText: "A",
-            prefixIcon: Icon(
+            initialValue: controller.endTravelPoint?.name ?? "",
+            prefixIcon: const Icon(
               Icons.location_on,
               color: Colors.redAccent,
             ),
-            suffixIcon: Icon(Icons.cancel),
+            suffixIcon: const Icon(Icons.cancel),
+            onChanged: (value) {
+              controller.onEditingEndAddress();
+              controller.searchTravelPoints(value);
+            },
           ),
           TextButton(
             onPressed: () {},
@@ -63,29 +76,14 @@ class SearchAddressModal extends StatelessWidget {
             height: 10.0,
           ),
           Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  minLeadingWidth: 0,
-                  leading: const Icon(
-                    Icons.location_on_outlined,
-                    size: 30.0,
-                  ),
-                  title: Text(
-                    "Campo de Futbol de Villa Miriam",
-                    style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Calle 18A # 30 - 21, Valledupar - Cesar",
-                    style: GoogleFonts.montserrat(),
-                  ),
-                );
-              },
-            ),
+            child: Obx(() => ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final travelPoint = controller.addressessSearched[index];
+                    return TravelPointItem(travelPoint: travelPoint);
+                  },
+                  itemCount: controller.addressessSearched.length,
+                )),
           ),
         ],
       ),
@@ -109,21 +107,62 @@ class SearchAddressModal extends StatelessWidget {
   }
 }
 
+class TravelPointItem extends GetView<RequestServiceCtrl> {
+  const TravelPointItem({
+    super.key,
+    required this.travelPoint,
+  });
+
+  final TravelPoint travelPoint;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {
+        controller.selectTravelPoint(travelPoint);
+        Get.back();
+      },
+      contentPadding: EdgeInsets.zero,
+      minLeadingWidth: 0,
+      leading: const Icon(
+        Icons.location_on_outlined,
+        size: 30.0,
+      ),
+      title: Text(
+        travelPoint.name,
+        style: GoogleFonts.montserrat(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        travelPoint.address,
+        style: GoogleFonts.montserrat(),
+      ),
+    );
+  }
+}
+
 class TextInput extends StatelessWidget {
   const TextInput({
     super.key,
     required this.hintText,
     required this.prefixIcon,
     required this.suffixIcon,
+    required this.onChanged,
+    this.initialValue,
   });
 
   final Widget prefixIcon;
   final Widget suffixIcon;
   final String hintText;
+  final String? initialValue;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
+      initialValue: initialValue,
       style: GoogleFonts.montserrat(
         fontSize: 18.0,
       ),
@@ -200,21 +239,7 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
             const SizedBox(
               height: 10.0,
             ),
-            TextFormField(
-              style: GoogleFonts.montserrat(
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-              decoration: const InputDecoration(
-                prefix: Padding(
-                  padding: EdgeInsets.only(right: 10.0),
-                  child: Text(
-                    "COP",
-                  ),
-                ),
-              ),
-            ),
+            _buildCurrencyTextInput(),
             const SizedBox(
               height: 5.0,
             ),
@@ -239,10 +264,50 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
             ),
             ButtonClassic(
               text: "Hecho",
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+              },
               color: Get.theme.colorScheme.primary,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  TextFormField _buildCurrencyTextInput() {
+    final formatter = CurrencyTextInputFormatter(
+      decimalDigits: 0,
+      symbol: "",
+      locale: 'es_CO',
+      enableNegative: false,
+    );
+    return TextFormField(
+      style: GoogleFonts.montserrat(
+        fontSize: 40.0,
+        fontWeight: FontWeight.bold,
+      ),
+      inputFormatters: [formatter],
+      keyboardType: TextInputType.number,
+      onChanged: (_) => controller.setTeeValue(formatter.getUnformattedValue()),
+      initialValue: formatter.formatDouble(controller.teeValue),
+      decoration: InputDecoration(
+        hintText: "8000",
+        hintStyle: const TextStyle(
+          fontSize: 40.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey,
+        ),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: Text(
+            "COP",
+            style: TextStyle(
+              fontSize: 40.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[400]!,
+            ),
+          ),
         ),
       ),
     );
@@ -293,7 +358,7 @@ class PaymentButton extends StatelessWidget {
               width: 10.0,
             ),
             Text(
-              value.name,
+              getPaymentNameByName(value.name),
               style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.bold,
               ),
@@ -374,7 +439,7 @@ class PaymentTypeModal extends StatelessWidget {
                             width: 10.0,
                           ),
                           Text(
-                            e.name.capitalize!,
+                            getPaymentNameByName(e.name),
                             style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold,
                               fontSize: 14.0,
@@ -404,3 +469,9 @@ Icon iconByPaymentType(PaymentType type) => ({
         Icons.phone_iphone_sharp,
       ),
     }[type]!);
+
+String getPaymentNameByName(String str) => ({
+      "cash": "Efectivo",
+      "nequi": "Nequi",
+      "bancolombia": "Bancolombia",
+    }[str]!);

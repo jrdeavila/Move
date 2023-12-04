@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:move_app/lib.dart';
 
@@ -17,6 +18,9 @@ class ExceptionCtrl extends GetxController {
       case FirebaseException:
         _firebaseException(exception as FirebaseException);
         break;
+      case DioException:
+        _dioException(exception as DioException);
+        break;
       default:
         _defaultException(exception);
         break;
@@ -31,6 +35,14 @@ class ExceptionCtrl extends GetxController {
     );
   }
 
+  _dioException(DioException exception) {
+    return showSnackbar(
+      "Ups! Algo salió mal 😢",
+      dioExceptionsCodeMap[exception.response?.statusCode ?? 0] ??
+          'Se produjo un error desconocido',
+    );
+  }
+
   _defaultException(Object exception) {
     return showSnackbar(
       "Ups! Error desconocido 😱",
@@ -38,6 +50,18 @@ class ExceptionCtrl extends GetxController {
     );
   }
 }
+
+Map<int, String> dioExceptionsCodeMap = {
+  400: 'Falló la solicitud debido a un error del cliente',
+  401: 'Acción no autorizada',
+  403: 'Acceso denegado',
+  404: 'No se encontró el recurso solicitado',
+  409: 'Conflicto en la solicitud',
+  408: 'Tiempo de espera de la solicitud',
+  500: 'Error interno del servidor',
+  503: 'Servicio no disponible',
+  505: 'Versión HTTP no soportada',
+};
 
 Map<String, String> firebaseExceptionsCodeMap = {
   'unknown': 'Se produjo un error desconocido',

@@ -8,26 +8,32 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:firebase_app_check/firebase_app_check.dart' as _i4;
-import 'package:firebase_auth/firebase_auth.dart' as _i5;
-import 'package:firebase_core/firebase_core.dart' as _i3;
+import 'package:dio/dio.dart' as _i3;
+import 'package:firebase_app_check/firebase_app_check.dart' as _i5;
+import 'package:firebase_auth/firebase_auth.dart' as _i6;
+import 'package:firebase_core/firebase_core.dart' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../../../lib.dart' as _i6;
-import '../../application/use_cases/authentication_use_case.dart' as _i11;
-import '../../application/use_cases/driver_request_use_cases.dart' as _i16;
+import '../../../lib.dart' as _i7;
+import '../../application/use_cases/authentication_use_case.dart' as _i15;
+import '../../application/use_cases/driver_request_use_cases.dart' as _i21;
 import '../../application/use_cases/fetch_driver_request_use_cases.dart'
-    as _i14;
-import '../../application/use_cases/find_file_use_cases.dart' as _i10;
-import '../../application/use_cases/profile_use_case.dart' as _i17;
-import '../../src.dart' as _i15;
-import '../device/services/find_file.dart' as _i9;
-import '../firebase/repositories/firebase_user_repository.dart' as _i13;
-import '../firebase/services/firebase_auth_service.dart' as _i8;
-import '../firebase/services/firebase_driver_request_service.dart' as _i7;
-import '../firebase/services/firebase_upload_file_service.dart' as _i12;
-import 'dependecies.dart' as _i18;
+    as _i19;
+import '../../application/use_cases/find_address_use_cases.dart' as _i13;
+import '../../application/use_cases/find_file_use_cases.dart' as _i11;
+import '../../application/use_cases/profile_use_case.dart' as _i23;
+import '../../application/use_cases/request_service_use_case.dart' as _i22;
+import '../../src.dart' as _i20;
+import '../cache/services/find_known_address_service.dart' as _i14;
+import '../device/services/find_file.dart' as _i10;
+import '../firebase/repositories/firebase_payment_repository.dart' as _i16;
+import '../firebase/repositories/firebase_user_repository.dart' as _i18;
+import '../firebase/services/firebase_auth_service.dart' as _i9;
+import '../firebase/services/firebase_driver_request_service.dart' as _i8;
+import '../firebase/services/firebase_upload_file_service.dart' as _i17;
+import '../google/services/google_find_address_service.dart' as _i12;
+import 'dependecies.dart' as _i24;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -40,163 +46,184 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
+    final dioModule = _$DioModule();
     final firebaseAppModule = _$FirebaseAppModule();
     final appCheckModule = _$AppCheckModule();
     final firebaseAuthModule = _$FirebaseAuthModule();
     final firestoreModule = _$FirestoreModule();
     final firebaseStorageModule = _$FirebaseStorageModule();
-    await gh.factoryAsync<_i3.FirebaseApp>(
+    gh.lazySingleton<_i3.Dio>(() => dioModule.dio);
+    await gh.factoryAsync<_i4.FirebaseApp>(
       () => firebaseAppModule.firebaseApp,
       preResolve: true,
     );
-    await gh.lazySingletonAsync<_i4.FirebaseAppCheck>(
+    await gh.lazySingletonAsync<_i5.FirebaseAppCheck>(
       () => appCheckModule.appCheck,
       preResolve: true,
     );
-    await gh.lazySingletonAsync<_i5.FirebaseAuth>(
+    await gh.lazySingletonAsync<_i6.FirebaseAuth>(
       () => firebaseAuthModule.firebaseAuth,
       preResolve: true,
     );
-    await gh.lazySingletonAsync<_i6.FirebaseFirestore>(
+    await gh.lazySingletonAsync<_i7.FirebaseFirestore>(
       () => firestoreModule.firestore,
       preResolve: true,
     );
-    await gh.lazySingletonAsync<_i6.FirebaseStorage>(
+    await gh.lazySingletonAsync<_i7.FirebaseStorage>(
       () => firebaseStorageModule.firebaseStorage,
       preResolve: true,
     );
-    gh.factory<_i6.IAboutCarSectionService>(() =>
-        _i7.FirebaseAboutCarSectionService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IAboutMeSectionService>(() =>
-        _i7.FirebaseAboutMeSectionService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IAuthenticationService>(
-        () => _i8.FirebaseAuthService(firebaseAuth: gh<_i5.FirebaseAuth>()));
-    gh.factory<_i6.IDNISectionService>(() => _i7.FirebaseDNISectionService(
-        firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IDriverLicenseSectionService>(() =>
-        _i7.FirebaseDriverLicenseSectionService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IFileSearchService>(() => _i9.FindFileService());
-    gh.factory<_i6.IFindFileUseCase>(
-        () => _i10.FindFileUseCase(gh<_i6.IFileSearchService>()));
-    gh.factory<_i6.IFinishDriverRequestService>(() =>
-        _i7.FirebaseFinishDriverRequestService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IGetDriverRequestService>(() =>
-        _i7.FirebaseGetDriverRequestService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.ILogoutUseCase>(
-        () => _i11.LogoutUseCase(gh<_i6.IAuthenticationService>()));
-    gh.factory<_i6.INoCriminalRecordSectionService>(() =>
-        _i7.FirebaseNoCriminalRecordSectionService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IOwnerShipCardSectionService>(() =>
-        _i7.FirebaseOwnerShipSectionService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.ISendDriverRequestService>(() =>
-        _i7.FirebaseSendDriverRequestService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.ISoatSectionService>(() => _i7.FirebaseSoatSectionService(
-        firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.ITechnicalReviewSectionService>(() =>
-        _i7.FirebaseTechnicalReviewSectionService(
-            firebaseFirestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IUploadFile>(() => _i12.FirebaseUploadFileService(
-        firebaseStorage: gh<_i6.FirebaseStorage>()));
-    gh.factory<_i6.IUserRepository>(() =>
-        _i13.FirebaseUserRepository(firestore: gh<_i6.FirebaseFirestore>()));
-    gh.factory<_i6.IFetchDriverRequestUseCase>(() =>
-        _i14.FetchDriverRequestUseCase(
-            driverRequestService: gh<_i6.IGetDriverRequestService>()));
-    gh.factory<_i15.IFinishDriverRequestUseCase>(
-        () => _i16.FinishDriverRequestUseCase(
-              driverRequestService: gh<_i15.IFinishDriverRequestService>(),
-              userService: gh<_i15.IUserRepository>(),
+    gh.factory<_i7.IAboutCarSectionService>(() =>
+        _i8.FirebaseAboutCarSectionService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IAboutMeSectionService>(() =>
+        _i8.FirebaseAboutMeSectionService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IAuthenticationService>(
+        () => _i9.FirebaseAuthService(firebaseAuth: gh<_i6.FirebaseAuth>()));
+    gh.factory<_i7.IDNISectionService>(() => _i8.FirebaseDNISectionService(
+        firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IDriverLicenseSectionService>(() =>
+        _i8.FirebaseDriverLicenseSectionService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IFileSearchService>(() => _i10.FindFileService());
+    gh.factory<_i7.IFindFileUseCase>(
+        () => _i11.FindFileUseCase(gh<_i7.IFileSearchService>()));
+    gh.factory<_i7.IFinishDriverRequestService>(() =>
+        _i8.FirebaseFinishDriverRequestService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IGetAddressByGeopointService>(
+        () => _i12.GoogleGetAddressByGeopointService(gh<_i3.Dio>()));
+    gh.factory<_i7.IGetAddressByGeopointUseCase>(() =>
+        _i13.GetMyAddressByGeopointUseCase(
+            gh<_i7.IGetAddressByGeopointService>()));
+    gh.factory<_i7.IGetAddressByQueryService>(
+        () => _i12.GoogleFindAddressService(gh<_i3.Dio>()));
+    gh.factory<_i7.IGetAddressesByQueryUseCase>(() =>
+        _i13.GetAddressesByQueryUseCase(gh<_i7.IGetAddressByQueryService>()));
+    gh.factory<_i7.IGetDriverRequestService>(() =>
+        _i8.FirebaseGetDriverRequestService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IGetKnownAddressesService>(
+        () => _i14.CacheGetKnownAddressesService());
+    gh.factory<_i7.IGetKnownAddressesUseCase>(() =>
+        _i13.GetKnownAddressesUseCase(gh<_i7.IGetKnownAddressesService>()));
+    gh.factory<_i7.ILogoutUseCase>(
+        () => _i15.LogoutUseCase(gh<_i7.IAuthenticationService>()));
+    gh.factory<_i7.INoCriminalRecordSectionService>(() =>
+        _i8.FirebaseNoCriminalRecordSectionService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IOwnerShipCardSectionService>(() =>
+        _i8.FirebaseOwnerShipSectionService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IPaymentRepository>(
+        () => _i16.FirebasePaymentRepository(gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.ISendDriverRequestService>(() =>
+        _i8.FirebaseSendDriverRequestService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.ISoatSectionService>(() => _i8.FirebaseSoatSectionService(
+        firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.ITechnicalReviewSectionService>(() =>
+        _i8.FirebaseTechnicalReviewSectionService(
+            firebaseFirestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IUploadFile>(() => _i17.FirebaseUploadFileService(
+        firebaseStorage: gh<_i7.FirebaseStorage>()));
+    gh.factory<_i7.IUserRepository>(() =>
+        _i18.FirebaseUserRepository(firestore: gh<_i7.FirebaseFirestore>()));
+    gh.factory<_i7.IFetchDriverRequestUseCase>(() =>
+        _i19.FetchDriverRequestUseCase(
+            driverRequestService: gh<_i7.IGetDriverRequestService>()));
+    gh.factory<_i20.IFinishDriverRequestUseCase>(
+        () => _i21.FinishDriverRequestUseCase(
+              driverRequestService: gh<_i20.IFinishDriverRequestService>(),
+              userService: gh<_i20.IUserRepository>(),
             ));
-    gh.factory<_i6.IGetUserUseCase>(() => _i11.GetUserUseCase(
-          authenticationService: gh<_i6.IAuthenticationService>(),
-          userRepository: gh<_i6.IUserRepository>(),
+    gh.factory<_i7.IGetPaymentsUseCase>(
+        () => _i22.GetPaymentsUseCase(gh<_i7.IPaymentRepository>()));
+    gh.factory<_i7.IGetUserUseCase>(() => _i15.GetUserUseCase(
+          authenticationService: gh<_i7.IAuthenticationService>(),
+          userRepository: gh<_i7.IUserRepository>(),
         ));
-    gh.singleton<_i6.IPhoneAuthenticationService>(
-        _i8.FirebasePhoneAuthenticationService(
-      firebaseAuth: gh<_i5.FirebaseAuth>(),
-      userRepository: gh<_i6.IUserRepository>(),
+    gh.singleton<_i7.IPhoneAuthenticationService>(
+        _i9.FirebasePhoneAuthenticationService(
+      firebaseAuth: gh<_i6.FirebaseAuth>(),
+      userRepository: gh<_i7.IUserRepository>(),
     ));
-    gh.factory<_i6.IRegisterUseCase>(() => _i11.RegisterUseCase(
-          userRepository: gh<_i6.IUserRepository>(),
-          authenticationService: gh<_i6.IAuthenticationService>(),
+    gh.factory<_i7.IRegisterUseCase>(() => _i15.RegisterUseCase(
+          userRepository: gh<_i7.IUserRepository>(),
+          authenticationService: gh<_i7.IAuthenticationService>(),
         ));
-    gh.factory<_i15.ISendAboutCarSectionUseCase>(
-        () => _i16.SendAboutCarSectionUseCase(
-              aboutCarSectionService: gh<_i15.IAboutCarSectionService>(),
-              userService: gh<_i15.IUserRepository>(),
-              uploadFile: gh<_i15.IUploadFile>(),
+    gh.factory<_i20.ISendAboutCarSectionUseCase>(
+        () => _i21.SendAboutCarSectionUseCase(
+              aboutCarSectionService: gh<_i20.IAboutCarSectionService>(),
+              userService: gh<_i20.IUserRepository>(),
+              uploadFile: gh<_i20.IUploadFile>(),
             ));
-    gh.factory<_i15.ISendAboutMeSectionUseCase>(
-        () => _i16.SendAboutMeSectionUseCase(
-              aboutMeSectionService: gh<_i15.IAboutMeSectionService>(),
-              userService: gh<_i15.IUserRepository>(),
-              uploadFile: gh<_i15.IUploadFile>(),
+    gh.factory<_i20.ISendAboutMeSectionUseCase>(
+        () => _i21.SendAboutMeSectionUseCase(
+              aboutMeSectionService: gh<_i20.IAboutMeSectionService>(),
+              userService: gh<_i20.IUserRepository>(),
+              uploadFile: gh<_i20.IUploadFile>(),
             ));
-    gh.factory<_i6.ISendCodeUseCase>(
-        () => _i11.SendCodeUseCase(gh<_i6.IPhoneAuthenticationService>()));
-    gh.factory<_i15.ISendDNISectionUseCase>(() => _i16.SendDNISectionUseCase(
-          dniSectionService: gh<_i15.IDNISectionService>(),
-          userService: gh<_i15.IUserRepository>(),
-          uploadFile: gh<_i15.IUploadFile>(),
+    gh.factory<_i7.ISendCodeUseCase>(
+        () => _i15.SendCodeUseCase(gh<_i7.IPhoneAuthenticationService>()));
+    gh.factory<_i20.ISendDNISectionUseCase>(() => _i21.SendDNISectionUseCase(
+          dniSectionService: gh<_i20.IDNISectionService>(),
+          userService: gh<_i20.IUserRepository>(),
+          uploadFile: gh<_i20.IUploadFile>(),
         ));
-    gh.factory<_i15.ISendDriverLicenseSectionUseCase>(() =>
-        _i16.SendDriverLicenseSectionUseCase(
-          driverLicenseSectionService: gh<_i15.IDriverLicenseSectionService>(),
-          userService: gh<_i15.IUserRepository>(),
-          uploadFile: gh<_i15.IUploadFile>(),
+    gh.factory<_i20.ISendDriverLicenseSectionUseCase>(() =>
+        _i21.SendDriverLicenseSectionUseCase(
+          driverLicenseSectionService: gh<_i20.IDriverLicenseSectionService>(),
+          userService: gh<_i20.IUserRepository>(),
+          uploadFile: gh<_i20.IUploadFile>(),
         ));
-    gh.factory<_i15.ISendDriverRequestUseCase>(
-        () => _i16.SendDriverRequestUseCase(
-              driverRequestService: gh<_i15.ISendDriverRequestService>(),
-              userService: gh<_i15.IUserRepository>(),
+    gh.factory<_i20.ISendDriverRequestUseCase>(
+        () => _i21.SendDriverRequestUseCase(
+              driverRequestService: gh<_i20.ISendDriverRequestService>(),
+              userService: gh<_i20.IUserRepository>(),
             ));
-    gh.factory<_i15.ISendNoCriminalRecordSectionUseCase>(
-        () => _i16.SendNoCriminalRecordSectionUseCase(
+    gh.factory<_i20.ISendNoCriminalRecordSectionUseCase>(
+        () => _i21.SendNoCriminalRecordSectionUseCase(
               noCriminalRecordSectionService:
-                  gh<_i15.INoCriminalRecordSectionService>(),
-              userService: gh<_i15.IUserRepository>(),
-              uploadFile: gh<_i15.IUploadFile>(),
+                  gh<_i20.INoCriminalRecordSectionService>(),
+              userService: gh<_i20.IUserRepository>(),
+              uploadFile: gh<_i20.IUploadFile>(),
             ));
-    gh.factory<_i15.ISendOwnerShipCardSectionUseCase>(() =>
-        _i16.SendOwnerShipCardSectionUseCase(
-          ownerShipCardSectionService: gh<_i15.IOwnerShipCardSectionService>(),
-          userService: gh<_i15.IUserRepository>(),
-          uploadFile: gh<_i15.IUploadFile>(),
+    gh.factory<_i20.ISendOwnerShipCardSectionUseCase>(() =>
+        _i21.SendOwnerShipCardSectionUseCase(
+          ownerShipCardSectionService: gh<_i20.IOwnerShipCardSectionService>(),
+          userService: gh<_i20.IUserRepository>(),
+          uploadFile: gh<_i20.IUploadFile>(),
         ));
-    gh.factory<_i15.ISendSoatSectionUseCase>(() => _i16.SendSoatSectionUseCase(
-          soatSectionService: gh<_i15.ISoatSectionService>(),
-          userService: gh<_i15.IUserRepository>(),
-          uploadFile: gh<_i15.IUploadFile>(),
+    gh.factory<_i20.ISendSoatSectionUseCase>(() => _i21.SendSoatSectionUseCase(
+          soatSectionService: gh<_i20.ISoatSectionService>(),
+          userService: gh<_i20.IUserRepository>(),
+          uploadFile: gh<_i20.IUploadFile>(),
         ));
-    gh.factory<_i15.ISendTechnicalReviewSectionUseCase>(
-        () => _i16.SendTechnicalReviewSectionUseCase(
+    gh.factory<_i20.ISendTechnicalReviewSectionUseCase>(
+        () => _i21.SendTechnicalReviewSectionUseCase(
               technicalReviewSectionService:
-                  gh<_i15.ITechnicalReviewSectionService>(),
-              userService: gh<_i15.IUserRepository>(),
-              uploadFile: gh<_i15.IUploadFile>(),
+                  gh<_i20.ITechnicalReviewSectionService>(),
+              userService: gh<_i20.IUserRepository>(),
+              uploadFile: gh<_i20.IUploadFile>(),
             ));
-    gh.factory<_i6.IUpdateProfileUseCase>(() =>
-        _i17.UpdateProfileUseCase(userRepository: gh<_i6.IUserRepository>()));
-    gh.factory<_i6.ILoginWithPhoneUseCase>(() =>
-        _i11.LoginWithPhoneUseCase(gh<_i6.IPhoneAuthenticationService>()));
+    gh.factory<_i7.IUpdateProfileUseCase>(() =>
+        _i23.UpdateProfileUseCase(userRepository: gh<_i7.IUserRepository>()));
+    gh.factory<_i7.ILoginWithPhoneUseCase>(() =>
+        _i15.LoginWithPhoneUseCase(gh<_i7.IPhoneAuthenticationService>()));
     return this;
   }
 }
 
-class _$FirebaseAppModule extends _i18.FirebaseAppModule {}
+class _$DioModule extends _i24.DioModule {}
 
-class _$AppCheckModule extends _i18.AppCheckModule {}
+class _$FirebaseAppModule extends _i24.FirebaseAppModule {}
 
-class _$FirebaseAuthModule extends _i18.FirebaseAuthModule {}
+class _$AppCheckModule extends _i24.AppCheckModule {}
 
-class _$FirestoreModule extends _i18.FirestoreModule {}
+class _$FirebaseAuthModule extends _i24.FirebaseAuthModule {}
 
-class _$FirebaseStorageModule extends _i18.FirebaseStorageModule {}
+class _$FirestoreModule extends _i24.FirestoreModule {}
+
+class _$FirebaseStorageModule extends _i24.FirebaseStorageModule {}

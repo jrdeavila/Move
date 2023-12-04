@@ -1,8 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+
+// ------------------------------------ Firebase ------------------------------------
 
 @module
 abstract class FirebaseAppModule {
@@ -51,4 +55,28 @@ abstract class FirebaseStorageModule {
         app: getIt<FirebaseApp>(),
         bucket: "gs://mevo-ceb14.appspot.com",
       );
+}
+
+// ------------------------------------ Dio ------------------------------------
+
+@module
+abstract class DioModule {
+  @lazySingleton
+  Dio get dio => Dio()
+    ..interceptors.addAll([
+      DioCacheInterceptor(
+        options: CacheOptions(
+          store: MemCacheStore(),
+          policy: CachePolicy.request,
+          hitCacheOnErrorExcept: [401, 403],
+        ),
+      ),
+      LogInterceptor(
+        request: true,
+        responseBody: true,
+        requestBody: true,
+        requestHeader: true,
+        responseHeader: true,
+      ),
+    ]);
 }

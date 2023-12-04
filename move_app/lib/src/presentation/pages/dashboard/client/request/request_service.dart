@@ -1,4 +1,5 @@
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:move_app/lib.dart';
 
 class RequestService extends GetView<RequestServiceCtrl> {
@@ -7,6 +8,7 @@ class RequestService extends GetView<RequestServiceCtrl> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Positioned.fill(
@@ -46,34 +48,31 @@ class RequestService extends GetView<RequestServiceCtrl> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Solicitar servicio',
-              style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            AddressField(
-              color: Colors.blue,
-              address: 'Calle 1 # 2 - 3',
-              onTap: () {
-                controller.openSearchAddress(context);
-              },
-            ),
+            Obx(() => AddressField(
+                  color: Colors.blue,
+                  name: controller.beginTravelPoint?.name ?? 'Recogida',
+                  address: controller.beginTravelPoint?.address ??
+                      'Dirección de recogida',
+                  onTap: () {
+                    controller.onEditingBeginAddress();
+                    controller.openSearchAddress(context);
+                  },
+                )),
             const SizedBox(height: 10.0),
-            AddressField(
-              color: Colors.redAccent,
-              address: 'Calle 1 # 2 - 3',
-              onTap: () {
-                controller.openSearchAddress(context);
-              },
-            ),
+            Obx(() => AddressField(
+                  color: Colors.redAccent,
+                  name: controller.endTravelPoint?.name ?? 'Llegada',
+                  address: controller.endTravelPoint?.address ??
+                      'Dirección de llegada',
+                  onTap: () {
+                    controller.onEditingEndAddress();
+                    controller.openSearchAddress(context);
+                  },
+                )),
             const SizedBox(height: 10.0),
             FeeButton(onTap: () {
               controller.openSetTee(context);
@@ -83,7 +82,9 @@ class RequestService extends GetView<RequestServiceCtrl> {
               width: double.infinity,
               child: ButtonClassic(
                 text: "Solicitar servicio",
-                onPressed: () {},
+                onPressed: () {
+                  controller.requestService(context);
+                },
                 color: Get.theme.colorScheme.primary,
               ),
             ),
@@ -125,22 +126,65 @@ class RequestService extends GetView<RequestServiceCtrl> {
             TileLayer(
               urlTemplate: mapsTileUrl,
             ),
-            MarkerLayer(
-              markers: [
-                Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: locationCtrl.currentLocation,
-                  rotate: true,
-                  child: const Icon(
-                    Icons.person_pin_circle,
-                    size: 45.0,
+            PolylineLayer(
+              polylines: [
+                if (controller.beginTravelPoint != null &&
+                    controller.endTravelPoint != null)
+                  Polyline(
+                    points: [
+                      LatLng(
+                        controller.beginTravelPoint!.latitude,
+                        controller.beginTravelPoint!.longitude,
+                      ),
+                      LatLng(
+                        controller.endTravelPoint!.latitude,
+                        controller.endTravelPoint!.longitude,
+                      ),
+                    ],
+                    strokeWidth: 4.0,
                     color: Colors.redAccent,
                   ),
-                ),
               ],
             ),
+            _buildMarkerLayer(),
           ],
         ));
+  }
+
+  MarkerLayer _buildMarkerLayer() {
+    return MarkerLayer(
+      markers: [
+        if (controller.beginTravelPoint != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              controller.beginTravelPoint!.latitude,
+              controller.beginTravelPoint!.longitude,
+            ),
+            rotate: true,
+            child: const Icon(
+              Icons.person_pin_circle,
+              size: 45.0,
+              color: Colors.redAccent,
+            ),
+          ),
+        if (controller.endTravelPoint != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              controller.endTravelPoint!.latitude,
+              controller.endTravelPoint!.longitude,
+            ),
+            rotate: true,
+            child: const Icon(
+              Icons.location_on,
+              size: 45.0,
+              color: Colors.blue,
+            ),
+          ),
+      ],
+    );
   }
 }

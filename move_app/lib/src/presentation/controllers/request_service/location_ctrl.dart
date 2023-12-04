@@ -13,7 +13,8 @@ class LocationCtrl extends GetxController {
   final Rx<LatLng?> _currentLocation = Rx<LatLng?>(null);
 
   // --------------------- Getters ---------------------
-  LatLng get currentLocation => _currentLocation.value ?? const LatLng(0, 0);
+  LatLng get currentLocation =>
+      _currentLocation.value ?? const LatLng(10.4634, -73.2532);
 
   // --------------------- Lyfecycles ---------------------
 
@@ -23,6 +24,8 @@ class LocationCtrl extends GetxController {
     _requestPermissions();
     ever(_currentLocation, _saveLastLocation);
     ever(_currentLocation, _moveCamera);
+    ever(_currentLocation, _searchCurrentTravelPoint,
+        condition: (LatLng? location) => location != null);
     _getCurrentLocation();
   }
 
@@ -50,6 +53,18 @@ class LocationCtrl extends GetxController {
   void _moveCamera(LatLng? location) {
     if (location == null) return;
     mapCtrl.move(location, 15);
+  }
+
+  void _searchCurrentTravelPoint(LatLng? location) {
+    final useCase = getIt<IGetAddressByGeopointUseCase>();
+    useCase
+        .getAddress(GeoPointRequest(
+      latitude: location!.latitude,
+      longitude: location.longitude,
+    ))
+        .then((value) {
+      Get.find<RequestServiceCtrl>().setBeginTravelPoint(value);
+    });
   }
 
   // --------------------- Public Methods ---------------------

@@ -1,69 +1,40 @@
 import 'package:move_app/lib.dart';
 
-class TravelPoint {
-  String name;
-  String address;
-  double latitude;
-  double longitude;
-
-  TravelPoint({
-    required this.name,
-    required this.address,
-    required this.latitude,
-    required this.longitude,
-  });
-}
-
-enum PaymentType {
-  virtual,
-  cash,
-}
-
-class Payment {
-  final String name;
-  final PaymentType type;
-
-  Payment({
-    required this.name,
-    required this.type,
-  });
-}
-
-final payments = [
-  Payment(
-    name: "Efectivo",
-    type: PaymentType.cash,
-  ),
-  Payment(
-    name: "Nequi",
-    type: PaymentType.virtual,
-  ),
-  Payment(
-    name: "Bancolombia a la Mano",
-    type: PaymentType.virtual,
-  ),
-];
-
 class RequestServiceCtrl extends GetxController {
+  // -----------------------No Observable -------------------------------
+  bool editingBeginAddress = false;
+  bool editingEndAddress = false;
   // ----------------------- Observables -------------------------------
+  final RxList<TravelPoint> _addressessSearched = RxList();
 
   final Rx<TravelPoint?> _beginTravelPoint = Rx(null);
   final Rx<TravelPoint?> _endTravelPoint = Rx(null);
+  final RxDouble _teeValue = RxDouble(0);
 
   final RxList<Payment> _paymentsAbailables = RxList();
   final Rx<Payment> _currentPayment = Rx(payments.first);
 
   // ----------------------- Getters -------------------------------
 
+  List<TravelPoint> get addressessSearched => _addressessSearched;
   TravelPoint? get beginTravelPoint => _beginTravelPoint.value;
   TravelPoint? get endTravelPoint => _endTravelPoint.value;
   List<Payment> get paymentsAbailables => _paymentsAbailables;
   Payment get currentPayment => _currentPayment.value;
+  double get teeValue => _teeValue.value;
 
   // ----------------------- Setters -------------------------------
 
+  void setBeginTravelPoint(TravelPoint value) {
+    _beginTravelPoint.value = value;
+  }
+
   void setCurrentPayment(Payment payment) {
     _currentPayment.value = payment;
+  }
+
+  void setTeeValue(num unformattedValue) {
+    _teeValue.value = unformattedValue.toDouble();
   }
 
   // ----------------------- LifeCycle -------------------------------
@@ -77,10 +48,9 @@ class RequestServiceCtrl extends GetxController {
   // ----------------------- Private Methods -------------------------------
 
   void _fetchPayments() async {
-    // TODO: Implements Use Case
-
-    await Future.delayed(const Duration(seconds: 1));
-    _paymentsAbailables.addAll(payments);
+    final useCase = getIt<IGetPaymentsUseCase>();
+    final payments = await useCase.get();
+    _paymentsAbailables.value = payments;
     _currentPayment.value = payments.first;
   }
 
@@ -104,5 +74,54 @@ class RequestServiceCtrl extends GetxController {
         builder: (context) {
           return const SetTeeModal();
         });
+  }
+
+  void requestService(context) {
+    if (beginTravelPoint == null) {
+      openSearchAddress(context);
+      return;
+    }
+    if (endTravelPoint == null) {
+      openSearchAddress(context);
+      return;
+    }
+
+    if (teeValue == 0) {
+      openSetTee(context);
+      return;
+    }
+  }
+
+  void onEditingBeginAddress() {
+    editingBeginAddress = true;
+    editingEndAddress = false;
+  }
+
+  void onEditingEndAddress() {
+    editingBeginAddress = false;
+    editingEndAddress = true;
+  }
+
+  void searchTravelPoints(String query) async {
+    final useCase = getIt<IGetAddressesByQueryUseCase>();
+    final addresses = await useCase.getAddresses(
+      QueryAddressRequest(
+        query: query,
+        latitudeRef: Get.find<LocationCtrl>().currentLocation.latitude,
+        longitudeRef: Get.find<LocationCtrl>().currentLocation.longitude,
+      ),
+    );
+    _addressessSearched.value = addresses;
+  }
+
+  void selectTravelPoint(TravelPoint travelPoint) {
+    if (editingBeginAddress) {
+      _beginTravelPoint.value = travelPoint;
+      return;
+    }
+    if (editingEndAddress) {
+      _endTravelPoint.value = travelPoint;
+      return;
+    }
   }
 }
