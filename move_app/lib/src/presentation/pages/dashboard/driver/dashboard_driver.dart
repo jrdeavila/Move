@@ -10,10 +10,6 @@ class DashboardDriver extends GetView<SessionCtrl> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              leading: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.sort_rounded, color: Colors.black),
-              ),
               actions: [
                 IconButton(
                   onPressed: () {
@@ -63,8 +59,8 @@ class DashboardDriver extends GetView<SessionCtrl> {
                     description:
                         'Descubre las solicitudes de viaje de los pasajeros',
                     onPressed: () {
-                      // Get.to(() => const RequestService());
-                      Get.to(() => const ListService());
+                      controller.goToShowServices();
+                      // Get.to(() => const ListService());
                     },
                     width: 70,
                     height: 100,

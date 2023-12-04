@@ -17,7 +17,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
           ),
           Positioned(
             right: 16.0,
-            top: MediaQuery.of(context).size.height / 2.2 + 16.0,
+            top: MediaQuery.of(context).size.height / 2.3 + 16.0,
             child: _buildLocationButton(),
           ),
           Positioned(
@@ -26,72 +26,40 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             child: _buildBackButton(),
           ),
           Positioned.fill(
-            top: MediaQuery.of(context).size.height / 2.2 + 86.0,
-            child: _buildRequestForm(context),
+            child: _buildLoading(),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height / 2.3 + 86.0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _buildCurrentAction(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRequestForm(context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20.0,
-            offset: const Offset(0, -4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Obx(() => AddressField(
-                  color: Colors.blue,
-                  name: controller.beginTravelPoint?.name ?? 'Recogida',
-                  address: controller.beginTravelPoint?.address ??
-                      'Dirección de recogida',
-                  onTap: () {
-                    controller.onEditingBeginAddress();
-                    controller.openSearchAddress(context);
-                  },
-                )),
-            const SizedBox(height: 10.0),
-            Obx(() => AddressField(
-                  color: Colors.redAccent,
-                  name: controller.endTravelPoint?.name ?? 'Llegada',
-                  address: controller.endTravelPoint?.address ??
-                      'Dirección de llegada',
-                  onTap: () {
-                    controller.onEditingEndAddress();
-                    controller.openSearchAddress(context);
-                  },
-                )),
-            const SizedBox(height: 10.0),
-            FeeButton(onTap: () {
-              controller.openSetTee(context);
-            }),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ButtonClassic(
-                text: "Solicitar servicio",
-                onPressed: () {
-                  controller.requestService(context);
-                },
-                color: Get.theme.colorScheme.primary,
-              ),
+  Widget _buildCurrentAction(BuildContext context) {
+    final ListenCurrentServiceCtrl listenCurrentServiceCtrl =
+        Get.find<ListenCurrentServiceCtrl>();
+    return Obx(() {
+      if (listenCurrentServiceCtrl.currentRequestService != null) {
+        return const ServiceDetailsView();
+      }
+      return const FormRequestService();
+    });
+  }
+
+  Obx _buildLoading() {
+    return Obx(() => controller.loading
+        ? Container(
+            color: Colors.black.withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : const SizedBox.shrink());
   }
 
   FloatingActionButton _buildBackButton() {

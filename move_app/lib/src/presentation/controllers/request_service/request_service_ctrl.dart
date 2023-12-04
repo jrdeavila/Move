@@ -7,6 +7,7 @@ class RequestServiceCtrl extends GetxController {
   // ----------------------- Observables -------------------------------
   final RxList<TravelPoint> _addressessSearched = RxList();
   final RxList<Payment> _paymentsAbailables = RxList();
+  final RxBool _loading = RxBool(false);
 
   // Fields to request service
   final Rx<TravelPoint?> _beginTravelPoint = Rx(null);
@@ -16,6 +17,7 @@ class RequestServiceCtrl extends GetxController {
 
   // ----------------------- Getters -------------------------------
 
+  bool get loading => _loading.value;
   List<TravelPoint> get addressessSearched => _addressessSearched;
   TravelPoint? get beginTravelPoint => _beginTravelPoint.value;
   TravelPoint? get endTravelPoint => _endTravelPoint.value;
@@ -60,6 +62,40 @@ class RequestServiceCtrl extends GetxController {
     _addressessSearched.value = res;
   }
 
+  void _sendRequestService() async {
+    final sendServiceUseCase = getIt<ISendRequestServiceUseCase>();
+    final saveAddressUseCase = getIt<ISaveAddressUseCase>();
+    final request = SendRequestServiceRequest(
+      clientCreator: Get.find<SessionCtrl>().user!,
+      origin: beginTravelPoint!,
+      destination: endTravelPoint!,
+      tee: teeValue,
+      driver: null,
+      payment: currentPayment,
+    );
+    _loading.value = true;
+    await saveAddressUseCase
+        .saveAddress(
+          SaveAddressRequest(
+            tag: 'origin',
+            address: beginTravelPoint!,
+          ),
+        )
+        .onError((error, stackTrace) => _loading.value = false);
+    await saveAddressUseCase
+        .saveAddress(
+          SaveAddressRequest(
+            tag: 'destination',
+            address: endTravelPoint!,
+          ),
+        )
+        .onError((error, stackTrace) => _loading.value = false);
+    sendServiceUseCase
+        .sendRequestService(request)
+        .then((value) => _loading.value = false)
+        .onError((error, stackTrace) => _loading.value = false);
+  }
+
   // ----------------------- Public Methods -------------------------------
 
   void openSearchAddress(context) {
@@ -97,29 +133,7 @@ class RequestServiceCtrl extends GetxController {
       return;
     }
 
-    final sendServiceUseCase = getIt<ISendRequestServiceUseCase>();
-    final saveAddressUseCase = getIt<ISaveAddressUseCase>();
-    final request = SendRequestServiceRequest(
-      clientCreator: Get.find<SessionCtrl>().user!,
-      origin: beginTravelPoint!,
-      destination: endTravelPoint!,
-      tee: teeValue,
-      driver: null,
-      payment: currentPayment,
-    );
-    saveAddressUseCase.saveAddress(
-      SaveAddressRequest(
-        tag: 'origin',
-        address: beginTravelPoint!,
-      ),
-    );
-    saveAddressUseCase.saveAddress(
-      SaveAddressRequest(
-        tag: 'destination',
-        address: endTravelPoint!,
-      ),
-    );
-    sendServiceUseCase.sendRequestService(request);
+    _sendRequestService();
   }
 
   void onEditingBeginAddress() {

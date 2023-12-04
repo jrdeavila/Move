@@ -21,8 +21,18 @@ class SessionCtrl extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    _getStorage.remove("session_role");
     ever(_user, _routing);
+    ever(_user, _mountServicesOfUser,
+        condition: (AppUser? user) => user != null);
+    everAll([
+      _user,
+      _currentSessionRole,
+    ], _mountServicesOfUser, condition: (value) {
+      final user = value[0] as AppUser?;
+      final role = value[1] as AppUserRole?;
+
+      return user != null && role != null;
+    });
     _authenticationService.isAuthenticated().listen((event) {
       if (event) {
         var userId = _authenticationService.getUserUuid();
@@ -34,7 +44,6 @@ class SessionCtrl extends GetxController {
   void _routingAndRemember(AppUserRole? role) {
     if (role == null) return;
     if (role == AppUserRole.driver) {
-      Get.put(DriverRequestRegisterCtrl());
       Get.toNamed(DriverRequestRoutes.driverMode);
     } else {
       Get.offAllNamed(DashboardRoutes.homeClient);
@@ -46,8 +55,22 @@ class SessionCtrl extends GetxController {
       Get.offAllNamed(AuthenticationRoutes.login);
     } else {
       Get.addPages(ProfileRoutes.routes);
-      ever(_currentSessionRole, _routingAndRemember);
-      _currentSessionRole.value = _getCurrentSessionRole();
+      final currentRole = _getCurrentSessionRole();
+      _currentSessionRole.value = currentRole;
+      if (user.roles.contains(currentRole)) {
+        _routingAndRemember(currentRole);
+      } else {
+        _routingAndRemember(user.roles.first);
+      }
+    }
+  }
+
+  void _mountServicesOfUser(dynamic values) {
+    if (_currentSessionRole.value == AppUserRole.driver) {
+      Get.put(DriverRequestRegisterCtrl(), permanent: true);
+      Get.put(ShowListServiceCtrl(user: _user.value!), permanent: true);
+    } else {
+      Get.put(ListenCurrentServiceCtrl(user: _user.value!), permanent: true);
     }
   }
 
@@ -98,5 +121,9 @@ class SessionCtrl extends GetxController {
 
   void goToRequestService() {
     Get.toNamed(ProfileRoutes.requestService);
+  }
+
+  void goToShowServices() {
+    Get.toNamed(ProfileRoutes.showServices);
   }
 }

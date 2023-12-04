@@ -43,9 +43,8 @@ class ExceptionCtrl extends GetxController {
   }
 
   _defaultException(Object exception) {
-    return showSnackbar(
-      "Ups! Error desconocido 😱",
-      exception.toString(),
+    return printError(
+      info: exception.toString(),
     );
   }
 }

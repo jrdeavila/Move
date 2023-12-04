@@ -1,27 +1,7 @@
 import 'package:move_app/lib.dart';
 
-class ServiceAccepted extends StatefulWidget {
-  final TextEditingController paymentController;
-  final TextEditingController controllerInitialLocation;
-  final TextEditingController controllerFinalLocation;
-  final Function(bool) onVisibilityChanged;
-  const ServiceAccepted(
-      {super.key,
-      required this.paymentController,
-      required this.controllerInitialLocation,
-      required this.controllerFinalLocation,
-      required this.onVisibilityChanged});
-
-  @override
-  State<ServiceAccepted> createState() => _ServiceAcceptedState();
-}
-
-class _ServiceAcceptedState extends State<ServiceAccepted> {
-  void _onFinishButtonPressed() {
-    setState(() {
-      widget.onVisibilityChanged(true);
-    });
-  }
+class ServiceAcceptedPage extends StatelessWidget {
+  const ServiceAcceptedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +76,7 @@ class _ServiceAcceptedState extends State<ServiceAccepted> {
                           Padding(
                             padding: EdgeInsets.only(
                                 left: Dimensions.screenWidth * 0.03),
-                            child: Text('COP ${widget.paymentController.text}',
+                            child: Text('COP 3000',
                                 style: GoogleFonts.montserrat(
                                   color: Colors.black,
                                   fontSize: Dimensions.screenWidth * 0.045,
@@ -112,14 +92,14 @@ class _ServiceAcceptedState extends State<ServiceAccepted> {
               ],
             ),
           ),
-          CardDetails(
+          const CardDetails(
             color: Colors.blue,
-            adress: widget.controllerInitialLocation.text,
+            adress: "Calle 10 # 10 - 10",
             title: 'Origen',
           ),
-          CardDetails(
-            color: const Color.fromRGBO(255, 198, 65, 1),
-            adress: widget.controllerInitialLocation.text,
+          const CardDetails(
+            color: Color.fromRGBO(255, 198, 65, 1),
+            adress: "Calle 10 # 10 - 10",
             title: 'Destino',
           ),
           Padding(
@@ -129,7 +109,7 @@ class _ServiceAcceptedState extends State<ServiceAccepted> {
                 top: Dimensions.screenHeight * 0.01),
             child: ButtonClassic(
               text: "Cancelar",
-              onPressed: _onFinishButtonPressed,
+              onPressed: () {},
               color: const Color.fromRGBO(224, 26, 25, 1),
             ),
           ),

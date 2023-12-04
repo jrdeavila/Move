@@ -211,367 +211,217 @@ class CardCompound extends StatelessWidget {
   }
 }
 
-class CardService extends StatelessWidget {
-  final String user;
-  final String score;
-  final String price;
-  final String km;
-  final String time;
-  final String carName;
-  final String license;
-  final Color colorTextUser;
-  final VoidCallback onPressed;
-  const CardService(
-      {super.key,
-      required this.user,
-      required this.score,
-      required this.price,
-      required this.km,
-      required this.time,
-      required this.carName,
-      required this.license,
-      required this.onPressed,
-      required this.colorTextUser});
+class CardRequestService extends GetView<ShowListServiceCtrl> {
+  final RequestService requestService;
+  const CardRequestService({
+    super.key,
+    required this.requestService,
+  });
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(4, 0),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(-4, 0),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AddressInfo(
+            travelPoint: requestService.origin,
+          ),
+          const SizedBox(height: 10.0),
+          AddressInfo(
+            travelPoint: requestService.destination,
+            isOrigin: false,
+          ),
+          const SizedBox(height: 10.0),
+          _buildServiceDetails(),
+          const SizedBox(height: 10.0),
+          _buildActions(),
+        ],
+      ),
+    );
+  }
+
+  Row _buildActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        _buildActionButton(
+          color: Get.theme.colorScheme.primary,
+          text: "Contra Oferta",
+          onPressed: () => controller.showContraOffertModal(requestService),
+        ),
+        const SizedBox(width: 10.0),
+        _buildActionButton(
+          color: Colors.blueAccent,
+          text: "Aceptar",
+          onPressed: () => controller.acceptService(requestService),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButton({
+    required Color color,
+    required String text,
+    required VoidCallback onPressed,
+  }) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: Dimensions.screenWidth * 0.85,
-        height: Dimensions.screenHeight * 0.18,
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(140, 138, 142, 1),
+          color: color,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              width: Dimensions.screenWidth * 0.8,
-              height: Dimensions.screenHeight * 0.18,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Dimensions.screenWidth * 0.04),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        UserClassic(
-                          user: user,
-                          colorText: colorTextUser,
-                        ),
-                        SizedBox(
-                          height: Dimensions.screenHeight * 0.01,
-                        ),
-                        Container(
-                            width: Dimensions.screenWidth * 0.12,
-                            height: Dimensions.screenHeight * 0.03,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromRGBO(67, 67, 67, 1),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  size: 17,
-                                  color: Color.fromRGBO(255, 193, 7, 1),
-                                ),
-                                Text(
-                                  score,
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: Dimensions.screenWidth * 0.028,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: Dimensions.screenHeight * 0.01),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(price,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.07,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
-                            )),
-                        SizedBox(
-                          height: Dimensions.screenHeight * 0.005,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Icon(
-                              Icons.map_rounded,
-                              size: 17,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.01,
-                            ),
-                            Text(
-                              km,
-                              style: GoogleFonts.montserrat(
-                                fontSize: Dimensions.screenWidth * 0.028,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.015,
-                            ),
-                            const Icon(
-                              Icons.access_time_outlined,
-                              size: 17,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.01,
-                            ),
-                            Text(
-                              time,
-                              style: GoogleFonts.montserrat(
-                                fontSize: Dimensions.screenWidth * 0.028,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: Dimensions.screenHeight * 0.01),
-                          child: SizedBox(
-                            width: Dimensions.screenWidth * 0.39,
-                            child: Text(carName,
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.black,
-                                  fontSize: Dimensions.screenWidth * 0.038,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 1,
-                                )),
-                          ),
-                        ),
-                        Container(
-                          width: Dimensions.screenWidth * 0.26,
-                          height: Dimensions.screenHeight * 0.035,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: const Color.fromRGBO(140, 138, 142, 1),
-                          ),
-                          child: Center(
-                            child: Text(license,
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: Dimensions.screenWidth * 0.035,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1,
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
+        child: Text(
+          text,
+          style: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontSize: 14.0,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
   }
+
+  Row _buildServiceDetails() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Metodo de Pago',
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Row(
+                children: [
+                  iconByPaymentType(
+                    requestService.payment.type,
+                  ),
+                  Text(
+                    getPaymentNameByName(requestService.payment.name),
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 10.0),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Tarifa',
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Text(
+                doubleCurrencyFormatter(requestService.tee),
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class CardRequest extends StatelessWidget {
-  final String photo;
-  final String user;
-  final String price;
-  final String paymentType;
-  final Color colorText;
-  final String initialAdress;
-  final String endAdress;
-  final VoidCallback onPressedAccepted;
-  final VoidCallback onPressedOffer;
+class AddressInfo extends StatelessWidget {
+  const AddressInfo({
+    super.key,
+    required this.travelPoint,
+    this.isOrigin = true,
+  });
 
-  const CardRequest(
-      {super.key,
-      required this.photo,
-      required this.price,
-      required this.paymentType,
-      required this.onPressedAccepted,
-      required this.user,
-      required this.colorText,
-      required this.initialAdress,
-      required this.endAdress,
-      required this.onPressedOffer});
+  final TravelPoint travelPoint;
+  final bool isOrigin;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: Dimensions.screenHeight * 0.025,
-        left: Dimensions.screenWidth * 0.05,
-        right: Dimensions.screenWidth * 0.05,
-      ),
-      child: Container(
-        width: Dimensions.screenWidth * 0.85,
-        height: Dimensions.screenHeight * 0.23,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(169, 131, 44, 1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
           children: [
-            Container(
-              width: Dimensions.screenWidth * 0.86,
-              height: Dimensions.screenHeight * 0.23,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 198, 65, 1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: Dimensions.screenWidth * 0.02,
-                    top: Dimensions.screenHeight * 0.02),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: Dimensions.screenHeight * 0.02,
-                          right: Dimensions.screenWidth * 0.02),
-                      child: UserClassic(
-                        user: user,
-                        colorText: colorText,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(price,
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: Dimensions.screenWidth * 0.06,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1.2,
-                                )),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.03,
-                            ),
-                            Text(paymentType,
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: Dimensions.screenWidth * 0.035,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.2,
-                                )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: Dimensions.screenHeight * 0.005,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.place,
-                              size: 25,
-                              color: Colors.red,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.02,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.47,
-                              child: Text(initialAdress,
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.white,
-                                    fontSize: Dimensions.screenWidth * 0.035,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 1.2,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: Dimensions.screenHeight * 0.005,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.map_rounded,
-                              size: 25,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.02,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.47,
-                              child: Text(endAdress,
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.white,
-                                    fontSize: Dimensions.screenWidth * 0.035,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 1.2,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ButtonSmall(
-                              text: 'Aceptar',
-                              onPressed: onPressedAccepted,
-                              color: const Color.fromRGBO(169, 131, 44, 1),
-                              colorText: Colors.white,
-                              width: Dimensions.screenWidth * 0.26,
-                              height: Dimensions.screenHeight * 0.04,
-                            ),
-                            SizedBox(
-                              width: Dimensions.screenWidth * 0.02,
-                            ),
-                            ButtonSmall(
-                              text: 'Ofertar',
-                              onPressed: onPressedOffer,
-                              color: const Color.fromRGBO(169, 131, 44, 1),
-                              colorText: Colors.white,
-                              width: Dimensions.screenWidth * 0.26,
-                              height: Dimensions.screenHeight * 0.04,
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
+            Icon(
+              Icons.location_on,
+              color: isOrigin ? Colors.blueAccent : Colors.redAccent,
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: Text(
+                travelPoint.name,
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ],
         ),
-      ),
+        Text(
+          travelPoint.address,
+          style: GoogleFonts.montserrat(
+            fontSize: 14.0,
+          ),
+        ),
+      ],
     );
   }
 }

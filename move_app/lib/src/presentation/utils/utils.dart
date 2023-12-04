@@ -1,3 +1,4 @@
+export 'currency_formatter.dart';
 export 'dimensions.dart';
 export 'image_download.dart';
 export 'image_picker.dart';

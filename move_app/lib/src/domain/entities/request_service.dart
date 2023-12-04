@@ -8,14 +8,14 @@ enum RequestServiceStatus {
 }
 
 class RequestService {
-  final String uuid;
+  String uuid;
   final AppUser clientCreator;
-  final AppUser? driver;
+  AppUser? driver;
   final TravelPoint origin;
   final TravelPoint destination;
   final Payment payment;
   RequestServiceStatus status;
-  final double tee;
+  double tee;
 
   RequestService({
     required this.uuid,

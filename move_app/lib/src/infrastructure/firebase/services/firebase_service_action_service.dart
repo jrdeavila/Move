@@ -17,17 +17,21 @@ class FirebaseServiceActionService implements IServiceActionService {
   }
 
   @override
-  Stream<RequestService> listenCurrentRequestService() {
+  Stream<RequestService?> listenCurrentRequestService(AppUser clientCreator) {
     return _firestore
         .collection('services')
-        .where('status', whereNotIn: [
-          RequestServiceStatus.canceled.toString(),
-          RequestServiceStatus.finished.toString(),
+        .where("clientCreator", isEqualTo: clientCreator.uuid)
+        .where('status', whereIn: [
+          RequestServiceStatus.waiting.toString(),
+          RequestServiceStatus.started.toString(),
         ])
         .snapshots()
         .asyncMap((event) async {
+          if (event.docs.isEmpty) {
+            return Future.value(null);
+          }
           final creator = await _getUser(event.docs.first['clientCreator']);
-          final driver = event.docs.first['driver'] != null
+          final driver = event.docs.first.data()['driver'] != null
               ? await _getUser(event.docs.first['driver'])
               : null;
           return requestServiceFromMapWithUserAndDriver(
@@ -40,14 +44,7 @@ class FirebaseServiceActionService implements IServiceActionService {
 
   Future<AppUser> _getUser(String uuid) async {
     final user = await _firestore.collection('users').doc(uuid).get();
-    return AppUser(
-      uuid: user.id,
-      firstname: user['firstname'],
-      lastname: user['lastname'],
-      email: user['email'],
-      phone: user['phone'],
-      roles: user['roles'],
-    );
+    return userFromJson(user.data()!);
   }
 
   @override

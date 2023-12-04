@@ -29,6 +29,14 @@ class LocationCtrl extends GetxController {
     _getCurrentLocation();
   }
 
+  @override
+  void onClose() {
+    _currentLocation.close();
+    mapCtrl.dispose();
+
+    super.onClose();
+  }
+
   // --------------------- Private Methods ---------------------
 
   void _requestPermissions() async {

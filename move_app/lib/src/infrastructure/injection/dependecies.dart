@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -108,4 +109,11 @@ abstract class DatabaseModule {
       },
     );
   }
+}
+
+// ----------------------------- Audio Player --------------------------------
+@module
+abstract class AudioPlayerModule {
+  @lazySingleton
+  AudioPlayer get audioPlayer => AudioPlayer();
 }

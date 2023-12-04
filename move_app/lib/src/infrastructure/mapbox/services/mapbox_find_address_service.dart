@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:move_app/lib.dart';
-import 'package:move_app/src/infrastructure/mapbox/mapbox.dart';
 
 // @Injectable(as: IGetAddressByGeopointService)
 class MapBoxGetAddressByGeopointService

@@ -4,6 +4,7 @@ abstract class ProfileRoutes {
   static const String profile = '/profile';
   static const String details = '/details';
   static const String requestService = "/requestService";
+  static const String showServices = "/showServices";
 
   static final routes = [
     GetPage(
@@ -30,6 +31,14 @@ abstract class ProfileRoutes {
         middlewares: [
           VerifyAuth(),
         ]),
+
+    GetPage(
+        name: showServices,
+        page: () => const ListServicePage(),
+        middlewares: [
+          VerifyAuth(),
+        ]),
+
     // ------------------------------------------------------------
     DriverRequestRoutes.routes.firstWhere(
       (element) => element.name == DriverRequestRoutes.driverMode,

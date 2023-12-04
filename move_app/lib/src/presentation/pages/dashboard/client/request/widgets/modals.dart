@@ -254,7 +254,10 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
             const SizedBox(
               height: 10.0,
             ),
-            _buildCurrencyTextInput(),
+            CurrencyTextInputModal(
+              initialValue: controller.teeValue,
+              onChanged: controller.setTeeValue,
+            ),
             const SizedBox(
               height: 5.0,
             ),
@@ -289,8 +292,17 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
       ),
     );
   }
+}
 
-  TextFormField _buildCurrencyTextInput() {
+class CurrencyTextInputModal extends StatelessWidget {
+  const CurrencyTextInputModal(
+      {super.key, this.initialValue, required this.onChanged});
+
+  final double? initialValue;
+  final ValueChanged<num> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
     final formatter = CurrencyTextInputFormatter(
       decimalDigits: 0,
       symbol: "",
@@ -304,8 +316,8 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
       ),
       inputFormatters: [formatter],
       keyboardType: TextInputType.number,
-      onChanged: (_) => controller.setTeeValue(formatter.getUnformattedValue()),
-      initialValue: formatter.formatDouble(controller.teeValue),
+      onChanged: (_) => onChanged(formatter.getUnformattedValue()),
+      initialValue: formatter.formatDouble(initialValue ?? 0.0),
       decoration: InputDecoration(
         hintText: "8000",
         hintStyle: const TextStyle(
