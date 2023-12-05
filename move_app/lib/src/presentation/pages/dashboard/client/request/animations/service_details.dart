@@ -33,7 +33,7 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
             child: Text(
               'Espera a que un conductor acepte tu servicio',
               style: GoogleFonts.montserrat(
-                color: Colors.black,
+                color: Colors.grey[600],
                 fontSize: Dimensions.screenWidth * 0.06,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1,
@@ -41,11 +41,13 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
               textAlign: TextAlign.center,
             ),
           ),
-          Text('COP ${controller.currentRequestService?.tee}',
+          Text(
+              doubleCurrencyFormatter(
+                  controller.currentRequestService?.tee ?? 0),
               style: GoogleFonts.montserrat(
                 color: Colors.black,
                 fontSize: Dimensions.screenWidth * 0.06,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 letterSpacing: 1,
               )),
           CardDetails(

@@ -28,6 +28,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
           Positioned.fill(
             child: _buildLoading(),
           ),
+          _buildCounterOfferts(context),
           Positioned(
             top: MediaQuery.of(context).size.height / 2.3 + 86.0,
             bottom: 0,
@@ -38,6 +39,52 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
         ],
       ),
     );
+  }
+
+  Widget _buildCounterOfferts(context) {
+    final ListenCurrentServiceCtrl listenCurrentServiceCtrl =
+        Get.find<ListenCurrentServiceCtrl>();
+    return Obx(() {
+      if (listenCurrentServiceCtrl.currentRequestService?.status ==
+          RequestServiceStatus.started) {
+        return Positioned(
+          child: Container(),
+        );
+      }
+      if (listenCurrentServiceCtrl.listCounterOffers.isEmpty) {
+        return Positioned(child: Container());
+      }
+      return Positioned.fill(
+        bottom: MediaQuery.of(context).size.height / 2.3,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.05),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 6.0,
+                offset: const Offset(0.0, -4.0),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.only(top: kToolbarHeight),
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final offer = listenCurrentServiceCtrl.listCounterOffers[index];
+              return OfferCardItem(
+                offer: offer,
+              );
+            },
+            itemCount: listenCurrentServiceCtrl.listCounterOffers.length,
+          ),
+        ),
+      );
+    });
   }
 
   Widget _buildCurrentAction(BuildContext context) {
@@ -102,6 +149,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             _buildPolylineLayer(),
             _buildMarkerLayer(),
             _buildDriverLocationLayer(),
+            _buildCurrentRequestServiceTravel(),
           ],
         ));
   }
@@ -121,6 +169,44 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             rotate: true,
             child: Icon(Icons.directions_car,
                 size: 45.0, color: Get.theme.colorScheme.primary),
+          ),
+      ],
+    );
+  }
+
+  MarkerLayer _buildCurrentRequestServiceTravel() {
+    final controller = Get.find<ListenCurrentServiceCtrl>();
+    return MarkerLayer(
+      markers: [
+        if (controller.currentRequestService != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              controller.currentRequestService!.origin.latitude,
+              controller.currentRequestService!.origin.longitude,
+            ),
+            rotate: true,
+            child: const Icon(
+              Icons.location_on,
+              size: 45.0,
+              color: Colors.blueAccent,
+            ),
+          ),
+        if (controller.currentRequestService != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              controller.currentRequestService!.destination.latitude,
+              controller.currentRequestService!.destination.longitude,
+            ),
+            rotate: true,
+            child: const Icon(
+              Icons.location_on,
+              size: 45.0,
+              color: Colors.redAccent,
+            ),
           ),
       ],
     );

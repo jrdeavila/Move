@@ -16,6 +16,19 @@ abstract class IListenDriverLocationUseCase {
   Stream<DriverLocation?> listen(ListenDriverLocationRequest request);
 }
 
+abstract class IListenRequestServiceCounterOffersUseCase {
+  Stream<List<RequestService>> listen(
+      ListenRequestServiceCounterOffersRequest request);
+}
+
+abstract class ICancelCounterOfferUseCase {
+  Future<void> cancelCounterOffer(CancelCounterOfferRequest request);
+}
+
+abstract class IAcceptCounterOfferUseCase {
+  Future<void> acceptCounterOffer(AcceptCounterOfferRequest request);
+}
+
 //-------------------------------- Driver --------------------------------
 
 abstract class IListenAllRequestServiceUseCase {
@@ -41,4 +54,12 @@ abstract class IUpdateProfileLocationDataUseCase {
 
 abstract class IFinishServiceDriverUseCase {
   Future<void> finish(FinishServiceDriverRequest request);
+}
+
+abstract class IGetServiceCommonOffertsUseCase {
+  Future<List<ServiceCommonOffert>> get();
+}
+
+abstract class IMarkAsViewedRequestServiceUseCase {
+  Future<void> markAsViewed(MarkAsViewedRequest request);
 }

@@ -51,10 +51,11 @@ class ListServicePage extends GetView<ShowListServiceCtrl> {
         return ListView.builder(
           itemCount: controller.listRequestService.length,
           itemBuilder: (context, index) {
-            final requestService = controller.listRequestService[index];
+            final requestServiceWithTimer =
+                controller.listRequestService[index];
 
             return CardRequestService(
-              requestService: requestService,
+              requestServiceWithTimer: requestServiceWithTimer,
             );
           },
         );

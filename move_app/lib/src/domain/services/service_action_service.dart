@@ -4,6 +4,13 @@ abstract class IServiceActionService {
   Future<void> sendRequestService(RequestService request);
   Future<void> cancelRequestService(RequestService request);
   Stream<RequestService?> listenCurrentRequestService(AppUser clientCreator);
+  Future<void> acceptCounterOffer(
+      RequestService requestService, RequestService counterOffer);
+  Stream<List<RequestService>> getRequestServiceCounterOffers(
+      RequestService requestService);
+
+  Future<void> cancelCounterOffer(
+      RequestService requestService, RequestService counterOffer);
 }
 
 // -------------------------------- Driver --------------------------------
@@ -26,4 +33,10 @@ abstract class IGetDriverLocationService {
 
 abstract class IServiceFinishDriverActionService {
   Future<void> finish(RequestService requestService);
+}
+
+class IMarkAsViewedRequestServiceService {
+  Future<void> markAsViewed(RequestService requestService, AppUser driver) {
+    throw UnimplementedError();
+  }
 }

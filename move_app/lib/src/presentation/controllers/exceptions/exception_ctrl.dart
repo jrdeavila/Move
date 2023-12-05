@@ -21,6 +21,12 @@ class ExceptionCtrl extends GetxController {
       case DioException:
         _dioException(exception as DioException);
         break;
+      case ExceptionMessage:
+        showSnackbar(
+          "Ups! Algo salió mal 😢",
+          exception.toString(),
+        );
+        break;
       default:
         _defaultException(exception);
         break;

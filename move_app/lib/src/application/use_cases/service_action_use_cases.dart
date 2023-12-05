@@ -68,6 +68,54 @@ class ListenDriverLocationUseCase implements IListenDriverLocationUseCase {
   }
 }
 
+@Injectable(as: IListenRequestServiceCounterOffersUseCase)
+class ListenRequestServiceCounterOffersUseCase
+    implements IListenRequestServiceCounterOffersUseCase {
+  final IServiceActionService _serviceActionService;
+
+  ListenRequestServiceCounterOffersUseCase({
+    required IServiceActionService serviceActionService,
+  }) : _serviceActionService = serviceActionService;
+  @override
+  Stream<List<RequestService>> listen(
+      ListenRequestServiceCounterOffersRequest request) {
+    return _serviceActionService
+        .getRequestServiceCounterOffers(request.requestService);
+  }
+}
+
+@Injectable(as: IAcceptCounterOfferUseCase)
+class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
+  final IServiceActionService _serviceActionService;
+
+  AcceptCounterOfferUseCase({
+    required IServiceActionService serviceActionService,
+  }) : _serviceActionService = serviceActionService;
+  @override
+  Future<void> acceptCounterOffer(AcceptCounterOfferRequest request) {
+    return _serviceActionService.acceptCounterOffer(
+      request.requestService,
+      request.offer,
+    );
+  }
+}
+
+@Injectable(as: ICancelCounterOfferUseCase)
+class CancelCounterOfferUseCase implements ICancelCounterOfferUseCase {
+  final IServiceActionService _serviceActionService;
+
+  CancelCounterOfferUseCase({
+    required IServiceActionService serviceActionService,
+  }) : _serviceActionService = serviceActionService;
+  @override
+  Future<void> cancelCounterOffer(CancelCounterOfferRequest request) {
+    return _serviceActionService.cancelCounterOffer(
+      request.requestService,
+      request.offer,
+    );
+  }
+}
+
 // ------------------------------ Driver ------------------------------
 
 @Injectable(as: IListenAllRequestServiceUseCase)
@@ -103,18 +151,14 @@ class AcceptRequestServiceUseCase implements IAcceptRequestServiceUseCase {
 @Injectable(as: ISendCounterOfferUseCase)
 class SendCounterOfferUseCase implements ISendCounterOfferUseCase {
   final IServiceDriverActionService _serviceActionService;
-  final IGenerateUuid _generateUuid;
 
   SendCounterOfferUseCase({
     required IServiceDriverActionService serviceActionService,
-    required IGenerateUuid generateUuid,
-  })  : _serviceActionService = serviceActionService,
-        _generateUuid = generateUuid;
+  }) : _serviceActionService = serviceActionService;
   @override
   Future<void> sendCounterOffer(SendCounterOfferRequest request) {
     final counterOffer = request.requestService;
     counterOffer.driver = request.driver;
-    counterOffer.uuid = _generateUuid.generate();
     counterOffer.tee = request.counterOffer;
 
     return _serviceActionService.sendCounterOffer(
@@ -168,5 +212,42 @@ class FinishServiceDriverUseCase implements IFinishServiceDriverUseCase {
   @override
   Future<void> finish(FinishServiceDriverRequest request) {
     return _serviceActionService.finish(request.requestService);
+  }
+}
+
+@Injectable(as: IGetServiceCommonOffertsUseCase)
+class GetServiceCommonOffertsUseCase
+    implements IGetServiceCommonOffertsUseCase {
+  final IConsultServiceConfigurationService _configurationService;
+
+  GetServiceCommonOffertsUseCase({
+    required IConsultServiceConfigurationService configurationService,
+  }) : _configurationService = configurationService;
+
+  @override
+  Future<List<ServiceCommonOffert>> get() {
+    return _configurationService.get().then((value) {
+      final offerts = value.commonOfferts;
+      offerts.sort((a, b) => a.uses.compareTo(b.uses));
+      // Get only first 9 elements
+      return offerts.take(9).toList();
+    });
+  }
+}
+
+@Injectable(as: IMarkAsViewedRequestServiceUseCase)
+class MarkAsViewedRequestServiceUseCase
+    implements IMarkAsViewedRequestServiceUseCase {
+  final IMarkAsViewedRequestServiceService _markAsViewedRequestServiceService;
+
+  MarkAsViewedRequestServiceUseCase({
+    required IMarkAsViewedRequestServiceService
+        markAsViewedRequestServiceService,
+  }) : _markAsViewedRequestServiceService = markAsViewedRequestServiceService;
+
+  @override
+  Future<void> markAsViewed(MarkAsViewedRequest request) {
+    return _markAsViewedRequestServiceService.markAsViewed(
+        request.requestService, request.driver);
   }
 }

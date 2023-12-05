@@ -122,3 +122,22 @@ class FirebaseServiceFinishDriverActionService
     });
   }
 }
+
+@Injectable(as: IMarkAsViewedRequestServiceService)
+class FirebaseMarkAsViewedRequestServiceService
+    implements IMarkAsViewedRequestServiceService {
+  final FirebaseFirestore _firebaseFirestore;
+
+  FirebaseMarkAsViewedRequestServiceService({
+    required FirebaseFirestore firebaseFirestore,
+  }) : _firebaseFirestore = firebaseFirestore;
+  @override
+  Future<void> markAsViewed(RequestService requestService, AppUser driver) {
+    return _firebaseFirestore
+        .collection("services")
+        .doc(requestService.uuid)
+        .update({
+      "viewedBy": FieldValue.arrayUnion([driver.uuid])
+    });
+  }
+}

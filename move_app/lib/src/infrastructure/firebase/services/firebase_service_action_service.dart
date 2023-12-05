@@ -42,6 +42,47 @@ class FirebaseServiceActionService implements IServiceActionService {
         });
   }
 
+  @override
+  Stream<List<RequestService>> getRequestServiceCounterOffers(
+      RequestService requestService) async* {
+    final ref = _firestore.collection("services").doc(requestService.uuid);
+
+    yield* ref
+        .collection("counter_offer")
+        .where("status", isEqualTo: RequestServiceStatus.waiting.toString())
+        .snapshots()
+        .asyncMap((event) async {
+      final docsNoViewed = event.docs.where((doc) {
+        final clientViewed = doc.data()["viewedBy"] ?? [];
+        return !clientViewed.contains(requestService.clientCreator.uuid);
+      }).toList();
+
+      final List<RequestService> offers = await _getOffers(docsNoViewed);
+
+      return offers;
+    });
+  }
+
+  Future<List<RequestService>> _getOffers(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> docsNoViewed) async {
+    final List<RequestService> offers = [];
+
+    for (final counterOffer in docsNoViewed) {
+      final creator = await _getUser(counterOffer['clientCreator']);
+      final driver = counterOffer.data()['driver'] != null
+          ? await _getUser(counterOffer['driver'])
+          : null;
+      final requestService = requestServiceFromMapWithUserAndDriver(
+        counterOffer.data(),
+        clientCreator: creator,
+        driver: driver,
+      );
+      offers.add(requestService);
+    }
+
+    return offers;
+  }
+
   Future<AppUser> _getUser(String uuid) async {
     final user = await _firestore.collection('users').doc(uuid).get();
     return userFromJson(user.data()!);
@@ -53,6 +94,57 @@ class FirebaseServiceActionService implements IServiceActionService {
         .collection('services')
         .doc(request.uuid)
         .set(requestServiceToMap(request));
+  }
+
+  @override
+  Future<void> acceptCounterOffer(
+      RequestService requestService, RequestService counterOffer) async {
+    final driverIsAvailable = await _driverIsAvailable(counterOffer.driver!);
+    if (driverIsAvailable) {
+      await cancelRequestService(requestService);
+      await _acceptCounterOffer(requestService, counterOffer);
+      counterOffer.status = RequestServiceStatus.started;
+      await sendRequestService(counterOffer);
+    } else {
+      await cancelCounterOffer(requestService, counterOffer);
+      throw ExceptionMessage(code: 'driver-not-available');
+    }
+  }
+
+  Future<void> _acceptCounterOffer(
+      RequestService requestService, RequestService counterOffer) async {
+    final ref = _firestore.collection("services").doc(requestService.uuid);
+    return ref
+        .collection("counter_offer")
+        .doc(counterOffer.driver?.uuid)
+        .update({
+      'status': RequestServiceStatus.started.toString(),
+    });
+  }
+
+  @override
+  Future<void> cancelCounterOffer(
+      RequestService requestService, RequestService counterOffer) async {
+    final ref = _firestore.collection("services").doc(requestService.uuid);
+    return ref
+        .collection("counter_offer")
+        .doc(counterOffer.driver?.uuid)
+        .update({'status': RequestServiceStatus.canceled.toString()});
+  }
+
+  Future<bool> _driverIsAvailable(AppUser driver) async {
+    return _firestore
+        .collection('services')
+        .where(
+          'driver',
+          isEqualTo: driver.uuid,
+        )
+        .where(
+          'status',
+          isEqualTo: RequestServiceStatus.started.toString(),
+        )
+        .get()
+        .then((value) => !value.docs.isNotEmpty);
   }
 }
 

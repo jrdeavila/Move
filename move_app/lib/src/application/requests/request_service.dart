@@ -42,6 +42,34 @@ class ListenDriverLocationRequest {
   });
 }
 
+class ListenRequestServiceCounterOffersRequest {
+  final RequestService requestService;
+
+  ListenRequestServiceCounterOffersRequest({
+    required this.requestService,
+  });
+}
+
+class AcceptCounterOfferRequest {
+  final RequestService requestService;
+  final RequestService offer;
+
+  AcceptCounterOfferRequest({
+    required this.requestService,
+    required this.offer,
+  });
+}
+
+class CancelCounterOfferRequest {
+  CancelCounterOfferRequest({
+    required this.requestService,
+    required this.offer,
+  });
+
+  final RequestService requestService;
+  final RequestService offer;
+}
+
 // ------------------------------ Driver ------------------------------
 
 class SendCounterOfferRequest {
@@ -98,6 +126,16 @@ class FinishServiceDriverRequest {
   final RequestService requestService;
 
   FinishServiceDriverRequest({
+    required this.requestService,
+  });
+}
+
+class MarkAsViewedRequest {
+  final AppUser driver;
+  final RequestService requestService;
+
+  MarkAsViewedRequest({
+    required this.driver,
     required this.requestService,
   });
 }

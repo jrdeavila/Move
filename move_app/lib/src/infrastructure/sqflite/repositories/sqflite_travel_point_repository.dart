@@ -30,7 +30,7 @@ class SqfliteTravelPointRepository implements ITravelPointRepository {
     final checkIfExists = await _database.query(
       'travel_point',
       where: 'tag = ? AND latitude = ? AND longitude = ?',
-      whereArgs: [tag, address.latitude, address.longitude],
+      whereArgs: [tag, address.name, address.address],
     );
     if (checkIfExists.isNotEmpty) {
       return;

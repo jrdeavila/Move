@@ -255,6 +255,7 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
               height: 10.0,
             ),
             CurrencyTextInputModal(
+              focus: true,
               initialValue: controller.teeValue,
               onChanged: controller.setTeeValue,
             ),
@@ -294,15 +295,39 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
   }
 }
 
-class CurrencyTextInputModal extends StatelessWidget {
-  const CurrencyTextInputModal(
-      {super.key, this.initialValue, required this.onChanged});
+class CurrencyTextInputModal extends StatefulWidget {
+  const CurrencyTextInputModal({
+    super.key,
+    this.initialValue,
+    required this.onChanged,
+    this.focus = false,
+  });
 
   final double? initialValue;
   final ValueChanged<num> onChanged;
+  final bool focus;
+
+  @override
+  State<CurrencyTextInputModal> createState() => _CurrencyTextInputModalState();
+}
+
+class _CurrencyTextInputModalState extends State<CurrencyTextInputModal> {
+  final FocusNode _focusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focus) {
+      _focusNode.requestFocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      if (widget.focus) {
+        _focusNode.requestFocus();
+      }
+    });
     final formatter = CurrencyTextInputFormatter(
       decimalDigits: 0,
       symbol: "",
@@ -310,14 +335,15 @@ class CurrencyTextInputModal extends StatelessWidget {
       enableNegative: false,
     );
     return TextFormField(
+      focusNode: _focusNode,
       style: GoogleFonts.montserrat(
         fontSize: 40.0,
         fontWeight: FontWeight.bold,
       ),
       inputFormatters: [formatter],
       keyboardType: TextInputType.number,
-      onChanged: (_) => onChanged(formatter.getUnformattedValue()),
-      initialValue: formatter.formatDouble(initialValue ?? 0.0),
+      onChanged: (_) => widget.onChanged(formatter.getUnformattedValue()),
+      initialValue: formatter.formatDouble(widget.initialValue ?? 0.0),
       decoration: InputDecoration(
         hintText: "8000",
         hintStyle: const TextStyle(

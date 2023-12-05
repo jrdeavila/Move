@@ -26,6 +26,7 @@ class RequestService {
   final Payment payment;
   RequestServiceStatus status;
   double tee;
+  List<RequestService> offers = [];
 
   RequestService({
     required this.uuid,
