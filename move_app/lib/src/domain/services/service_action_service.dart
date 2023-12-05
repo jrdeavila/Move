@@ -13,6 +13,11 @@ abstract class IServiceActionService {
       RequestService requestService, RequestService counterOffer);
 }
 
+abstract interface class IChangeRequestServiceOfferService {
+  Future<void> changeRequestServiceOffer(
+      RequestService requestService, double offer);
+}
+
 // -------------------------------- Driver --------------------------------
 
 abstract class IServiceDriverActionService {

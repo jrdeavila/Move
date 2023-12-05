@@ -35,11 +35,20 @@ class ListenCurrentServiceCtrl extends GetxController {
   final Rx<LatLng?> _driverLocation = Rx(null);
   final RxList<TimeLyfeOfOffer> _listCounterOffers = <TimeLyfeOfOffer>[].obs;
 
+  final RxDouble _currentOffer = 0.0.obs;
+
   // ---------------------- Getters ----------------------
 
   RequestService? get currentRequestService => _currentRequestService.value;
   LatLng? get driverLocation => _driverLocation.value;
   List<TimeLyfeOfOffer> get listCounterOffers => _listCounterOffers;
+  double get currentOffer => _currentOffer.value;
+
+  bool get enableDecrementOffer500 =>
+      currentOffer <= (_currentRequestService.value?.tee ?? 0);
+
+  bool get onUpdatingCurrentOffer =>
+      _currentOffer.value != _currentRequestService.value?.tee;
 
   // ---------------------- LifeCycle ----------------------
 
@@ -47,6 +56,7 @@ class ListenCurrentServiceCtrl extends GetxController {
   void onReady() {
     super.onReady();
     ever(_currentRequestService, _routing);
+    ever(_currentRequestService, _updateCurrentOffer);
     everAll([
       _currentRequestService,
       _listCounterOffers,
@@ -65,6 +75,10 @@ class ListenCurrentServiceCtrl extends GetxController {
   }
 
   // ---------------------- Private Methods ----------------------
+
+  void _updateCurrentOffer(RequestService? requestService) {
+    _currentOffer.value = requestService?.tee ?? 0;
+  }
 
   void _listenCounterOffers(RequestService? requestService) {
     if (requestService != null) {
@@ -94,8 +108,6 @@ class ListenCurrentServiceCtrl extends GetxController {
             .toList();
         _listCounterOffers.value = itemsNotAdded;
       });
-    } else {
-      clearStreams();
     }
   }
 
@@ -180,5 +192,24 @@ class ListenCurrentServiceCtrl extends GetxController {
     _streamSubscription?.cancel();
     _streamSubscription = null;
     _driverLocation.value = null;
+  }
+
+  void decrementOffer500() {
+    _currentOffer.value -= 500;
+  }
+
+  void incrementOffer500() {
+    _currentOffer.value += 500;
+  }
+
+  void changeOffer() async {
+    final useCase = getIt<IChangeRequestServiceOfferUseCase>();
+    await useCase.changeRequestServiceOffer(
+      ChangeRequestServiceOfferRequest(
+        requestService: currentRequestService!,
+        offer: currentOffer,
+      ),
+    );
+    _currentRequestService.value?.tee = currentOffer;
   }
 }

@@ -41,15 +41,46 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
               textAlign: TextAlign.center,
             ),
           ),
-          Text(
-              doubleCurrencyFormatter(
-                  controller.currentRequestService?.tee ?? 0),
-              style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: Dimensions.screenWidth * 0.06,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Obx(() {
+                return CardActionButton(
+                  color: Colors.blueAccent,
+                  text: "- 500",
+                  disabled: controller.enableDecrementOffer500,
+                  onPressed: () {
+                    controller.decrementOffer500();
+                  },
+                );
+              }),
+              const SizedBox(
+                width: 20,
+              ),
+              Obx(() {
+                return Text(
+                    doubleCurrencyFormatter(
+                      controller.currentOffer,
+                    ),
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: Dimensions.screenWidth * 0.06,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ));
+              }),
+              const SizedBox(
+                width: 10,
+              ),
+              CardActionButton(
+                color: Colors.blueAccent,
+                text: "+ 500",
+                onPressed: () {
+                  controller.incrementOffer500();
+                },
+              ),
+            ],
+          ),
           CardDetails(
             color: Colors.blue,
             adress: controller.currentRequestService?.origin.address ??
@@ -67,13 +98,24 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
                 left: Dimensions.screenWidth * 0.1,
                 right: Dimensions.screenWidth * 0.1,
                 top: Dimensions.screenHeight * 0.01),
-            child: ButtonClassic(
-              text: "Cancelar",
-              onPressed: () {
-                controller.cancelRequestService();
-              },
-              color: const Color.fromRGBO(224, 26, 25, 1),
-            ),
+            child: Obx(() {
+              if (controller.onUpdatingCurrentOffer) {
+                return ButtonClassic(
+                  text: "Cambiar oferta",
+                  onPressed: () {
+                    controller.changeOffer();
+                  },
+                  color: Colors.blueAccent,
+                );
+              }
+              return ButtonClassic(
+                text: "Cancelar",
+                onPressed: () {
+                  controller.cancelRequestService();
+                },
+                color: const Color.fromRGBO(224, 26, 25, 1),
+              );
+            }),
           ),
         ],
       ),

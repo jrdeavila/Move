@@ -29,6 +29,11 @@ abstract class IAcceptCounterOfferUseCase {
   Future<void> acceptCounterOffer(AcceptCounterOfferRequest request);
 }
 
+abstract class IChangeRequestServiceOfferUseCase {
+  Future<void> changeRequestServiceOffer(
+      ChangeRequestServiceOfferRequest request);
+}
+
 //-------------------------------- Driver --------------------------------
 
 abstract class IListenAllRequestServiceUseCase {

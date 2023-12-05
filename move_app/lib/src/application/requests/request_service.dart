@@ -70,6 +70,16 @@ class CancelCounterOfferRequest {
   final RequestService offer;
 }
 
+class ChangeRequestServiceOfferRequest {
+  ChangeRequestServiceOfferRequest({
+    required this.requestService,
+    required this.offer,
+  });
+
+  final RequestService requestService;
+  final double offer;
+}
+
 // ------------------------------ Driver ------------------------------
 
 class SendCounterOfferRequest {

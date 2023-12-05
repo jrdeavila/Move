@@ -262,3 +262,22 @@ DriverLocation? driverLocationFromMap(GeoPoint? location) {
     longitude: location.longitude,
   );
 }
+
+@Injectable(as: IChangeRequestServiceOfferService)
+class FirebaseChangeRequestServiceOfferService
+    implements IChangeRequestServiceOfferService {
+  final FirebaseFirestore _firestore;
+
+  FirebaseChangeRequestServiceOfferService({
+    required FirebaseFirestore firestore,
+  }) : _firestore = firestore;
+
+  @override
+  Future<void> changeRequestServiceOffer(
+      RequestService requestService, double offer) {
+    return _firestore.collection("services").doc(requestService.uuid).update({
+      'tee': offer,
+      'viewedBy': [],
+    });
+  }
+}

@@ -197,20 +197,22 @@ class CardActionButton extends StatelessWidget {
     required this.color,
     required this.text,
     required this.onPressed,
+    this.disabled = false,
   });
 
   final Color color;
   final String text;
+  final bool disabled;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: disabled ? null : onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: color,
+          color: disabled ? Colors.grey[600] : color,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(

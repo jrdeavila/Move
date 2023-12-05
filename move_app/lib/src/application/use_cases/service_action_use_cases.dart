@@ -251,3 +251,22 @@ class MarkAsViewedRequestServiceUseCase
         request.requestService, request.driver);
   }
 }
+
+@Injectable(as: IChangeRequestServiceOfferUseCase)
+class ChangeRequestServiceOfferUseCase
+    implements IChangeRequestServiceOfferUseCase {
+  final IChangeRequestServiceOfferService _changeRequestServiceOfferService;
+
+  ChangeRequestServiceOfferUseCase({
+    required IChangeRequestServiceOfferService changeRequestServiceOfferService,
+  }) : _changeRequestServiceOfferService = changeRequestServiceOfferService;
+
+  @override
+  Future<void> changeRequestServiceOffer(
+      ChangeRequestServiceOfferRequest request) {
+    return _changeRequestServiceOfferService.changeRequestServiceOffer(
+      request.requestService,
+      request.offer,
+    );
+  }
+}
