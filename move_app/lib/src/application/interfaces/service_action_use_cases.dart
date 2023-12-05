@@ -68,3 +68,11 @@ abstract class IGetServiceCommonOffertsUseCase {
 abstract class IMarkAsViewedRequestServiceUseCase {
   Future<void> markAsViewed(MarkAsViewedRequest request);
 }
+
+abstract class ICallClientUseCase {
+  Future<void> call(CallClientRequest request);
+}
+
+abstract class IChatWithClientUseCase {
+  Future<void> chat(ChatWithClientRequest request);
+}

@@ -61,6 +61,7 @@ dependencies:
   pin_code_fields: ^8.0.1
   sqflite: ^2.3.0
   syncfusion_flutter_pdfviewer: ^23.1.44
+  url_launcher: ^6.2.1
   uuid: ^4.2.1
 
 dev_dependencies:

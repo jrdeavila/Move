@@ -40,8 +40,14 @@ abstract class IServiceFinishDriverActionService {
   Future<void> finish(RequestService requestService);
 }
 
-class IMarkAsViewedRequestServiceService {
-  Future<void> markAsViewed(RequestService requestService, AppUser driver) {
-    throw UnimplementedError();
-  }
+abstract class IMarkAsViewedRequestServiceService {
+  Future<void> markAsViewed(RequestService requestService, AppUser driver);
+}
+
+abstract interface class IChatWithClientService {
+  Future<void> chat(AppUser client);
+}
+
+abstract interface class ICallClientService {
+  Future<void> call(AppUser client);
 }

@@ -270,3 +270,31 @@ class ChangeRequestServiceOfferUseCase
     );
   }
 }
+
+@Injectable(as: ICallClientUseCase)
+class CallClientUseCase implements ICallClientUseCase {
+  final ICallClientService _callClientService;
+
+  CallClientUseCase({
+    required ICallClientService callClientService,
+  }) : _callClientService = callClientService;
+
+  @override
+  Future<void> call(CallClientRequest request) {
+    return _callClientService.call(request.client);
+  }
+}
+
+@Injectable(as: IChatWithClientUseCase)
+class ChatWithClientUseCase implements IChatWithClientUseCase {
+  final IChatWithClientService _chatWithClientService;
+
+  ChatWithClientUseCase({
+    required IChatWithClientService chatWithClientService,
+  }) : _chatWithClientService = chatWithClientService;
+
+  @override
+  Future<void> chat(ChatWithClientRequest request) {
+    return _chatWithClientService.chat(request.client);
+  }
+}

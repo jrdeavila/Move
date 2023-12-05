@@ -63,4 +63,22 @@ class ListenDriverCurrentServiceCtrl extends GetxController {
         .then((value) => _loading.value = false)
         .onError((error, stackTrace) => _loading.value = false);
   }
+
+  void callClient() {
+    final useCase = getIt<ICallClientUseCase>();
+    useCase.call(
+      CallClientRequest(
+        client: currentRequestService!.clientCreator,
+      ),
+    );
+  }
+
+  void chatWithClient() {
+    final useCase = getIt<IChatWithClientUseCase>();
+    useCase.chat(
+      ChatWithClientRequest(
+        client: currentRequestService!.clientCreator,
+      ),
+    );
+  }
 }

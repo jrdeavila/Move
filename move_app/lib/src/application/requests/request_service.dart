@@ -149,3 +149,15 @@ class MarkAsViewedRequest {
     required this.requestService,
   });
 }
+
+class ChatWithClientRequest {
+  final AppUser client;
+
+  ChatWithClientRequest({required this.client});
+}
+
+class CallClientRequest {
+  final AppUser client;
+
+  CallClientRequest({required this.client});
+}

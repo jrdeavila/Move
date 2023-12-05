@@ -92,14 +92,18 @@ class ServiceDetailsDriver extends GetView<ListenDriverCurrentServiceCtrl> {
                       children: [
                         InteractButtonIcon(
                           icon: Icons.phone,
-                          onTap: () {},
+                          onTap: () {
+                            controller.callClient();
+                          },
                         ),
                         const SizedBox(
                           width: 10.0,
                         ),
                         InteractButtonIcon(
                           icon: Icons.chat,
-                          onTap: () {},
+                          onTap: () {
+                            controller.chatWithClient();
+                          },
                         )
                       ],
                     ),
