@@ -1,97 +1,174 @@
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:move_app/lib.dart';
 
-class ServiceAcceptedDriver extends StatefulWidget {
-  const ServiceAcceptedDriver({Key? key}) : super(key: key);
-
-  @override
-  State<ServiceAcceptedDriver> createState() => _ServiceAcceptedDriverState();
-}
-
-class _ServiceAcceptedDriverState extends State<ServiceAcceptedDriver> {
-  final String controllerInitialLocation = 'Cll 7a.24-31 la esperanza';
-  final String controllerFinalLocation = 'los cortijos';
-  final String paymentController = '8000';
-
-  bool isServiceDetailVisible = true;
-  bool serviceCompleted = false;
-  bool isServiceCanceledVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-    requestLocationPermission();
-  }
-
-  Future<void> requestLocationPermission() async {}
-
-  Widget serviceCanceled() {
-    return Positioned(
-        top: Dimensions.screenHeight * 0.46,
-        child: ServiceCanceledDriver(
-          onVisibilityChangedServiceCanceled: (isCanceled) {
-            setState(() {
-              isServiceCanceledVisible = isCanceled;
-            });
-          },
-        ));
-  }
-
-  Widget serviceDetails() {
-    return Positioned(
-        top: Dimensions.screenHeight * 0.5,
-        child: ServiceDetailsDriver(
-          paymentController: paymentController,
-          controllerInitialLocation: controllerInitialLocation,
-          controllerFinalLocation: controllerFinalLocation,
-          onVisibilityChanged: (isVisible) {
-            setState(() {
-              serviceCompleted = isVisible;
-            });
-          },
-          onVisibilityCancelService: (isVisibelForm) {
-            setState(() {
-              isServiceCanceledVisible = isVisibelForm;
-            });
-          },
-        ));
-  }
+class DriverCurrentServicePage extends GetView<ListenDriverCurrentServiceCtrl> {
+  const DriverCurrentServicePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SizedBox(
-        height: Dimensions.screenHeight * 1,
-        child: Stack(
-          children: [
-            Positioned(
-              top: Dimensions.screenHeight * 0.05,
-              left: Dimensions.screenWidth * 0.05,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 5.0,
-                      spreadRadius: 2.0,
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Get.offAll(() => const DashboardClient());
-                  },
-                  icon: const Icon(Icons.sort_rounded, color: Colors.black),
-                ),
-              ),
-            ),
-            serviceDetails(),
-            isServiceCanceledVisible ? serviceCanceled() : const SizedBox(),
-          ],
-        ),
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            bottom: MediaQuery.of(context).size.height / 3,
+            child: _buildMap(),
+          ),
+          Positioned(
+            right: 16.0,
+            top: MediaQuery.of(context).size.height / 2.3 + 16.0,
+            child: _buildLocationButton(),
+          ),
+          Positioned(
+            left: 16.0,
+            top: MediaQuery.of(context).padding.top + 16.0,
+            child: _buildBackButton(),
+          ),
+          Positioned.fill(
+            child: _buildLoading(),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height / 2.3 + 86.0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _buildCurrentAction(context),
+          ),
+        ],
       ),
+    );
+  }
+
+  Obx _buildLoading() {
+    return Obx(() => controller.loading
+        ? Container(
+            color: Colors.black.withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : const SizedBox.shrink());
+  }
+
+  FloatingActionButton _buildBackButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        Get.back();
+      },
+      child: const Icon(Icons.arrow_back),
+    );
+  }
+
+  FloatingActionButton _buildLocationButton() {
+    final locationCtrl = Get.find<DriverLocationCtrl>();
+    return FloatingActionButton(
+      heroTag: "navigation_button",
+      onPressed: () {
+        locationCtrl.moveCameraToCurrentLocation();
+      },
+      child: const Icon(Icons.navigation_rounded),
+    );
+  }
+
+  Widget _buildCurrentAction(BuildContext context) {
+    final listenDriverCurrentServiceCtrl =
+        Get.find<ListenDriverCurrentServiceCtrl>();
+    return Obx(() {
+      if (listenDriverCurrentServiceCtrl.currentRequestService != null) {
+        return const ServiceDetailsDriver();
+      }
+
+      return const SizedBox.shrink();
+    });
+  }
+
+  Widget _buildMap() {
+    final locationCtrl = Get.find<DriverLocationCtrl>();
+    locationCtrl.mapInitialized();
+    return Obx(() => FlutterMap(
+          mapController: locationCtrl.mapCtrl,
+          options: MapOptions(
+            initialCenter: locationCtrl.currentLocation,
+            initialZoom: 15.0,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: mapsTileUrl,
+            ),
+            PolylineLayer(
+              polylines: [
+                if (controller.currentRequestService != null)
+                  Polyline(
+                    points: [
+                      LatLng(
+                        controller.currentRequestService!.origin.latitude,
+                        controller.currentRequestService!.origin.longitude,
+                      ),
+                      LatLng(
+                        controller.currentRequestService!.destination.latitude,
+                        controller.currentRequestService!.destination.longitude,
+                      ),
+                    ],
+                    strokeWidth: 4.0,
+                    color: Colors.redAccent,
+                  ),
+              ],
+            ),
+            _buildMarkerLayer(),
+          ],
+        ));
+  }
+
+  MarkerLayer _buildMarkerLayer() {
+    final locationCtrl = Get.find<DriverLocationCtrl>();
+    return MarkerLayer(
+      markers: [
+        if (controller.currentRequestService != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              controller.currentRequestService!.origin.latitude,
+              controller.currentRequestService!.origin.longitude,
+            ),
+            rotate: true,
+            child: const Icon(
+              Icons.location_on,
+              size: 45.0,
+              color: Colors.blueAccent,
+            ),
+          ),
+        if (controller.currentRequestService != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              controller.currentRequestService!.destination.latitude,
+              controller.currentRequestService!.destination.longitude,
+            ),
+            rotate: true,
+            child: const Icon(
+              Icons.location_on,
+              size: 45.0,
+              color: Colors.redAccent,
+            ),
+          ),
+        Marker(
+          width: 80.0,
+          height: 80.0,
+          point: LatLng(
+            locationCtrl.currentLocation.latitude,
+            locationCtrl.currentLocation.longitude,
+          ),
+          rotate: true,
+          child: Icon(
+            Icons.directions_car,
+            size: 45.0,
+            color: Get.theme.colorScheme.primary,
+          ),
+        ),
+      ],
     );
   }
 }

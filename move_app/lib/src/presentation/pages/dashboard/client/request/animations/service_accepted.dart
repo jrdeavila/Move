@@ -1,7 +1,7 @@
 import 'package:move_app/lib.dart';
 
-class ServiceAcceptedPage extends StatelessWidget {
-  const ServiceAcceptedPage({super.key});
+class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
+  const ServiceAccepted({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,34 +15,38 @@ class ServiceAcceptedPage extends StatelessWidget {
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, -5),
+          )
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 20.0,
+        horizontal: 10.0,
       ),
       child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: Dimensions.screenHeight * 0.035,
-              bottom: Dimensions.screenHeight * 0.02,
-            ),
-            child: Row(
-              children: [
-                const UserProfile(
-                  user: 'Pedro Miguel',
-                  score: '4,5',
-                  colorText: Colors.black,
-                ),
-                Column(
+          Row(
+            children: [
+              Obx(() => UserProfile(
+                    user:
+                        "${controller.currentRequestService!.driver?.firstname}",
+                    score: '4,5',
+                    colorText: Colors.black,
+                  )),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: Dimensions.screenWidth * 0.6,
-                      child: Text('Su movil llegara aproximadamente en 3 min',
-                          style: GoogleFonts.montserrat(
-                            color: Colors.black,
-                            fontSize: Dimensions.screenWidth * 0.04,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1,
-                          )),
-                    ),
+                    Text('El conductor llegara en 5 minutos',
+                        style: GoogleFonts.montserrat(
+                          color: Colors.black,
+                          fontSize: Dimensions.screenWidth * 0.04,
+                          fontWeight: FontWeight.w500,
+                        )),
                     Text('Negro Kia Picanto',
                         style: GoogleFonts.montserrat(
                           color: Colors.black,
@@ -50,68 +54,64 @@ class ServiceAcceptedPage extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           letterSpacing: 1,
                         )),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(top: Dimensions.screenHeight * 0.01),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: Dimensions.screenWidth * 0.26,
-                            height: Dimensions.screenHeight * 0.035,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              color: const Color.fromRGBO(140, 138, 142, 1),
-                            ),
-                            child: Center(
-                              child: Text('IOZ320',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.white,
-                                    fontSize: Dimensions.screenWidth * 0.035,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 1,
-                                  )),
-                            ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: Dimensions.screenWidth * 0.26,
+                          height: Dimensions.screenHeight * 0.035,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: const Color.fromRGBO(140, 138, 142, 1),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: Dimensions.screenWidth * 0.03),
-                            child: Text('COP 3000',
+                          child: Center(
+                            child: Text('IOZ320',
                                 style: GoogleFonts.montserrat(
-                                  color: Colors.black,
-                                  fontSize: Dimensions.screenWidth * 0.045,
-                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                  fontSize: Dimensions.screenWidth * 0.035,
+                                  fontWeight: FontWeight.w600,
                                   letterSpacing: 1,
                                 )),
                           ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                            doubleCurrencyFormatter(
+                                controller.currentRequestService?.tee ?? 0),
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontSize: Dimensions.screenWidth * 0.045,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 1,
+                            )),
+                      ],
                     )
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const CardDetails(
-            color: Colors.blue,
-            adress: "Calle 10 # 10 - 10",
-            title: 'Origen',
-          ),
-          const CardDetails(
-            color: Color.fromRGBO(255, 198, 65, 1),
-            adress: "Calle 10 # 10 - 10",
-            title: 'Destino',
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                left: Dimensions.screenWidth * 0.1,
-                right: Dimensions.screenWidth * 0.1,
-                top: Dimensions.screenHeight * 0.01),
-            child: ButtonClassic(
-              text: "Cancelar",
-              onPressed: () {},
-              color: const Color.fromRGBO(224, 26, 25, 1),
-            ),
+          Obx(() => CardDetails(
+                color: Colors.blue,
+                adress: controller.currentRequestService?.origin.address ??
+                    "Direccion de origen",
+                title: 'Origen',
+              )),
+          Obx(() => CardDetails(
+                color: const Color.fromRGBO(255, 198, 65, 1),
+                adress: controller.currentRequestService?.destination.address ??
+                    "Direccion de destino",
+                title: 'Destino',
+              )),
+          const Spacer(),
+          ButtonClassic(
+            text: "Cancelar",
+            onPressed: () {
+              controller.cancelRequestService();
+            },
+            color: const Color.fromRGBO(224, 26, 25, 1),
           ),
         ],
       ),

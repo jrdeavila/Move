@@ -119,6 +119,7 @@ Map<String, dynamic> requestServiceToMap(RequestService request) {
   return {
     'uuid': request.uuid,
     'clientCreator': request.clientCreator.uuid,
+    'driver': request.driver?.uuid,
     'origin': {
       'name': request.origin.name,
       'address': request.origin.address,
@@ -138,4 +139,34 @@ Map<String, dynamic> requestServiceToMap(RequestService request) {
     'tee': request.tee,
     'status': request.status.toString(),
   };
+}
+
+@Injectable(as: IGetDriverLocationService)
+class FirebaseGetDriverLocationService implements IGetDriverLocationService {
+  final FirebaseFirestore _firestore;
+
+  FirebaseGetDriverLocationService({
+    required FirebaseFirestore firestore,
+  }) : _firestore = firestore;
+  @override
+  Stream<DriverLocation?> listen(AppUser driver) {
+    return _firestore
+        .collection('users')
+        .doc(driver.uuid)
+        .snapshots()
+        .map((event) {
+      return driverLocationFromMap(event.data()?['location'] as GeoPoint?);
+    });
+  }
+}
+
+DriverLocation? driverLocationFromMap(GeoPoint? location) {
+  if (location == null) {
+    return null;
+  }
+
+  return DriverLocation(
+    latitude: location.latitude,
+    longitude: location.longitude,
+  );
 }

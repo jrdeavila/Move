@@ -25,20 +25,33 @@ class DashboardDriver extends GetView<SessionCtrl> {
               padding: const EdgeInsets.all(20.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  Text('Bienvenido',
-                      style: GoogleFonts.montserrat(
-                        color: Colors.black,
-                        fontSize: Dimensions.screenWidth * 0.06,
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: 1.2,
-                      )),
-                  Obx(() => Text("${controller.user?.firstname}",
-                      style: GoogleFonts.montserrat(
-                        color: Colors.black,
-                        fontSize: Dimensions.screenWidth * 0.07,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.2,
-                      ))),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Bienvenido',
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.black,
+                                  fontSize: Dimensions.screenWidth * 0.06,
+                                  fontWeight: FontWeight.w300,
+                                  letterSpacing: 1.2,
+                                )),
+                            Obx(() => Text("${controller.user?.firstname}",
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.black,
+                                  fontSize: Dimensions.screenWidth * 0.07,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.2,
+                                ))),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      _buildBalanceSection(),
+                    ],
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(
                       vertical: Dimensions.screenHeight * 0.03,
@@ -97,5 +110,38 @@ class DashboardDriver extends GetView<SessionCtrl> {
             )
           ],
         ));
+  }
+
+  Column _buildBalanceSection() {
+    final driverBalanceCtrl = Get.find<DriverBalanceCtrl>();
+    return Column(
+      children: [
+        Text('Saldo actual',
+            style: GoogleFonts.montserrat(
+              color: Colors.black,
+              fontSize: Dimensions.screenWidth * 0.04,
+              fontWeight: FontWeight.w300,
+            )),
+        const SizedBox(height: 5),
+        Row(
+          children: [
+            Obx(() => Text(
+                doubleCurrencyFormatterWithoutSign(driverBalanceCtrl.balance),
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: Dimensions.screenWidth * 0.07,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.2,
+                ))),
+            const SizedBox(width: 5),
+            Icon(
+              Icons.attach_money,
+              color: Colors.yellow[700],
+              size: Dimensions.screenWidth * 0.07,
+            )
+          ],
+        ),
+      ],
+    );
   }
 }

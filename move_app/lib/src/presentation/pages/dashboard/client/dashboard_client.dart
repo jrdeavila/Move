@@ -41,20 +41,33 @@ class DashboardClientView extends GetView<SessionCtrl> {
           padding: const EdgeInsets.all(20.0),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              Text('Bienvenido',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.black,
-                    fontSize: Dimensions.screenWidth * 0.06,
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 1.2,
-                  )),
-              Obx(() => Text("${controller.user?.firstname}",
-                  style: GoogleFonts.montserrat(
-                    color: Colors.black,
-                    fontSize: Dimensions.screenWidth * 0.07,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                  ))),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Bienvenido',
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w300,
+                            )),
+                        Obx(() => Text(
+                            controller.user?.firstname ?? "Nombre de usuario",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2,
+                            ))),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  _buildPointSection(),
+                ],
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: Dimensions.screenHeight * 0.03,
@@ -106,6 +119,34 @@ class DashboardClientView extends GetView<SessionCtrl> {
             ]),
           ),
         )
+      ],
+    );
+  }
+
+  Column _buildPointSection() {
+    final clientPointsCtrl = Get.find<ClientPointCtrl>();
+    return Column(
+      children: [
+        Text('Puntos',
+            style: GoogleFonts.montserrat(
+              color: Colors.black,
+              fontSize: Dimensions.screenWidth * 0.04,
+              fontWeight: FontWeight.w300,
+            )),
+        const SizedBox(height: 5),
+        Row(
+          children: [
+            Obx(() => Text(clientPointsCtrl.points.toString(),
+                style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: Dimensions.screenWidth * 0.07,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.2,
+                ))),
+            const SizedBox(width: 5),
+            Icon(Icons.star, color: Colors.yellow[700]),
+          ],
+        ),
       ],
     );
   }

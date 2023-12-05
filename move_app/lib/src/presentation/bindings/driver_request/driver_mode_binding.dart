@@ -1,12 +1,5 @@
 import 'package:move_app/lib.dart';
 
-class DriverModeBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.put(DriverRequestRegisterCtrl());
-  }
-}
-
 class AboutMeBinding extends Bindings {
   @override
   void dependencies() {

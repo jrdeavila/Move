@@ -54,6 +54,20 @@ class ListenCurrentRequestServiceUseCase
   }
 }
 
+@Injectable(as: IListenDriverLocationUseCase)
+class ListenDriverLocationUseCase implements IListenDriverLocationUseCase {
+  final IGetDriverLocationService _getDriverLocationService;
+
+  ListenDriverLocationUseCase({
+    required IGetDriverLocationService getDriverLocationService,
+  }) : _getDriverLocationService = getDriverLocationService;
+
+  @override
+  Stream<DriverLocation?> listen(ListenDriverLocationRequest request) {
+    return _getDriverLocationService.listen(request.driver);
+  }
+}
+
 // ------------------------------ Driver ------------------------------
 
 @Injectable(as: IListenAllRequestServiceUseCase)
@@ -108,5 +122,51 @@ class SendCounterOfferUseCase implements ISendCounterOfferUseCase {
       counterOffer,
       request.driver,
     );
+  }
+}
+
+@Injectable(as: IListenCurrentRequestServiceDriverUseCase)
+class ListenCurrentRequestServiceDriverUseCase
+    implements IListenCurrentRequestServiceDriverUseCase {
+  final IServiceDriverActionService _serviceActionService;
+
+  ListenCurrentRequestServiceDriverUseCase({
+    required IServiceDriverActionService serviceActionService,
+  }) : _serviceActionService = serviceActionService;
+  @override
+  Stream<RequestService?> listen(
+      ListenCurrentRequestServiceDriverRequest request) {
+    return _serviceActionService.listenCurrentRequestService(request.driver);
+  }
+}
+
+@Injectable(as: IUpdateProfileLocationDataUseCase)
+class UpdateProfileLocationDataUseCase
+    implements IUpdateProfileLocationDataUseCase {
+  final IProfileService _profileService;
+
+  UpdateProfileLocationDataUseCase({
+    required IProfileService profileService,
+  }) : _profileService = profileService;
+  @override
+  Future<void> updateProfileData(UpdateProfileLocationDataRequest request) {
+    return _profileService.updateProfileLocationData(
+      request.user,
+      latitude: request.latitude,
+      longitude: request.longitude,
+    );
+  }
+}
+
+@Injectable(as: IFinishServiceDriverUseCase)
+class FinishServiceDriverUseCase implements IFinishServiceDriverUseCase {
+  final IServiceFinishDriverActionService _serviceActionService;
+
+  FinishServiceDriverUseCase({
+    required IServiceFinishDriverActionService serviceActionService,
+  }) : _serviceActionService = serviceActionService;
+  @override
+  Future<void> finish(FinishServiceDriverRequest request) {
+    return _serviceActionService.finish(request.requestService);
   }
 }

@@ -34,6 +34,14 @@ class ListenCurrentRequestServiceRequest {
   });
 }
 
+class ListenDriverLocationRequest {
+  final AppUser driver;
+
+  ListenDriverLocationRequest({
+    required this.driver,
+  });
+}
+
 // ------------------------------ Driver ------------------------------
 
 class SendCounterOfferRequest {
@@ -63,5 +71,33 @@ class ListenAllRequestServiceRequest {
 
   ListenAllRequestServiceRequest({
     required this.driver,
+  });
+}
+
+class ListenCurrentRequestServiceDriverRequest {
+  final AppUser driver;
+
+  ListenCurrentRequestServiceDriverRequest({
+    required this.driver,
+  });
+}
+
+class UpdateProfileLocationDataRequest {
+  final AppUser user;
+  final double latitude;
+  final double longitude;
+
+  UpdateProfileLocationDataRequest({
+    required this.user,
+    required this.latitude,
+    required this.longitude,
+  });
+}
+
+class FinishServiceDriverRequest {
+  final RequestService requestService;
+
+  FinishServiceDriverRequest({
+    required this.requestService,
   });
 }

@@ -1,153 +1,179 @@
 import 'package:move_app/lib.dart';
 
-class ServiceDetailsDriver extends StatefulWidget {
-  final String paymentController;
-  final String controllerInitialLocation;
-  final String controllerFinalLocation;
-  final Function(bool) onVisibilityChanged;
-  final Function(bool) onVisibilityCancelService;
-  const ServiceDetailsDriver(
-      {super.key,
-      required this.paymentController,
-      required this.controllerInitialLocation,
-      required this.controllerFinalLocation,
-      required this.onVisibilityChanged,
-      required this.onVisibilityCancelService});
-
-  @override
-  State<ServiceDetailsDriver> createState() => _ServiceDetailsDriverState();
-}
-
-class _ServiceDetailsDriverState extends State<ServiceDetailsDriver> {
-  void _onFinishButtonPressed() {
-    setState(() {
-      widget.onVisibilityChanged(true);
-    });
-  }
-
-  void _onFinishButtonPressedCancelSerivice() {
-    setState(() {
-      widget.onVisibilityCancelService(true);
-    });
-  }
+class ServiceDetailsDriver extends GetView<ListenDriverCurrentServiceCtrl> {
+  const ServiceDetailsDriver({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return FadeInUpBig(
-        child: Container(
-      width: Dimensions.screenWidth * 1,
-      height: Dimensions.screenHeight * 0.55,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: Dimensions.screenHeight * 0.035,
-              bottom: Dimensions.screenHeight * 0.02,
+    return FadeInUpBig(child: Obx(() {
+      return Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 20.0,
+              spreadRadius: 5.0,
+              offset: Offset(0.0, -5.0),
             ),
-            child: Row(
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 20.0,
+          horizontal: 20.0,
+        ),
+        child: Column(
+          children: [
+            Row(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: Dimensions.screenWidth * 0.085,
-                      right: Dimensions.screenWidth * 0.03),
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey,
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 40,
-                      color: Colors.white,
-                    ),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey,
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(
+                  width: 30.0,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          controller.currentRequestService?.clientCreator
+                                  .firstname ??
+                              'Nombre del cliente',
+                          style: GoogleFonts.montserrat(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1,
+                          )),
+                      Text(
+                          PhoneConvert.fromFirebase(
+                              numberPhone: controller.currentRequestService
+                                      ?.clientCreator.phone ??
+                                  "+570000000000"),
+                          style: GoogleFonts.montserrat(
+                            color: Colors.black,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 1,
+                          )),
+                      Text(
+                          getPaymentNameByName(
+                              controller.currentRequestService?.payment.name ??
+                                  'Efectivo'),
+                          style: GoogleFonts.montserrat(
+                            color: Colors.black,
+                            fontSize: Dimensions.screenWidth * 0.043,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1,
+                          )),
+                    ],
                   ),
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Pedro Miguel',
-                        style: GoogleFonts.montserrat(
-                          color: Colors.black,
-                          fontSize: Dimensions.screenWidth * 0.048,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 1,
-                        )),
-                    Text('3016487654',
-                        style: GoogleFonts.montserrat(
-                          color: Colors.black,
-                          fontSize: Dimensions.screenWidth * 0.045,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 1,
-                        )),
                     Row(
                       children: [
-                        Text('8000',
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.07,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                            )),
-                        SizedBox(
-                          width: Dimensions.screenWidth * 0.02,
+                        InteractButtonIcon(
+                          icon: Icons.phone,
+                          onTap: () {},
                         ),
-                        Text('Efectivo',
-                            style: GoogleFonts.montserrat(
-                              color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.043,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1,
-                            )),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        InteractButtonIcon(
+                          icon: Icons.chat,
+                          onTap: () {},
+                        )
                       ],
                     ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                        doubleCurrencyFormatter(
+                            controller.currentRequestService?.tee ?? 0),
+                        style: GoogleFonts.montserrat(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        )),
                   ],
                 ),
               ],
             ),
-          ),
-          CardDetails(
-            color: Colors.blue,
-            adress: widget.controllerInitialLocation,
-            title: 'Origen',
-          ),
-          CardDetails(
-            color: const Color.fromRGBO(255, 198, 65, 1),
-            adress: widget.controllerInitialLocation,
-            title: 'Destino',
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                left: Dimensions.screenWidth * 0.1,
-                right: Dimensions.screenWidth * 0.1,
-                top: Dimensions.screenHeight * 0.015),
-            child: ButtonClassic(
+            const SizedBox(
+              height: 10.0,
+            ),
+            CardDetails(
+              color: Colors.blue,
+              adress: controller.currentRequestService?.origin.address ??
+                  'Dirección de origen',
+              title: 'Origen',
+            ),
+            CardDetails(
+              color: const Color.fromRGBO(255, 198, 65, 1),
+              adress: controller.currentRequestService?.destination.address ??
+                  'Dirección de destino',
+              title: 'Destino',
+            ),
+            const Spacer(),
+            ButtonClassic(
               text: "Finalizar",
-              onPressed: _onFinishButtonPressed,
+              onPressed: () {
+                controller.finishService();
+              },
               color: const Color.fromRGBO(255, 198, 65, 1),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                left: Dimensions.screenWidth * 0.1,
-                right: Dimensions.screenWidth * 0.1,
-                top: Dimensions.screenHeight * 0.01),
-            child: ButtonBorderClassic(
-              text: "Cancelar servicio",
-              onPressed: _onFinishButtonPressedCancelSerivice,
-              borderColor: const Color.fromRGBO(224, 26, 25, 1),
-            ),
-          ),
-        ],
+          ],
+        ),
+      );
+    }));
+  }
+}
+
+class InteractButtonIcon extends StatelessWidget {
+  const InteractButtonIcon({
+    super.key,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.grey[300],
+        ),
+        child: Icon(
+          icon,
+        ),
       ),
-    ));
+    );
   }
 }

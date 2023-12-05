@@ -2,11 +2,20 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:move_app/lib.dart';
 
-class LocationCtrl extends GetxController {
+class DriverLocationCtrl extends GetxController {
   // -------------------- Final Variables --------------------
-
+  final AppUser user;
   final mapCtrl = MapController();
   final GetStorage _getStorage = GetStorage();
+
+  // --------------------- Constructor ---------------------
+
+  DriverLocationCtrl({
+    required this.user,
+  });
+
+  // ------------------- No Observable -------------------
+  bool _alreadyInitialized = false;
 
   // --------------------- Observables ---------------------
 
@@ -17,16 +26,15 @@ class LocationCtrl extends GetxController {
       _currentLocation.value ?? const LatLng(10.4634, -73.2532);
 
   // --------------------- Lyfecycles ---------------------
-
   @override
   void onReady() {
     super.onReady();
     _requestPermissions();
+    ever(_currentLocation, _saveInProfileData);
     ever(_currentLocation, _saveLastLocation);
     ever(_currentLocation, _moveCamera);
-    ever(_currentLocation, _searchCurrentTravelPoint,
-        condition: (LatLng? location) => location != null);
-    _getCurrentLocation();
+
+    _listenLocation();
   }
 
   @override
@@ -38,6 +46,26 @@ class LocationCtrl extends GetxController {
   }
 
   // --------------------- Private Methods ---------------------
+
+  void _listenLocation() {
+    _currentLocation.bindStream(Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      ),
+    ).map((event) => LatLng(event.latitude, event.longitude)));
+  }
+
+  void _saveInProfileData(LatLng? location) {
+    final useCase = getIt<IUpdateProfileLocationDataUseCase>();
+    useCase.updateProfileData(
+      UpdateProfileLocationDataRequest(
+        user: user,
+        latitude: location!.latitude,
+        longitude: location.longitude,
+      ),
+    );
+  }
 
   void _requestPermissions() async {
     final request = await Geolocator.requestPermission();
@@ -59,32 +87,17 @@ class LocationCtrl extends GetxController {
   }
 
   void _moveCamera(LatLng? location) {
+    if (!_alreadyInitialized) return;
     if (location == null) return;
     mapCtrl.move(location, 15);
-    mapCtrl.rotate(0.0);
   }
 
-  void _searchCurrentTravelPoint(LatLng? location) {
-    final useCase = getIt<IGetAddressByGeopointUseCase>();
-    useCase
-        .getAddress(GeoPointRequest(
-      latitude: location!.latitude,
-      longitude: location.longitude,
-    ))
-        .then((value) {
-      Get.find<RequestServiceCtrl>().setBeginTravelPoint(value);
-    });
-  }
-
-  // --------------------- Public Methods ---------------------
+  //-------------------------- Public Methods --------------------------
 
   void moveCameraToCurrentLocation() async {
     _getCurrentLocation();
-    _moveCamera(currentLocation);
-  }
-
-  void moveCameraToLocation(LatLng location) {
-    _moveCamera(location);
+    mapCtrl.move(currentLocation, 15);
+    mapCtrl.rotate(0.0);
   }
 
   void focusOnTravelPoint(TravelPoint travelPoint) {
@@ -96,5 +109,9 @@ class LocationCtrl extends GetxController {
       14.0,
       0.0,
     );
+  }
+
+  void mapInitialized() {
+    _alreadyInitialized = true;
   }
 }

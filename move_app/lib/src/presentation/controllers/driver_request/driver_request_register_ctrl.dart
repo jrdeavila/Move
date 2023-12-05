@@ -34,6 +34,16 @@ class SectionSegment {
 }
 
 class DriverRequestRegisterCtrl extends GetxController {
+  // --------------------- Final Variables ---------------------
+
+  final AppUser user;
+
+  // --------------------- Constructor ---------------------
+
+  DriverRequestRegisterCtrl({
+    required this.user,
+  });
+
   // ------------------------------------------------------------
 
   List<SectionSegment> get steps => [
@@ -83,6 +93,9 @@ class DriverRequestRegisterCtrl extends GetxController {
         Get.offAndToNamed(DriverRequestRoutes.approved);
       }
       if (value.isFinalized) {
+        Get.put(ListenDriverCurrentServiceCtrl(user: user), permanent: true);
+        Get.put(DriverLocationCtrl(user: user), permanent: true);
+        Get.put(ShowListServiceCtrl(user: user), permanent: true);
         Get.offAllNamed(DashboardRoutes.homeDriver);
       }
     });

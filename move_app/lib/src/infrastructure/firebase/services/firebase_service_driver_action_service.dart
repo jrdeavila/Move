@@ -64,4 +64,61 @@ class FirebaseServiceDriverActionService
           requestServiceToMap(counterOffer),
         );
   }
+
+  @override
+  Stream<RequestService?> listenCurrentRequestService(AppUser driver) {
+    return _firebaseFirestore
+        .collection("services")
+        .where("status", isEqualTo: RequestServiceStatus.started.toString())
+        .where("driver", isEqualTo: driver.uuid)
+        .snapshots()
+        .asyncMap((event) async {
+      if (event.docs.isEmpty) {
+        return null;
+      }
+      final doc = event.docs.first;
+      final clientCreator = await _getUser(doc["clientCreator"]);
+      return requestServiceFromMapWithUserAndDriver(
+        doc.data(),
+        clientCreator: clientCreator,
+        driver: driver,
+      );
+    });
+  }
+}
+
+@Injectable(as: IServiceFinishDriverActionService)
+class FirebaseServiceFinishDriverActionService
+    implements IServiceFinishDriverActionService {
+  final FirebaseFirestore _firebaseFirestore;
+  final IClientBonificationService _clientBoniticationService;
+  final IDriverPaymentService _driverPaymentService;
+
+  FirebaseServiceFinishDriverActionService({
+    required FirebaseFirestore firebaseFirestore,
+    required IClientBonificationService clientBoniticationService,
+    required IDriverPaymentService driverPaymentService,
+  })  : _firebaseFirestore = firebaseFirestore,
+        _clientBoniticationService = clientBoniticationService,
+        _driverPaymentService = driverPaymentService;
+
+  @override
+  Future<void> finish(RequestService requestService) {
+    return _firebaseFirestore.runTransaction((transaction) async {
+      await _clientBoniticationService.updateBonification(
+        client: requestService.clientCreator,
+      );
+      await _driverPaymentService.updatePayment(
+        amount: requestService.tee,
+        driver: requestService.driver!,
+      );
+
+      transaction.update(
+        _firebaseFirestore.collection("services").doc(requestService.uuid),
+        {
+          "status": RequestServiceStatus.finished.toString(),
+        },
+      );
+    });
+  }
 }

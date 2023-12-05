@@ -44,8 +44,13 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
     final ListenCurrentServiceCtrl listenCurrentServiceCtrl =
         Get.find<ListenCurrentServiceCtrl>();
     return Obx(() {
-      if (listenCurrentServiceCtrl.currentRequestService != null) {
+      if (listenCurrentServiceCtrl.currentRequestService?.status ==
+          RequestServiceStatus.waiting) {
         return const ServiceDetailsView();
+      }
+      if (listenCurrentServiceCtrl.currentRequestService?.status ==
+          RequestServiceStatus.started) {
+        return const ServiceAccepted();
       }
       return const FormRequestService();
     });
@@ -94,29 +99,54 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             TileLayer(
               urlTemplate: mapsTileUrl,
             ),
-            PolylineLayer(
-              polylines: [
-                if (controller.beginTravelPoint != null &&
-                    controller.endTravelPoint != null)
-                  Polyline(
-                    points: [
-                      LatLng(
-                        controller.beginTravelPoint!.latitude,
-                        controller.beginTravelPoint!.longitude,
-                      ),
-                      LatLng(
-                        controller.endTravelPoint!.latitude,
-                        controller.endTravelPoint!.longitude,
-                      ),
-                    ],
-                    strokeWidth: 4.0,
-                    color: Colors.redAccent,
-                  ),
-              ],
-            ),
+            _buildPolylineLayer(),
             _buildMarkerLayer(),
+            _buildDriverLocationLayer(),
           ],
         ));
+  }
+
+  MarkerLayer _buildDriverLocationLayer() {
+    final listenCurrentServiceCtrl = Get.find<ListenCurrentServiceCtrl>();
+    return MarkerLayer(
+      markers: [
+        if (listenCurrentServiceCtrl.driverLocation != null)
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(
+              listenCurrentServiceCtrl.driverLocation!.latitude,
+              listenCurrentServiceCtrl.driverLocation!.longitude,
+            ),
+            rotate: true,
+            child: Icon(Icons.directions_car,
+                size: 45.0, color: Get.theme.colorScheme.primary),
+          ),
+      ],
+    );
+  }
+
+  PolylineLayer _buildPolylineLayer() {
+    return PolylineLayer(
+      polylines: [
+        if (controller.beginTravelPoint != null &&
+            controller.endTravelPoint != null)
+          Polyline(
+            points: [
+              LatLng(
+                controller.beginTravelPoint!.latitude,
+                controller.beginTravelPoint!.longitude,
+              ),
+              LatLng(
+                controller.endTravelPoint!.latitude,
+                controller.endTravelPoint!.longitude,
+              ),
+            ],
+            strokeWidth: 4.0,
+            color: Colors.redAccent,
+          ),
+      ],
+    );
   }
 
   MarkerLayer _buildMarkerLayer() {

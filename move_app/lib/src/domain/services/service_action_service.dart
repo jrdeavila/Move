@@ -16,4 +16,14 @@ abstract class IServiceDriverActionService {
 
   Future<void> sendCounterOffer(RequestService requestService,
       RequestService counterOffer, AppUser driver);
+
+  Stream<RequestService?> listenCurrentRequestService(AppUser driver);
+}
+
+abstract class IGetDriverLocationService {
+  Stream<DriverLocation?> listen(AppUser driver);
+}
+
+abstract class IServiceFinishDriverActionService {
+  Future<void> finish(RequestService requestService);
 }

@@ -5,6 +5,7 @@ abstract class ProfileRoutes {
   static const String details = '/details';
   static const String requestService = "/requestService";
   static const String showServices = "/showServices";
+  static const String driverService = "/driverService";
 
   static final routes = [
     GetPage(
@@ -26,7 +27,6 @@ abstract class ProfileRoutes {
         page: () => const RequestServicePage(),
         binding: BindingsBuilder(() {
           Get.lazyPut<RequestServiceCtrl>(() => RequestServiceCtrl());
-          Get.put<LocationCtrl>(LocationCtrl());
         }),
         middlewares: [
           VerifyAuth(),
@@ -38,6 +38,14 @@ abstract class ProfileRoutes {
         middlewares: [
           VerifyAuth(),
         ]),
+
+    GetPage(
+      name: driverService,
+      page: () => const DriverCurrentServicePage(),
+      middlewares: [
+        VerifyAuth(),
+      ],
+    ),
 
     // ------------------------------------------------------------
     DriverRequestRoutes.routes.firstWhere(

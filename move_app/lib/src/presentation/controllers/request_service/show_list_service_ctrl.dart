@@ -35,9 +35,9 @@ class ShowListServiceCtrl extends GetxController {
 
   void _routing(List<RequestService> listRequestService) {
     if (listRequestService.isNotEmpty) {
-      Future.delayed(const Duration(seconds: 2), () {
-        Get.toNamed(ProfileRoutes.showServices);
-      });
+      // Future.delayed(const Duration(seconds: 2), () {
+      Get.toNamed(ProfileRoutes.showServices);
+      // });
     }
   }
 
