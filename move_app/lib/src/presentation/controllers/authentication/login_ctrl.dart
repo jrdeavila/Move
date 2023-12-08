@@ -23,18 +23,22 @@ class LoginCtrl extends GetxController {
   void login() async {
     _loading.value = true;
     final useCase = getIt<ILoginWithPhoneUseCase>();
-    useCase.loginWithPhone(
-      LoginWithPhoneRequest(
-        phone: PhoneConvert.toFirebase(numberPhone: _phone.value),
-        onCodeSend: () {
-          Get.to(() => const VerificationCode(
-                timer: Duration(seconds: 60),
-                codeDigits: 6,
-              ));
-          _loading.value = false;
-        },
-      ),
-    );
+    useCase
+        .loginWithPhone(
+          LoginWithPhoneRequest(
+              phone: PhoneConvert.toFirebase(numberPhone: _phone.value),
+              onCodeSend: () {
+                Get.to(() => const VerificationCode(
+                      timer: Duration(seconds: 60),
+                      codeDigits: 6,
+                    ));
+                _loading.value = false;
+              },
+              onError: () {
+                _loading.value = false;
+              }),
+        )
+        .catchError((error, stackTrace) => _loading.value = false);
   }
 
   void sendCode() {

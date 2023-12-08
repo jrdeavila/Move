@@ -90,4 +90,6 @@ Map<String, String> firebaseExceptionsCodeMap = {
   'invalid-verification-code': 'El código de verificación no es válido',
   'invalid-verification-id': 'El ID de verificación no es válido',
   'invalid-phone-number': 'El número de teléfono no es válido',
+  'too-many-requests':
+      'Se bloqueó la solicitud debido a una actividad inusual. Inténtalo de nuevo después de un tiempo',
 };

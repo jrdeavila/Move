@@ -50,6 +50,7 @@ class FirebasePhoneAuthenticationService
   Future<void> loginWithPhone({
     required String phone,
     required void Function() onCodeSend,
+    required void Function() onError,
     Duration timeout = const Duration(seconds: 60),
   }) {
     return _firebaseAuth.verifyPhoneNumber(
@@ -61,7 +62,10 @@ class FirebasePhoneAuthenticationService
       phoneNumber: phone,
       forceResendingToken: _resendToken,
       verificationCompleted: (phoneAuthCredential) {},
-      verificationFailed: (error) => throw error,
+      verificationFailed: (error) {
+        onError();
+        throw error;
+      },
       codeAutoRetrievalTimeout: (code) {},
       timeout: timeout,
     );

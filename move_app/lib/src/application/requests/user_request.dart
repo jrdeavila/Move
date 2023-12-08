@@ -17,10 +17,12 @@ class LoginRequest {
 class LoginWithPhoneRequest {
   final String phone;
   final void Function() onCodeSend;
+  final void Function() onError;
 
   LoginWithPhoneRequest({
     required this.phone,
     required this.onCodeSend,
+    required this.onError,
   });
 }
 

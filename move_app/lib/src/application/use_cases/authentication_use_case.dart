@@ -12,6 +12,7 @@ class LoginWithPhoneUseCase implements ILoginWithPhoneUseCase {
     return _authenticationService.loginWithPhone(
       phone: loginWithPhoneRequest.phone,
       onCodeSend: loginWithPhoneRequest.onCodeSend,
+      onError: loginWithPhoneRequest.onError,
     );
   }
 }

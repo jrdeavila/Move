@@ -42,7 +42,7 @@ abstract class AppCheckModule {
   Future<FirebaseAppCheck> get appCheck async {
     final appCheck = FirebaseAppCheck.instanceFor(app: getIt<FirebaseApp>());
     await appCheck.activate(
-      androidProvider: AndroidProvider.debug,
+      androidProvider: AndroidProvider.playIntegrity,
     );
     return appCheck;
   }

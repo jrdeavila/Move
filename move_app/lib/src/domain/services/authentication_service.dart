@@ -11,6 +11,7 @@ abstract class IPhoneAuthenticationService {
   Future<void> loginWithPhone({
     required String phone,
     required void Function() onCodeSend,
+    required void Function() onError,
   });
 
   Future<void> verifyCode({
