@@ -73,13 +73,6 @@ abstract class DioModule {
           hitCacheOnErrorExcept: [401, 403],
         ),
       ),
-      LogInterceptor(
-        request: true,
-        responseBody: true,
-        requestBody: true,
-        requestHeader: true,
-        responseHeader: true,
-      ),
     ]);
 }
 

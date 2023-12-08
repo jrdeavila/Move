@@ -88,5 +88,6 @@ Map<String, String> firebaseExceptionsCodeMap = {
   'user-disabled': 'El usuario correspondiente ha sido deshabilitado',
   'user-token-expired': 'El token del usuario ya no es válido',
   'invalid-verification-code': 'El código de verificación no es válido',
-  'invalid-verification-id': 'El ID de verificación no es válido'
+  'invalid-verification-id': 'El ID de verificación no es válido',
+  'invalid-phone-number': 'El número de teléfono no es válido',
 };

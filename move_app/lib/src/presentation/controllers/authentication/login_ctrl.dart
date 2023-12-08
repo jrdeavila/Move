@@ -4,6 +4,11 @@ class LoginCtrl extends GetxController {
   // -------------------------------------------------
   final RxString _phone = ''.obs;
   final RxString _verificationCode = ''.obs;
+  final RxBool _loading = false.obs;
+
+  // -------------------------------------------------
+
+  bool get loading => _loading.value;
 
   // -------------------------------------------------
   void setNumberPhone(String value) {
@@ -16,6 +21,7 @@ class LoginCtrl extends GetxController {
 
   // -------------------------------------------------
   void login() async {
+    _loading.value = true;
     final useCase = getIt<ILoginWithPhoneUseCase>();
     useCase.loginWithPhone(
       LoginWithPhoneRequest(
@@ -25,6 +31,7 @@ class LoginCtrl extends GetxController {
                 timer: Duration(seconds: 60),
                 codeDigits: 6,
               ));
+          _loading.value = false;
         },
       ),
     );
@@ -36,7 +43,7 @@ class LoginCtrl extends GetxController {
       SendCodeRequest(
         code: _verificationCode.value,
         onLoginSuccessful: () {
-          Get.offAllNamed(MainRoutes.main);
+          Get.offAllNamed(DashboardRoutes.homeClient);
         },
         onShouldRegister: () {
           Get.toNamed(AuthenticationRoutes.register);

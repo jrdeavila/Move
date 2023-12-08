@@ -59,7 +59,7 @@ class FirebaseDriverBalanceService implements IDriverBalanceService {
         .collection("users")
         .doc(driver.uuid)
         .snapshots()
-        .map((event) => event.data()?["balance"] ?? 0);
+        .map((event) => double.parse("${event.data()?["balance"] ?? 0}"));
   }
 
   @override

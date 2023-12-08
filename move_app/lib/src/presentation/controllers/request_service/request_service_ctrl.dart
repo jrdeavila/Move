@@ -1,6 +1,15 @@
 import 'package:move_app/lib.dart';
 
 class RequestServiceCtrl extends GetxController {
+  // ----------------------- Final Variables -------------------------------
+  final AppUser user;
+
+  // ----------------------- Constructor -------------------------------
+
+  RequestServiceCtrl({
+    required this.user,
+  });
+
   // -----------------------No Observable -------------------------------
   bool editingBeginAddress = false;
   bool editingEndAddress = false;
@@ -66,7 +75,7 @@ class RequestServiceCtrl extends GetxController {
     final sendServiceUseCase = getIt<ISendRequestServiceUseCase>();
     final saveAddressUseCase = getIt<ISaveAddressUseCase>();
     final request = SendRequestServiceRequest(
-      clientCreator: Get.find<SessionCtrl>().user!,
+      clientCreator: user,
       origin: beginTravelPoint!,
       destination: endTravelPoint!,
       tee: teeValue,

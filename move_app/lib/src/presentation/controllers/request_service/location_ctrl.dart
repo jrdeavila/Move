@@ -5,16 +5,33 @@ import 'package:move_app/lib.dart';
 class LocationCtrl extends GetxController {
   // -------------------- Final Variables --------------------
 
-  final mapCtrl = MapController();
   final GetStorage _getStorage = GetStorage();
+  final AppUser user;
+
+  // -------------------- Constructor --------------------
+
+  LocationCtrl({
+    required this.user,
+  });
 
   // --------------------- Observables ---------------------
 
   final Rx<LatLng?> _currentLocation = Rx<LatLng?>(null);
+  final Rx<MapController?> _mapCtrl = Rx<MapController?>(null);
 
   // --------------------- Getters ---------------------
   LatLng get currentLocation =>
       _currentLocation.value ?? const LatLng(10.4634, -73.2532);
+
+  MapController? get mapCtrl => _mapCtrl.value;
+
+  // --------------------- Setters ---------------------
+
+  void setMapCtrl(MapController mapController) {
+    _mapCtrl.value?.dispose();
+    _mapCtrl.value = null;
+    _mapCtrl.value = mapController;
+  }
 
   // --------------------- Lyfecycles ---------------------
 
@@ -23,16 +40,17 @@ class LocationCtrl extends GetxController {
     super.onReady();
     _requestPermissions();
     ever(_currentLocation, _saveLastLocation);
+    ever(_currentLocation, _saveInProfileData);
     ever(_currentLocation, _moveCamera);
     ever(_currentLocation, _searchCurrentTravelPoint,
         condition: (LatLng? location) => location != null);
-    _getCurrentLocation();
+    _listenLocation();
   }
 
   @override
   void onClose() {
     _currentLocation.close();
-    mapCtrl.dispose();
+    _mapCtrl.value?.dispose();
 
     super.onClose();
   }
@@ -40,6 +58,11 @@ class LocationCtrl extends GetxController {
   // --------------------- Private Methods ---------------------
 
   void _requestPermissions() async {
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      return;
+    }
     final request = await Geolocator.requestPermission();
     if (request == LocationPermission.denied) {
       await Geolocator.openAppSettings();
@@ -47,6 +70,15 @@ class LocationCtrl extends GetxController {
     if (request == LocationPermission.deniedForever) {
       await Geolocator.openAppSettings();
     }
+  }
+
+  void _listenLocation() {
+    _currentLocation.bindStream(Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      ),
+    ).map((event) => LatLng(event.latitude, event.longitude)));
   }
 
   void _getCurrentLocation() async {
@@ -58,10 +90,22 @@ class LocationCtrl extends GetxController {
     _getStorage.write("last_location", location);
   }
 
+  void _saveInProfileData(LatLng? location) {
+    final useCase = getIt<IUpdateProfileLocationDataUseCase>();
+    useCase.updateProfileData(
+      UpdateProfileLocationDataRequest(
+        user: user,
+        latitude: location!.latitude,
+        longitude: location.longitude,
+      ),
+    );
+  }
+
   void _moveCamera(LatLng? location) {
     if (location == null) return;
-    mapCtrl.move(location, 15);
-    mapCtrl.rotate(0.0);
+    if (_mapCtrl.value == null) return;
+    _mapCtrl.value!.move(location, 15);
+    _mapCtrl.value!.rotate(0.0);
   }
 
   void _searchCurrentTravelPoint(LatLng? location) {
@@ -72,7 +116,9 @@ class LocationCtrl extends GetxController {
       longitude: location.longitude,
     ))
         .then((value) {
-      Get.find<RequestServiceCtrl>().setBeginTravelPoint(value);
+      if (Get.find<SessionCtrl>().currentSessionRole == AppUserRole.client) {
+        Get.find<RequestServiceCtrl>().setBeginTravelPoint(value);
+      }
     });
   }
 
@@ -88,7 +134,7 @@ class LocationCtrl extends GetxController {
   }
 
   void focusOnTravelPoint(TravelPoint travelPoint) {
-    mapCtrl.moveAndRotate(
+    _mapCtrl.value?.moveAndRotate(
       LatLng(
         travelPoint.latitude,
         travelPoint.longitude,

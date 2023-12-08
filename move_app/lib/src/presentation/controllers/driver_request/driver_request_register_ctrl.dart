@@ -80,25 +80,7 @@ class DriverRequestRegisterCtrl extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    ever(_driverRequest, (value) async {
-      await Future.delayed(1.seconds);
 
-      if (value.isSended) {
-        Get.offAndToNamed(DriverRequestRoutes.sended);
-      }
-      if (value.isMaking) {
-        Get.offAndToNamed(DriverRequestRoutes.steps);
-      }
-      if (value.isApproved) {
-        Get.offAndToNamed(DriverRequestRoutes.approved);
-      }
-      if (value.isFinalized) {
-        Get.put(ListenDriverCurrentServiceCtrl(user: user), permanent: true);
-        Get.put(DriverLocationCtrl(user: user), permanent: true);
-        Get.put(ShowListServiceCtrl(user: user), permanent: true);
-        Get.offAllNamed(DashboardRoutes.homeDriver);
-      }
-    });
     _fetchDriverRequest();
 
     Get.addPages(DriverRequestRoutes.routes);
@@ -185,6 +167,21 @@ class DriverRequestRegisterCtrl extends GetxController {
 
   void showTermsAndConditions() {
     // TODO: implement showTermsAndConditions
+  }
+
+  void routingByStatus() {
+    if (_driverRequest.value.isSended) {
+      Get.toNamed(DriverRequestRoutes.sended);
+    }
+    if (_driverRequest.value.isMaking) {
+      Get.toNamed(DriverRequestRoutes.steps);
+    }
+    if (_driverRequest.value.isApproved) {
+      Get.toNamed(DriverRequestRoutes.approved);
+    }
+    if (_driverRequest.value.isFinalized) {
+      Get.find<SessionCtrl>().onDriverIsReady();
+    }
   }
 
   void sendRequest() async {

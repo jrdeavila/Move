@@ -10,6 +10,28 @@ class DashboardDriver extends GetView<SessionCtrl> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
+              toolbarHeight: 100,
+              leadingWidth: 200,
+              leading: TextButton(
+                onPressed: () {
+                  Get.find<SessionCtrl>().onChangeSessionToClient();
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.swap_horiz,
+                      size: 30.0,
+                      color: Get.theme.colorScheme.primary,
+                    ),
+                    const SizedBox(width: 10),
+                    Text("Modo de Cliente",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ],
+                ),
+              ),
               actions: [
                 IconButton(
                   onPressed: () {

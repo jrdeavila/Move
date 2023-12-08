@@ -25,9 +25,6 @@ abstract class ProfileRoutes {
     GetPage(
         name: requestService,
         page: () => const RequestServicePage(),
-        binding: BindingsBuilder(() {
-          Get.lazyPut<RequestServiceCtrl>(() => RequestServiceCtrl());
-        }),
         middlewares: [
           VerifyAuth(),
         ]),

@@ -149,9 +149,7 @@ class ListenCurrentServiceCtrl extends GetxController {
 
   void _routing(RequestService? requestService) {
     if (requestService != null) {
-      Get.offAllNamed(ProfileRoutes.requestService);
-    } else {
-      Get.offAllNamed(DashboardRoutes.homeClient);
+      Get.toNamed(ProfileRoutes.requestService);
     }
   }
 

@@ -7,35 +7,41 @@ class DriverCurrentServicePage extends GetView<ListenDriverCurrentServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            bottom: MediaQuery.of(context).size.height / 3,
-            child: _buildMap(),
-          ),
-          Positioned(
-            right: 16.0,
-            top: MediaQuery.of(context).size.height / 2.3 + 16.0,
-            child: _buildLocationButton(),
-          ),
-          Positioned(
-            left: 16.0,
-            top: MediaQuery.of(context).padding.top + 16.0,
-            child: _buildBackButton(),
-          ),
-          Positioned.fill(
-            child: _buildLoading(),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height / 2.3 + 86.0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _buildCurrentAction(context),
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        var listeCtrl = Get.find<ListenDriverCurrentServiceCtrl>();
+        return listeCtrl.currentRequestService == null;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            Positioned.fill(
+              bottom: MediaQuery.of(context).size.height / 3,
+              child: _buildMap(),
+            ),
+            Positioned(
+              right: 16.0,
+              top: MediaQuery.of(context).size.height / 2.3 + 16.0,
+              child: _buildLocationButton(),
+            ),
+            Positioned(
+              left: 16.0,
+              top: MediaQuery.of(context).padding.top + 16.0,
+              child: _buildBackButton(),
+            ),
+            Positioned.fill(
+              child: _buildLoading(),
+            ),
+            Positioned(
+              top: MediaQuery.of(context).size.height / 2.3 + 86.0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _buildCurrentAction(context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -54,14 +60,18 @@ class DriverCurrentServicePage extends GetView<ListenDriverCurrentServiceCtrl> {
   FloatingActionButton _buildBackButton() {
     return FloatingActionButton(
       onPressed: () {
-        Get.back();
+        final listenDriverCurrentServiceCtrl =
+            Get.find<ListenDriverCurrentServiceCtrl>();
+        if (listenDriverCurrentServiceCtrl.currentRequestService == null) {
+          Get.back();
+        }
       },
       child: const Icon(Icons.arrow_back),
     );
   }
 
   FloatingActionButton _buildLocationButton() {
-    final locationCtrl = Get.find<DriverLocationCtrl>();
+    final locationCtrl = Get.find<LocationCtrl>();
     return FloatingActionButton(
       heroTag: "navigation_button",
       onPressed: () {
@@ -84,10 +94,11 @@ class DriverCurrentServicePage extends GetView<ListenDriverCurrentServiceCtrl> {
   }
 
   Widget _buildMap() {
-    final locationCtrl = Get.find<DriverLocationCtrl>();
-    locationCtrl.mapInitialized();
+    final locationCtrl = Get.find<LocationCtrl>();
+    var mapCtrl = MapController();
+    locationCtrl.setMapCtrl(mapCtrl);
     return Obx(() => FlutterMap(
-          mapController: locationCtrl.mapCtrl,
+          mapController: mapCtrl,
           options: MapOptions(
             initialCenter: locationCtrl.currentLocation,
             initialZoom: 15.0,
@@ -95,25 +106,7 @@ class DriverCurrentServicePage extends GetView<ListenDriverCurrentServiceCtrl> {
           children: [
             TileLayer(
               urlTemplate: mapsTileUrl,
-            ),
-            PolylineLayer(
-              polylines: [
-                if (controller.currentRequestService != null)
-                  Polyline(
-                    points: [
-                      LatLng(
-                        controller.currentRequestService!.origin.latitude,
-                        controller.currentRequestService!.origin.longitude,
-                      ),
-                      LatLng(
-                        controller.currentRequestService!.destination.latitude,
-                        controller.currentRequestService!.destination.longitude,
-                      ),
-                    ],
-                    strokeWidth: 4.0,
-                    color: Colors.redAccent,
-                  ),
-              ],
+              fallbackUrl: mapsTileFallbackUrl,
             ),
             _buildMarkerLayer(),
           ],
@@ -121,7 +114,7 @@ class DriverCurrentServicePage extends GetView<ListenDriverCurrentServiceCtrl> {
   }
 
   MarkerLayer _buildMarkerLayer() {
-    final locationCtrl = Get.find<DriverLocationCtrl>();
+    final locationCtrl = Get.find<LocationCtrl>();
     return MarkerLayer(
       markers: [
         if (controller.currentRequestService != null)

@@ -10,6 +10,7 @@ class SessionCtrl extends GetxController {
 
   final Rx<AppUser?> _user = Rx<AppUser?>(null);
   final Rx<AppUserRole?> _currentSessionRole = Rx<AppUserRole?>(null);
+  final RxBool _userLoaded = RxBool(false);
 
   // -------------------------------------------------
 
@@ -21,61 +22,80 @@ class SessionCtrl extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    ever(_user, _routing);
-    ever(_user, _mountServicesOfUser,
-        condition: (AppUser? user) => user != null);
-    everAll([
-      _user,
-      _currentSessionRole,
-    ], _mountServicesOfUser, condition: (value) {
-      final user = value[0] as AppUser?;
-      final role = value[1] as AppUserRole?;
+    ever(_userLoaded, _routing);
+    _listenAuthentication();
+  }
 
-      return user != null && role != null;
-    });
+  //--------------------------------------------------
+
+  void _listenAuthentication() {
     _authenticationService.isAuthenticated().listen((event) {
       if (event) {
         var userId = _authenticationService.getUserUuid();
-        _userRepository.getUser(userId).then((value) => _user.value = value);
+        _userRepository.getUser(userId).then((value) {
+          Future.delayed(const Duration(seconds: 2), () {
+            _user.value = value;
+            _userLoaded.value = value != null;
+          });
+        });
+      } else {
+        _onLogoutUmountServices();
       }
     });
-    _currentSessionRole.value = _getCurrentSessionRole();
   }
 
-  void _routingAndRemember(AppUserRole role) {
-    if (role == AppUserRole.driver) {
-      Get.toNamed(DriverRequestRoutes.driverMode);
-    } else {
-      Get.offAllNamed(DashboardRoutes.homeClient);
+  void _onLogoutUmountServices() {
+    Get.delete<ClientPointCtrl>();
+    Get.delete<DriverBalanceCtrl>();
+    Get.delete<DriverRequestRegisterCtrl>();
+    Get.delete<LocationCtrl>();
+    Get.delete<ListenCurrentServiceCtrl>();
+    Get.toNamed(MainRoutes.main);
+  }
+
+  void _routing(userLoaded) {
+    if (_userLoaded.value) {
+      if (_user.value != null) {
+        _routingAsUserAuthenticated(_user.value!);
+        return;
+      }
     }
+    Get.toNamed(MainRoutes.main);
+  }
+
+  void _routingAsUserAuthenticated(AppUser user) {
+    final role = _getCurrentSessionRole();
+    if (user.roles.contains(role)) {
+      _mountServicesOfUser(role);
+      return;
+    }
+    _mountServicesOfUser(AppUserRole.client);
+    return;
+  }
+
+  void _mountServicesOfUser(AppUserRole role) {
+    Get.put(ClientPointCtrl(user: _user.value!), permanent: true);
+    Get.put(DriverBalanceCtrl(user: _user.value!), permanent: true);
+    Get.put(LocationCtrl(user: _user.value!), permanent: true);
+    Get.put(DriverRequestRegisterCtrl(user: _user.value!), permanent: true);
+    Get.addPages(ProfileRoutes.routes);
+
+    _mountServiceByRole(role);
     _setCurrentSessionRole(role);
   }
 
-  void _routing(AppUser? user) {
-    if (user == null) {
-      Get.offAllNamed(AuthenticationRoutes.login);
-    } else {
-      Get.addPages(ProfileRoutes.routes);
-      final currentRole = _getCurrentSessionRole();
-      if (user.roles.contains(currentRole)) {
-        _routingAndRemember(currentRole);
-      } else {
-        _routingAndRemember(user.roles.first);
-      }
-    }
-  }
-
-  void _mountServicesOfUser(dynamic values) {
-    Get.put(ClientPointCtrl(user: _user.value!), permanent: true);
-    Get.put(DriverBalanceCtrl(user: _user.value!), permanent: true);
-    if (_currentSessionRole.value == AppUserRole.driver) {
-      Get.delete<LocationCtrl>();
+  void _mountServiceByRole(AppUserRole role) {
+    if (role == AppUserRole.driver) {
       Get.delete<ListenCurrentServiceCtrl>();
-      Get.put(DriverRequestRegisterCtrl(user: _user.value!), permanent: true);
+      Get.put(ShowListServiceCtrl(user: _user.value!), permanent: true);
+      Get.put(ListenDriverCurrentServiceCtrl(user: _user.value!),
+          permanent: true);
+      Get.offAllNamed(DashboardRoutes.homeDriver);
     } else {
       Get.delete<DriverRequestRegisterCtrl>();
-      Get.put<LocationCtrl>(LocationCtrl(), permanent: true);
       Get.put(ListenCurrentServiceCtrl(user: _user.value!), permanent: true);
+      Get.put(RequestServiceCtrl(user: _user.value!), permanent: true);
+      Get.offAllNamed(DashboardRoutes.homeClient);
     }
   }
 
@@ -111,13 +131,19 @@ class SessionCtrl extends GetxController {
   // -------------------------------------------------
 
   void onChangeSessionToDriver() {
-    _currentSessionRole.value = AppUserRole.driver;
-    _setCurrentSessionRole(AppUserRole.driver);
+    Get.find<DriverRequestRegisterCtrl>().routingByStatus();
   }
 
   void onChangeSessionToClient() {
     _currentSessionRole.value = AppUserRole.client;
+    _mountServiceByRole(AppUserRole.client);
     _setCurrentSessionRole(AppUserRole.client);
+  }
+
+  void onDriverIsReady() {
+    _currentSessionRole.value = AppUserRole.driver;
+    _mountServiceByRole(AppUserRole.driver);
+    _setCurrentSessionRole(AppUserRole.driver);
   }
 
   void goToProfile() {
