@@ -24,24 +24,101 @@ class DashboardClientView extends GetView<SessionCtrl> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                controller.logout();
-              },
-              icon: const Icon(Icons.output_rounded, color: Colors.black),
+      physics: const NeverScrollableScrollPhysics(),
+      slivers: [_buildAppBar(), _buildDashboardItems()],
+    );
+  }
+
+  SliverPadding _buildDashboardItems() {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate([
+          Text('panel de control',
+              style: GoogleFonts.montserrat(
+                color: Colors.black,
+                fontSize: Dimensions.screenWidth * 0.04,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1.5,
+              )),
+          CardDescription(
+            title: 'Solicitar servicio',
+            color: const Color.fromRGBO(255, 198, 65, 1),
+            colorTitle: Colors.white,
+            root: 'assets/images/car.png',
+            description: '¿Necesitas un viaje? ¡Estamos en camino!',
+            onPressed: () {
+              controller.goToRequestService();
+            },
+            width: 96,
+            height: 80,
+            top: Dimensions.screenHeight * 0.095,
+            left: Dimensions.screenWidth * 0.59,
+          ),
+          CardCompound(
+            title: 'Modo',
+            secondTitle: 'Conductor',
+            color: const Color.fromRGBO(217, 217, 217, 1),
+            colorTitle: Colors.white,
+            root: 'assets/images/steering.png',
+            onPressed: () {
+              controller.onChangeSessionToDriver();
+            },
+          ),
+          CardClassic(
+            title: 'Perfil',
+            color: Colors.black,
+            colorTitle: Colors.white,
+            root: 'assets/images/profile.png',
+            onPressed: () {
+              controller.goToProfile();
+            },
+            size: Dimensions.screenWidth * 0.12,
+            width: 100,
+            height: 100,
+          ),
+        ]),
+      ),
+    );
+  }
+
+  SliverAppBar _buildAppBar() {
+    return SliverAppBar(
+        actions: [
+          TextButton(
+            onPressed: () {
+              controller.logout();
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Salir de la app",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                const Icon(
+                  Icons.logout_outlined,
+                  size: 30,
+                  color: Colors.black,
+                ),
+              ],
             ),
-          ],
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.all(20.0),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate([
-              Row(
+          ),
+        ],
+        floating: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(100),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
                 children: [
                   Expanded(
                     child: Column(
@@ -68,59 +145,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
                   _buildPointSection(),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: Dimensions.screenHeight * 0.03,
-                ),
-                child: Text('panel de control',
-                    style: GoogleFonts.montserrat(
-                      color: Colors.black,
-                      fontSize: Dimensions.screenWidth * 0.04,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1.5,
-                    )),
-              ),
-              CardDescription(
-                title: 'Solicitar servicio',
-                color: const Color.fromRGBO(255, 198, 65, 1),
-                colorTitle: Colors.white,
-                root: 'assets/images/car.png',
-                description: '¿Necesitas un viaje? ¡Estamos en camino!',
-                onPressed: () {
-                  controller.goToRequestService();
-                },
-                width: 96,
-                height: 80,
-                top: Dimensions.screenHeight * 0.095,
-                left: Dimensions.screenWidth * 0.59,
-              ),
-              CardCompound(
-                title: 'Modo',
-                secondTitle: 'Conductor',
-                color: const Color.fromRGBO(217, 217, 217, 1),
-                colorTitle: Colors.white,
-                root: 'assets/images/steering.png',
-                onPressed: () {
-                  controller.onChangeSessionToDriver();
-                },
-              ),
-              CardClassic(
-                title: 'Perfil',
-                color: Colors.black,
-                colorTitle: Colors.white,
-                root: 'assets/images/profile.png',
-                onPressed: () {
-                  controller.goToProfile();
-                },
-                size: Dimensions.screenWidth * 0.12,
-                width: 100,
-                height: 100,
-              ),
-            ]),
-          ),
-        )
-      ],
-    );
+            )));
   }
 
   Column _buildPointSection() {

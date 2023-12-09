@@ -255,7 +255,6 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
               height: 10.0,
             ),
             CurrencyTextInputModal(
-              focus: true,
               initialValue: controller.teeValue,
               onChanged: controller.setTeeValue,
             ),

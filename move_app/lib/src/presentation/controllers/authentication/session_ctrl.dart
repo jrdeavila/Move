@@ -87,12 +87,14 @@ class SessionCtrl extends GetxController {
   void _mountServiceByRole(AppUserRole role) {
     if (role == AppUserRole.driver) {
       Get.delete<ListenCurrentServiceCtrl>();
+      Get.delete<RequestServiceCtrl>();
       Get.put(ShowListServiceCtrl(user: _user.value!), permanent: true);
       Get.put(ListenDriverCurrentServiceCtrl(user: _user.value!),
           permanent: true);
       Get.offAllNamed(DashboardRoutes.homeDriver);
     } else {
-      Get.delete<DriverRequestRegisterCtrl>();
+      Get.delete<ListenDriverCurrentServiceCtrl>();
+      Get.delete<ShowListServiceCtrl>();
       Get.put(ListenCurrentServiceCtrl(user: _user.value!), permanent: true);
       Get.put(RequestServiceCtrl(user: _user.value!), permanent: true);
       Get.offAllNamed(DashboardRoutes.homeClient);
@@ -114,7 +116,7 @@ class SessionCtrl extends GetxController {
   // -------------------------------------------------
 
   void onRegisterSuccess(AppUser user) {
-    _user.value = user;
+    _userLoaded.value = true;
   }
 
   void onUpdateProfileSuccess(AppUser user) {
