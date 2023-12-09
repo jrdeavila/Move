@@ -74,9 +74,8 @@ class ServiceDetailsDriver extends GetView<ListenDriverCurrentServiceCtrl> {
                             letterSpacing: 1,
                           )),
                       Text(
-                          getPaymentNameByName(
-                              controller.currentRequestService?.payment.name ??
-                                  'Efectivo'),
+                          controller.currentRequestService?.payment.name ??
+                              'Efectivo',
                           style: GoogleFonts.montserrat(
                             color: Colors.black,
                             fontSize: Dimensions.screenWidth * 0.043,

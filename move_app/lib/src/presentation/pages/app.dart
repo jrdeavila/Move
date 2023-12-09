@@ -21,7 +21,6 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true,
         appBarTheme: AppBarTheme(
           elevation: 0.0,
           toolbarHeight: kToolbarHeight + 50.0,

@@ -19,19 +19,19 @@
       "name": "Android 1",
       "request": "launch",
       "type": "dart",
-      "deviceId": "192.168.0.12:5000"
+      "deviceId": "192.168.0.19:5000"
     },
     {
       "name": "Android 2",
       "request": "launch",
       "type": "dart",
-      "deviceId": "ZE2237WSD2"
+      "deviceId": "192.168.0.28:5000"
     }
   ],
   "compounds": [
     {
       "name": "All Devices",
-      "configurations": ["Emulator", "Android 1", "Android 2"]
+      "configurations": ["Android 1", "Android 2", "Emulator"]
     },
     {
       "name": "Only Android",
@@ -40,6 +40,10 @@
     {
       "name": "Only Emulator and Android 2",
       "configurations": ["Emulator", "Android 2"]
+    },
+    {
+      "name": "Only Emulator and Android 1",
+      "configurations": ["Emulator", "Android 1"]
     }
   ]
 }

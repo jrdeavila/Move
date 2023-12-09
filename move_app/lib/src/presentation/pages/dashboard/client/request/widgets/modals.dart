@@ -410,7 +410,7 @@ class PaymentButton extends StatelessWidget {
               width: 10.0,
             ),
             Text(
-              getPaymentNameByName(value.name),
+              value.name,
               style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.bold,
               ),
@@ -491,7 +491,7 @@ class PaymentTypeModal extends StatelessWidget {
                             width: 10.0,
                           ),
                           Text(
-                            getPaymentNameByName(e.name),
+                            e.name,
                             style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold,
                               fontSize: 14.0,
@@ -521,9 +521,3 @@ Icon iconByPaymentType(PaymentType type) => ({
         Icons.phone_iphone_sharp,
       ),
     }[type]!);
-
-String getPaymentNameByName(String str) => ({
-      "cash": "Efectivo",
-      "nequi": "Nequi",
-      "bancolombia": "Bancolombia",
-    }[str]!);

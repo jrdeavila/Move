@@ -33,7 +33,7 @@ class SessionCtrl extends GetxController {
       if (event) {
         var userId = _authenticationService.getUserUuid();
         _userRepository.getUser(userId).then((value) {
-          Future.delayed(const Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 1), () {
             _user.value = value;
             _userLoaded.value = value != null;
           });

@@ -64,7 +64,7 @@ class ShowListServiceCtrl extends GetxController {
 
   void _playSound(List<DriverLyfeCicleOfRequestService> listRequestService) {
     if (listRequestService.isNotEmpty) {
-      Get.find<SoundCtrl>().playSound();
+      Get.find<SoundCtrl>().playSoundManyTimes();
     }
   }
 

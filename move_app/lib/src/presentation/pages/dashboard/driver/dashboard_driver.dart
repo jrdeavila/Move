@@ -70,20 +70,28 @@ class DashboardDriver extends GetView<SessionCtrl> {
   SliverAppBar _buildAppBar() {
     return SliverAppBar(
       actions: [
-        Text(
-          "Salir de la app",
-          style: GoogleFonts.montserrat(
-            fontSize: 16.0,
-            color: Colors.black,
+        TextButton(
+          onPressed: controller.logout,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Salir de la app",
+                style: GoogleFonts.montserrat(
+                  fontSize: 16.0,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Icon(
+                Icons.logout_outlined,
+                size: 30,
+                color: Colors.black,
+              ),
+            ],
           ),
-        ),
-        const SizedBox(
-          width: 10.0,
-        ),
-        const Icon(
-          Icons.logout_outlined,
-          size: 30,
-          color: Colors.black,
         ),
       ],
       backgroundColor: Colors.transparent,
@@ -104,13 +112,14 @@ class DashboardDriver extends GetView<SessionCtrl> {
                           fontSize: 16.0,
                           fontWeight: FontWeight.w300,
                         )),
-                    Obx(() => Text("${controller.user?.firstname}",
-                        style: GoogleFonts.montserrat(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.2,
-                        ))),
+                    Obx(() =>
+                        Text(controller.user?.firstname ?? "**************",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2,
+                            ))),
                   ],
                 ),
               ),

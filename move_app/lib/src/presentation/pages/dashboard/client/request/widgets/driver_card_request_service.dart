@@ -146,8 +146,7 @@ class _CardRequestServiceState extends State<CardRequestService> {
                     widget.requestServiceWithTimer.requestService.payment.type,
                   ),
                   Text(
-                    getPaymentNameByName(widget
-                        .requestServiceWithTimer.requestService.payment.name),
+                    widget.requestServiceWithTimer.requestService.payment.name,
                     style: GoogleFonts.montserrat(
                       color: Colors.black,
                       fontSize: 16.0,

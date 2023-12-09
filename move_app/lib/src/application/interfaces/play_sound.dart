@@ -6,8 +6,10 @@ abstract class IPlaySound {
 
 class PlaySoundRequest {
   final Source source;
+  final int times;
 
   PlaySoundRequest({
     required this.source,
+    this.times = 1,
   });
 }

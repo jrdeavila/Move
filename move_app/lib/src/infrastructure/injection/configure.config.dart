@@ -190,8 +190,7 @@ extension GetItInjectableX on _i1.GetIt {
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IPaymentRepository>(
         () => _i27.FirebasePaymentRepository(gh<_i9.FirebaseFirestore>()));
-    gh.factory<_i9.IPlaySound>(
-        () => _i28.AudioPlayerPlaySound(gh<_i3.AudioPlayer>()));
+    gh.factory<_i9.IPlaySound>(() => _i28.AudioPlayerPlaySound());
     gh.factory<_i9.IProfileService>(() =>
         _i29.FirebaseProfileService(firestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.ISendDriverRequestService>(() =>
