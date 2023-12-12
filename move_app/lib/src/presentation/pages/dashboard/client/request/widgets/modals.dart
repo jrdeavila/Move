@@ -156,15 +156,26 @@ class TravelPointInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            label,
-            style: GoogleFonts.montserrat(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              Icon(
+                Icons.location_on,
+                color: Get.theme.colorScheme.primary,
+              ),
+              const SizedBox(
+                width: 5.0,
+              ),
+              Text(
+                label,
+                style: GoogleFonts.montserrat(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           const SizedBox(
-            height: 5.0,
+            height: 10.0,
           ),
           Container(
             padding:
