@@ -13,6 +13,11 @@ class RequestServiceCtrl extends GetxController {
   // -----------------------No Observable -------------------------------
   bool editingBeginAddress = false;
   bool editingEndAddress = false;
+  TextEditingController beginAddressController = TextEditingController();
+  TextEditingController endAddressController = TextEditingController();
+  TextEditingController beginNeighborhoodController = TextEditingController();
+  TextEditingController endNeighborhoodController = TextEditingController();
+
   // ----------------------- Observables -------------------------------
   final RxList<TravelPoint> _addressessSearched = RxList();
   final RxList<Payment> _paymentsAbailables = RxList();
@@ -48,12 +53,38 @@ class RequestServiceCtrl extends GetxController {
     _teeValue.value = unformattedValue.toDouble();
   }
 
+  void setAddressBegin(String address) {
+    beginAddressController.text = address;
+    _beginTravelPoint.value?.address = address;
+    _beginTravelPoint.refresh();
+  }
+
+  void setAddressEnd(String address) {
+    endAddressController.text = address;
+    _endTravelPoint.value?.address = address;
+    _endTravelPoint.refresh();
+  }
+
   // ----------------------- LifeCycle -------------------------------
 
   @override
   void onReady() {
     super.onReady();
+    ever(_beginTravelPoint, _mapBeginTravelPoint);
+    ever(_endTravelPoint, _mapEndTravelPoint);
     _fetchPayments();
+  }
+
+  void _mapBeginTravelPoint(TravelPoint? travelPoint) {
+    if (travelPoint == null) return;
+    beginAddressController.text = travelPoint.address;
+    beginNeighborhoodController.text = travelPoint.name;
+  }
+
+  void _mapEndTravelPoint(TravelPoint? travelPoint) {
+    if (travelPoint == null) return;
+    endAddressController.text = travelPoint.address;
+    endNeighborhoodController.text = travelPoint.name;
   }
 
   // ----------------------- Private Methods -------------------------------

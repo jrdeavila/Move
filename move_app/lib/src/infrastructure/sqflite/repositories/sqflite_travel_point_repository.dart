@@ -29,7 +29,7 @@ class SqfliteTravelPointRepository implements ITravelPointRepository {
   Future<void> save(String tag, TravelPoint address) async {
     final checkIfExists = await _database.query(
       'travel_point',
-      where: 'tag = ? AND latitude = ? AND longitude = ?',
+      where: 'tag = ? AND name = ? AND address = ?',
       whereArgs: [tag, address.name, address.address],
     );
     if (checkIfExists.isNotEmpty) {

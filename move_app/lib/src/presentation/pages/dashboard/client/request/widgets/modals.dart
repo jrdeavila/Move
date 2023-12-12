@@ -25,56 +25,32 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(),
-          const SizedBox(
-            height: 20.0,
-          ),
-          TextInput(
-              hintText: "Desde",
-              initialValue: controller.beginTravelPoint?.name ?? "",
+          TravelPointInput(
+              neighborhoodController: controller.beginNeighborhoodController,
+              addressController: controller.beginAddressController,
+              label: "Punto de partida",
               onTap: () {
                 controller.onEditingBeginAddress();
               },
-              prefixIcon: const Icon(
-                Icons.search,
-              ),
-              suffixIcon: GestureDetector(
-                onTap: () {},
-                child: const Icon(Icons.cancel),
-              ),
-              onChanged: (value) {
+              onChangedAddress: (value) {
+                controller.setAddressBegin(value);
+              },
+              onChangedNeighborhood: (value) {
                 controller.searchTravelPoints(value);
               }),
-          const SizedBox(
-            height: 10.0,
-          ),
-          TextInput(
-            hintText: "A",
-            initialValue: controller.endTravelPoint?.name ?? "",
-            prefixIcon: const Icon(
-              Icons.location_on,
-              color: Colors.redAccent,
-            ),
-            suffixIcon: const Icon(Icons.cancel),
+          TravelPointInput(
+            neighborhoodController: controller.endNeighborhoodController,
+            addressController: controller.endAddressController,
+            onChangedAddress: (value) {
+              controller.setAddressEnd(value);
+            },
+            label: "Punto de llegada",
             onTap: () {
               controller.onEditingEndAddress();
             },
-            onChanged: (value) {
+            onChangedNeighborhood: (value) {
               controller.searchTravelPoints(value);
             },
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Row(
-              children: [
-                Icon(
-                  Icons.my_location,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text("Seleccionar en el mapa"),
-              ],
-            ),
           ),
           const SizedBox(
             height: 10.0,
@@ -135,7 +111,6 @@ class TravelPointItem extends GetView<RequestServiceCtrl> {
     return ListTile(
       onTap: () {
         controller.selectTravelPoint(travelPoint);
-        Get.back();
       },
       contentPadding: EdgeInsets.zero,
       minLeadingWidth: 0,
@@ -154,43 +129,97 @@ class TravelPointItem extends GetView<RequestServiceCtrl> {
   }
 }
 
-class TextInput extends StatelessWidget {
-  const TextInput({
+class TravelPointInput extends StatelessWidget {
+  const TravelPointInput({
     super.key,
-    required this.hintText,
-    required this.prefixIcon,
-    required this.suffixIcon,
-    required this.onChanged,
-    this.initialValue,
+    required this.label,
+    required this.onChangedNeighborhood,
+    required this.onChangedAddress,
+    required this.neighborhoodController,
+    required this.addressController,
     this.onTap,
   });
 
-  final Widget prefixIcon;
-  final Widget suffixIcon;
-  final String hintText;
-  final String? initialValue;
-  final ValueChanged<String> onChanged;
+  final String label;
+  final TextEditingController neighborhoodController;
+  final TextEditingController addressController;
+  final ValueChanged<String> onChangedNeighborhood;
+  final ValueChanged<String> onChangedAddress;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      onChanged: onChanged,
-      onTap: onTap,
-      initialValue: initialValue,
-      style: GoogleFonts.montserrat(
-        fontSize: 18.0,
-      ),
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.grey[300],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide.none,
-        ),
-        hintText: hintText,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.montserrat(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: neighborhoodController,
+                  keyboardType: TextInputType.streetAddress,
+                  onChanged: onChangedNeighborhood,
+                  onTap: onTap,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18.0,
+                  ),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Lugar, Barrio o Vereda",
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  controller: addressController,
+                  keyboardType: TextInputType.streetAddress,
+                  onChanged: onChangedAddress,
+                  onTap: onTap,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18.0,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Dirección exacta (opcional)",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

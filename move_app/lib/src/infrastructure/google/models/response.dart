@@ -19,7 +19,8 @@ class GoogleQueryPlaceResponse {
 
   factory GoogleQueryPlaceResponse.fromJson(Map<String, dynamic> json) =>
       GoogleQueryPlaceResponse(
-        places: List<Place>.from(json["places"].map((x) => Place.fromJson(x))),
+        places: List<Place>.from(
+            (json["places"] ?? []).map((x) => Place.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
