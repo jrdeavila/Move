@@ -33,7 +33,9 @@ class FirebaseServiceDriverActionService
       if (hasCurrentService) {
         yield [];
       } else {
-        final docsNoViewed = event.docs.where((doc) {
+        final docsNoViewed = event.docs
+            .where((doc) => doc.data()['clientCreator'] != driver.uuid)
+            .where((doc) {
           final driverViewed = doc.data()["viewedBy"] ?? [];
           return !driverViewed.contains(driver.uuid);
         }).toList();
