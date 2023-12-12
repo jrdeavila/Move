@@ -8,16 +8,10 @@ abstract class DashboardRoutes {
     GetPage(
       name: homeClient,
       page: () => const DashboardClient(),
-      middlewares: [
-        VerifyAuth(),
-      ],
     ),
     GetPage(
       name: homeDriver,
       page: () => const DashboardDriver(),
-      middlewares: [
-        VerifyAuth(),
-      ],
     )
   ];
 }

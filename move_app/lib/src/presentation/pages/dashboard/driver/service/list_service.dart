@@ -55,7 +55,7 @@ class ListServicePage extends GetView<ShowListServiceCtrl> {
                 controller.listRequestService[index];
 
             return CardRequestService(
-              requestServiceWithTimer: requestServiceWithTimer,
+              requestService: requestServiceWithTimer,
             );
           },
         );

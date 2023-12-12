@@ -1,124 +1,98 @@
 import 'package:move_app/lib.dart';
 
-class CardRequestService extends StatefulWidget {
-  final DriverLyfeCicleOfRequestService requestServiceWithTimer;
+class CardRequestService extends GetView<ShowListServiceCtrl> {
+  final RequestService requestService;
   const CardRequestService({
     super.key,
-    required this.requestServiceWithTimer,
+    required this.requestService,
   });
-
-  @override
-  State<CardRequestService> createState() => _CardRequestServiceState();
-}
-
-class _CardRequestServiceState extends State<CardRequestService> {
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    // Set State to update the timer every second
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (widget.requestServiceWithTimer.timer.isActive == false) {
-        _timer.cancel();
-      }
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return FadeInRightBig(
-      child: FadeOutLeftBig(
-        animate: _timer.tick > lyfeTimeOfRequestService - 2,
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: const Offset(0, 4),
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, -4),
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(4, 0),
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(-4, 0),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AddressInfo(
-                travelPoint:
-                    widget.requestServiceWithTimer.requestService.origin,
-              ),
-              const SizedBox(height: 10.0),
-              AddressInfo(
-                travelPoint:
-                    widget.requestServiceWithTimer.requestService.destination,
-                isOrigin: false,
-              ),
-              const SizedBox(height: 10.0),
-              _buildServiceDetails(),
-              const SizedBox(height: 10.0),
-              _buildActions(),
-            ],
-          ),
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+              offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -4),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(4, 0),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(-4, 0),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AddressInfo(
+              travelPoint: requestService.origin,
+            ),
+            const SizedBox(height: 10.0),
+            AddressInfo(
+              travelPoint: requestService.destination,
+              isOrigin: false,
+            ),
+            const SizedBox(height: 10.0),
+            _buildServiceDetails(),
+            const SizedBox(height: 10.0),
+            _buildActions(),
+          ],
         ),
       ),
     );
   }
 
   Row _buildActions() {
-    final controller = Get.find<ShowListServiceCtrl>();
     return Row(
       children: [
-        Icon(
-          Icons.access_time_filled,
-          color: Colors.grey[600],
-        ),
-        const SizedBox(width: 5.0),
-        Text(
-          "${lyfeTimeOfRequestService - _timer.tick - 2} Seg",
-          style: GoogleFonts.montserrat(
-            fontSize: 12.0,
-            color: Colors.grey[600],
+        GestureDetector(
+          onTap: () => controller.removeRequestService(requestService),
+          child: Row(
+            children: [
+              Icon(
+                Icons.remove_circle,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 5.0),
+              Text(
+                "Quitar",
+                style: GoogleFonts.montserrat(
+                  fontSize: 12.0,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
           ),
         ),
         const Spacer(),
         CardActionButton(
             color: Get.theme.colorScheme.primary,
             text: "Contra Oferta",
-            onPressed: () => controller.showContraOffertModal(
-                widget.requestServiceWithTimer.requestService)),
+            onPressed: () => controller.showContraOffertModal(requestService)),
         const SizedBox(width: 5.0),
         CardActionButton(
             color: Colors.blueAccent,
             text: "Aceptar",
-            onPressed: () => controller.sendCounterOffert(
-                widget.requestServiceWithTimer.requestService)),
+            onPressed: () => controller.sendCounterOffert(requestService)),
       ],
     );
   }
@@ -143,10 +117,10 @@ class _CardRequestServiceState extends State<CardRequestService> {
               Row(
                 children: [
                   iconByPaymentType(
-                    widget.requestServiceWithTimer.requestService.payment.type,
+                    requestService.payment.type,
                   ),
                   Text(
-                    widget.requestServiceWithTimer.requestService.payment.name,
+                    requestService.payment.name,
                     style: GoogleFonts.montserrat(
                       color: Colors.black,
                       fontSize: 16.0,
@@ -174,8 +148,7 @@ class _CardRequestServiceState extends State<CardRequestService> {
               ),
               const SizedBox(height: 5.0),
               Text(
-                doubleCurrencyFormatter(
-                    widget.requestServiceWithTimer.requestService.tee),
+                doubleCurrencyFormatter(requestService.tee),
                 style: GoogleFonts.montserrat(
                   color: Colors.black,
                   fontSize: 18.0,

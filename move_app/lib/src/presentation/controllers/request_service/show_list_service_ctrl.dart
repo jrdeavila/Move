@@ -1,19 +1,6 @@
 import 'package:move_app/lib.dart';
 
-const lyfeTimeOfRequestService = 17;
-
-class DriverLyfeCicleOfRequestService {
-  final RequestService requestService;
-  final VoidCallback onTimeOut;
-
-  Timer get timer =>
-      Timer(const Duration(seconds: lyfeTimeOfRequestService), onTimeOut);
-
-  DriverLyfeCicleOfRequestService({
-    required this.requestService,
-    required this.onTimeOut,
-  });
-}
+const lyfeTimeOfRequestService = 15;
 
 class ShowListServiceCtrl extends GetxController {
   // ---------------------------- Final Variables ----------------------------
@@ -27,16 +14,14 @@ class ShowListServiceCtrl extends GetxController {
 
   // ---------------------------- Observables ----------------------------
 
-  final RxList<DriverLyfeCicleOfRequestService> _listRequestService =
-      <DriverLyfeCicleOfRequestService>[].obs;
+  final RxList<RequestService> _listRequestService = <RequestService>[].obs;
   final RxList<ServiceCommonOffert> _listServiceCommonOffert =
       <ServiceCommonOffert>[].obs;
   final RxDouble _currentOffert = 0.0.obs;
 
   // ---------------------------- Getters ----------------------------
 
-  List<DriverLyfeCicleOfRequestService> get listRequestService =>
-      _listRequestService;
+  List<RequestService> get listRequestService => _listRequestService;
   List<ServiceCommonOffert> get listServiceCommonOffert =>
       _listServiceCommonOffert;
   double get currentOffert => _currentOffert.value;
@@ -56,15 +41,15 @@ class ShowListServiceCtrl extends GetxController {
 
   // ---------------------------- Private Methods -----------------------------
 
-  void _routing(List<DriverLyfeCicleOfRequestService> listRequestService) {
+  void _routing(List<RequestService> listRequestService) {
     if (listRequestService.isNotEmpty) {
       Get.toNamed(ProfileRoutes.showServices);
     }
   }
 
-  void _playSound(List<DriverLyfeCicleOfRequestService> listRequestService) {
+  void _playSound(List<RequestService> listRequestService) {
     if (listRequestService.isNotEmpty) {
-      Get.find<SoundCtrl>().playSoundManyTimes();
+      Get.find<SoundCtrl>().playSound();
     }
   }
 
@@ -77,21 +62,8 @@ class ShowListServiceCtrl extends GetxController {
       ),
     )
         .map((event) {
-      var itemsNoAdded = event
-          .where((element) => !_listRequestService
-              .any((e) => e.requestService.uuid == element.uuid))
-          .map((e) => DriverLyfeCicleOfRequestService(
-                requestService: e,
-                onTimeOut: () {
-                  final useCase = getIt<IMarkAsViewedRequestServiceUseCase>();
-                  useCase.markAsViewed(MarkAsViewedRequest(
-                    driver: user,
-                    requestService: e,
-                  ));
-                  _listRequestService.removeWhere(
-                      (element) => element.requestService.uuid == e.uuid);
-                },
-              ));
+      var itemsNoAdded = event.where(
+          (element) => !_listRequestService.any((e) => e.uuid == element.uuid));
       return itemsNoAdded.toList();
     }));
   }
@@ -115,15 +87,19 @@ class ShowListServiceCtrl extends GetxController {
         });
   }
 
-  void onSelectCommonOffert(
-      ServiceCommonOffert serviceCommonOffert, RequestService requestService) {
+  void onSelectCommonOffert(ServiceCommonOffert serviceCommonOffert,
+      RequestService requestService) async {
     final useCase = getIt<ISendCounterOfferUseCase>();
-    useCase.sendCounterOffer(
+    await useCase.sendCounterOffer(
       SendCounterOfferRequest(
         driver: user,
         requestService: requestService,
         counterOffer: serviceCommonOffert.offert,
       ),
+    );
+    Get.find<BannerCtrl>().showInfo(
+      'Oferta Enviada! 🎉',
+      'Espera a que el cliente acepte tu oferta',
     );
   }
 
@@ -131,14 +107,29 @@ class ShowListServiceCtrl extends GetxController {
     _currentOffert.value = value;
   }
 
-  void sendCounterOffert(RequestService requestService) {
+  void sendCounterOffert(RequestService requestService) async {
     _currentOffert.value = requestService.tee;
     final useCase = getIt<ISendCounterOfferUseCase>();
-    useCase.sendCounterOffer(
+    await useCase.sendCounterOffer(
       SendCounterOfferRequest(
         driver: user,
         requestService: requestService,
         counterOffer: _currentOffert.value,
+      ),
+    );
+
+    Get.find<BannerCtrl>().showInfo(
+      'Genial! 🎉',
+      'Espera a que el cliente acepte tu servicio',
+    );
+  }
+
+  void removeRequestService(RequestService requestService) {
+    final useCase = getIt<IMarkAsViewedRequestServiceUseCase>();
+    useCase.markAsViewed(
+      MarkAsViewedRequest(
+        driver: user,
+        requestService: requestService,
       ),
     );
   }

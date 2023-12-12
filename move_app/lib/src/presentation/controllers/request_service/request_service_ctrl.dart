@@ -82,7 +82,6 @@ class RequestServiceCtrl extends GetxController {
       driver: null,
       payment: currentPayment,
     );
-    _loading.value = true;
     await saveAddressUseCase
         .saveAddress(
           SaveAddressRequest(
@@ -99,10 +98,11 @@ class RequestServiceCtrl extends GetxController {
           ),
         )
         .onError((error, stackTrace) => _loading.value = false);
-    sendServiceUseCase
+    _loading.value = true;
+    await sendServiceUseCase
         .sendRequestService(request)
-        .then((value) => _loading.value = false)
         .onError((error, stackTrace) => _loading.value = false);
+    _loading.value = false;
   }
 
   // ----------------------- Public Methods -------------------------------

@@ -16,5 +16,6 @@ showSnackbar(
     duration: const Duration(seconds: 5),
     forwardAnimationCurve: Curves.easeOutBack,
     reverseAnimationCurve: Curves.easeInBack,
+    margin: const EdgeInsets.all(10.0),
   );
 }

@@ -29,24 +29,40 @@ class FirebaseServiceDriverActionService
         .where("status", isEqualTo: RequestServiceStatus.waiting.toString())
         .snapshots()
         .asyncExpand((event) async* {
-      final docsNoViewed = event.docs.where((doc) {
-        final driverViewed = doc.data()["viewedBy"] ?? [];
-        return !driverViewed.contains(driver.uuid);
-      }).toList();
-      final list = <RequestService>[];
+      final hasCurrentService = await _hasCurrentService(driver);
+      if (hasCurrentService) {
+        yield [];
+      } else {
+        final docsNoViewed = event.docs.where((doc) {
+          final driverViewed = doc.data()["viewedBy"] ?? [];
+          return !driverViewed.contains(driver.uuid);
+        }).toList();
+        final list = <RequestService>[];
 
-      for (final doc in docsNoViewed) {
-        final clientCreator = await _getUser(doc["clientCreator"]);
+        for (final doc in docsNoViewed) {
+          final clientCreator = await _getUser(doc["clientCreator"]);
 
-        list.add(
-          requestServiceFromMapWithUserAndDriver(
-            doc.data(),
-            clientCreator: clientCreator,
-          ),
-        );
+          list.add(
+            requestServiceFromMapWithUserAndDriver(
+              doc.data(),
+              clientCreator: clientCreator,
+            ),
+          );
+        }
+
+        yield list;
       }
+    });
+  }
 
-      yield list;
+  Future<bool> _hasCurrentService(AppUser driver) {
+    return _firebaseFirestore
+        .collection("services")
+        .where("driver", isEqualTo: driver.uuid)
+        .where("status", isEqualTo: RequestServiceStatus.started.toString())
+        .get()
+        .then((value) {
+      return value.docs.isNotEmpty;
     });
   }
 

@@ -25,7 +25,7 @@
       "name": "Android 2",
       "request": "launch",
       "type": "dart",
-      "deviceId": "192.168.0.28:5000"
+      "deviceId": "192.168.0.23:5000"
     }
   ],
   "compounds": [

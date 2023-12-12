@@ -22,7 +22,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             ),
             Positioned(
               right: 16.0,
-              top: MediaQuery.of(context).size.height / 2.3 + 16.0,
+              bottom: 416.0,
               child: _buildLocationButton(),
             ),
             Positioned(
@@ -30,16 +30,16 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
               top: MediaQuery.of(context).padding.top + 16.0,
               child: _buildBackButton(),
             ),
-            Positioned.fill(
-              child: _buildLoading(),
-            ),
             _buildCounterOfferts(context),
             Positioned(
-              top: MediaQuery.of(context).size.height / 2.3 + 86.0,
+              height: 400,
               bottom: 0,
               left: 0,
               right: 0,
               child: _buildCurrentAction(context),
+            ),
+            Positioned.fill(
+              child: _buildLoading(),
             ),
           ],
         ),
