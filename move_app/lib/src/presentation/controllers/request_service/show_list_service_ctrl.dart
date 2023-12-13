@@ -34,12 +34,23 @@ class ShowListServiceCtrl extends GetxController {
   void onReady() {
     super.onReady();
     ever(_listRequestService, _playSound);
+    ever(_listRequestService, _notifyInBackgroud);
     ever(_listRequestService, _routing);
     _listenRequestService();
     _fetchServiceCommonOffert();
   }
 
   // ---------------------------- Private Methods -----------------------------
+
+  void _notifyInBackgroud(List<RequestService> listRequestService) {
+    if (listRequestService.isNotEmpty) {
+      // Check if app is in background
+      Get.find<NotificationCtrl>().showNotification(
+        title: 'Nueva solicitud de servicio',
+        body: 'Tienes una nueva solicitud de servicio',
+      );
+    }
+  }
 
   void _routing(List<RequestService> listRequestService) {
     if (listRequestService.isNotEmpty) {

@@ -12,6 +12,7 @@ export 'package:move_app/src/presentation/utils/dimensions.dart';
 export 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 export 'package:geolocator/geolocator.dart';
 export 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 export 'firebase_options.dart';
 export 'main.dart';

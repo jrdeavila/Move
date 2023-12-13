@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -109,4 +111,50 @@ abstract class DatabaseModule {
 abstract class AudioPlayerModule {
   @lazySingleton
   AudioPlayer get audioPlayer => AudioPlayer();
+}
+
+// -------------------------- Flutter Local Notification --------------------------
+
+@module
+abstract class FlutterLocalNotificationModule {
+  @preResolve
+  @lazySingleton
+  Future<FlutterLocalNotificationsPlugin>
+      get flutterLocalNotificationsPlugin async {
+    final plugin = FlutterLocalNotificationsPlugin();
+    // Initialization settings for Android and iOS.
+    // Note: permissions aren't requested here just to demonstrate that can be
+    // done later using the `requestPermissions()` method.
+    const initializationSettings = InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      iOS: DarwinInitializationSettings(
+        requestAlertPermission: false,
+        requestBadgePermission: false,
+        requestSoundPermission: false,
+      ),
+    );
+    await plugin.initialize(
+      initializationSettings,
+    );
+    // Request Android permissions for displaying notifications.
+    if (Platform.isAndroid) {
+      await plugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    }
+    // Request iOS permissions for displaying notifications.
+    if (Platform.isIOS) {
+      await plugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    }
+
+    return plugin;
+  }
 }
