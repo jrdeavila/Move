@@ -25,18 +25,20 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
         children: [
           _buildHeader(),
           TravelPointInput(
-              neighborhoodController: controller.beginNeighborhoodController,
-              addressController: controller.beginAddressController,
-              label: "Punto de partida",
-              onTap: () {
-                controller.onEditingBeginAddress();
-              },
-              onChangedAddress: (value) {
-                controller.setAddressBegin(value);
-              },
-              onChangedNeighborhood: (value) {
-                controller.searchTravelPoints(value);
-              }),
+            neighborhoodController: controller.beginNeighborhoodController,
+            addressController: controller.beginAddressController,
+            label: "Punto de partida",
+            onTap: () {
+              controller.onEditingBeginAddress();
+            },
+            onChangedAddress: (value) {
+              controller.setAddressBegin(value);
+            },
+            onChangedNeighborhood: (value) {
+              controller.searchTravelPoints(value);
+            },
+            onEnter: controller.checkIfAllAddressAreFilled,
+          ),
           TravelPointInput(
             neighborhoodController: controller.endNeighborhoodController,
             addressController: controller.endAddressController,
@@ -47,6 +49,7 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
             onTap: () {
               controller.onEditingEndAddress();
             },
+            onEnter: controller.checkIfAllAddressAreFilled,
             onChangedNeighborhood: (value) {
               controller.searchTravelPoints(value);
             },
@@ -136,6 +139,7 @@ class TravelPointInput extends StatelessWidget {
     required this.onChangedAddress,
     required this.neighborhoodController,
     required this.addressController,
+    this.onEnter,
     this.onTap,
   });
 
@@ -145,6 +149,7 @@ class TravelPointInput extends StatelessWidget {
   final ValueChanged<String> onChangedNeighborhood;
   final ValueChanged<String> onChangedAddress;
   final VoidCallback? onTap;
+  final VoidCallback? onEnter;
 
   @override
   Widget build(BuildContext context) {
@@ -212,6 +217,7 @@ class TravelPointInput extends StatelessWidget {
                   keyboardType: TextInputType.streetAddress,
                   onChanged: onChangedAddress,
                   onTap: onTap,
+                  onFieldSubmitted: (_) => onEnter?.call(),
                   style: GoogleFonts.montserrat(
                     fontSize: 18.0,
                   ),

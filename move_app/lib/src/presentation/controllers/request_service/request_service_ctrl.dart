@@ -212,4 +212,10 @@ class RequestServiceCtrl extends GetxController {
       return;
     }
   }
+
+  void checkIfAllAddressAreFilled() {
+    if (beginTravelPoint != null && endTravelPoint != null) {
+      Get.back();
+    }
+  }
 }
