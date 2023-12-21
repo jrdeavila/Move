@@ -118,6 +118,7 @@ class SessionCtrl extends GetxController {
   void onRegisterSuccess(AppUser user) {
     _user.value = user;
     _userLoaded.value = true;
+    _userLoaded.refresh();
   }
 
   void onUpdateProfileSuccess(AppUser user) {

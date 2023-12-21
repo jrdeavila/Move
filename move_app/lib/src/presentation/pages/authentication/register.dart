@@ -12,6 +12,7 @@ class _RegisterState extends State<Register> {
 
   final TextEditingController _controllerFirstName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
+  final TextEditingController _controllerPhone = TextEditingController();
 
   @override
   void initState() {
@@ -22,6 +23,9 @@ class _RegisterState extends State<Register> {
     });
     _controllerLastName.addListener(() {
       _registerCtrl.onLastnameChanged(_controllerLastName.text);
+    });
+    _controllerPhone.addListener(() {
+      _registerCtrl.onPhoneChanged(_controllerPhone.text);
     });
   }
 
@@ -84,6 +88,16 @@ class _RegisterState extends State<Register> {
                               isPassword: false,
                               isNumericKeyboard: false,
                               isDateInput: false,
+                            ),
+                            InputClassic(
+                              labelText: "Telefono",
+                              controller: _controllerPhone,
+                              isPassword: false,
+                              isNumericKeyboard: true,
+                              isDateInput: false,
+                              formatters: [
+                                PhoneInputFormatter(),
+                              ],
                             ),
                             SizedBox(
                               height: Dimensions.screenHeight * 0.02,
