@@ -61,6 +61,22 @@ abstract class FirebaseStorageModule {
       );
 }
 
+// ------------------------- Google Sign In -------------------------
+
+@module
+abstract class GoogleSignInModule {
+  @preResolve
+  @lazySingleton
+  Future<GoogleSignIn> get googleSignIn async => GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/contacts.readonly',
+          'https://www.googleapis.com/auth/userinfo.profile',
+          'https://www.googleapis.com/auth/userinfo.email',
+        ],
+      );
+}
+
 // ------------------------------------ Dio ------------------------------------
 
 @module

@@ -1,17 +1,11 @@
 import 'package:move_app/lib.dart';
 
 class RegisterCtrl extends GetxController {
-  final RxString _email = ''.obs;
   final RxString _firstname = ''.obs;
   final RxString _lastname = ''.obs;
 
-  String get email => _email.value.trim();
   String get firstname => _firstname.value.trim();
   String get lastname => _lastname.value.trim();
-
-  void onEmailChanged(String text) {
-    _email.value = text;
-  }
 
   void onFirstnameChanged(String text) {
     _firstname.value = text;
@@ -28,7 +22,6 @@ class RegisterCtrl extends GetxController {
           RegisterRequest(
             firstname: firstname,
             lastname: lastname,
-            email: email,
           ),
         )
         .then(

@@ -12,7 +12,6 @@ class _RegisterState extends State<Register> {
 
   final TextEditingController _controllerFirstName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
-  final TextEditingController _controllerEmail = TextEditingController();
 
   @override
   void initState() {
@@ -23,9 +22,6 @@ class _RegisterState extends State<Register> {
     });
     _controllerLastName.addListener(() {
       _registerCtrl.onLastnameChanged(_controllerLastName.text);
-    });
-    _controllerEmail.addListener(() {
-      _registerCtrl.onEmailChanged(_controllerEmail.text);
     });
   }
 
@@ -41,15 +37,6 @@ class _RegisterState extends State<Register> {
               height: Dimensions.screenHeight * 0.99,
               child: Stack(
                 children: [
-                  Positioned(
-                      top: Dimensions.screenHeight * 0.05,
-                      left: Dimensions.screenWidth * 0.05,
-                      child: IconButton(
-                          onPressed: () {
-                            Get.offAllNamed(MainRoutes.main);
-                          },
-                          icon: const Icon(Icons.arrow_back_ios_rounded,
-                              color: Colors.white))),
                   IgnorePointer(
                     child: Container(
                         height: Dimensions.screenHeight * 0.452,
@@ -94,13 +81,6 @@ class _RegisterState extends State<Register> {
                             InputClassic(
                               labelText: 'Apellido',
                               controller: _controllerLastName,
-                              isPassword: false,
-                              isNumericKeyboard: false,
-                              isDateInput: false,
-                            ),
-                            InputClassic(
-                              labelText: 'Correo',
-                              controller: _controllerEmail,
                               isPassword: false,
                               isNumericKeyboard: false,
                               isDateInput: false,

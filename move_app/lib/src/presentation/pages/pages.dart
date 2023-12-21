@@ -5,4 +5,3 @@ export 'dashboard/dashboard.dart';
 export 'loading.dart';
 export 'main.dart';
 export 'profile/profile.dart';
-export 'verification/verification.dart';

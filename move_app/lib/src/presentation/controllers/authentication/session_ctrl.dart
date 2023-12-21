@@ -35,7 +35,8 @@ class SessionCtrl extends GetxController {
         _userRepository.getUser(userId).then((value) {
           Future.delayed(const Duration(seconds: 1), () {
             _user.value = value;
-            _userLoaded.value = value != null;
+            _userLoaded.value = true;
+            _userLoaded.refresh();
           });
         });
       } else {
@@ -54,13 +55,12 @@ class SessionCtrl extends GetxController {
   }
 
   void _routing(userLoaded) {
-    if (_userLoaded.value) {
-      if (_user.value != null) {
-        _routingAsUserAuthenticated(_user.value!);
-        return;
-      }
+    if (_user.value != null) {
+      _routingAsUserAuthenticated(_user.value!);
+      return;
+    } else {
+      Get.offAllNamed(AuthenticationRoutes.register);
     }
-    Get.toNamed(MainRoutes.main);
   }
 
   void _routingAsUserAuthenticated(AppUser user) {
@@ -116,6 +116,7 @@ class SessionCtrl extends GetxController {
   // -------------------------------------------------
 
   void onRegisterSuccess(AppUser user) {
+    _user.value = user;
     _userLoaded.value = true;
   }
 

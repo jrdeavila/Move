@@ -5,18 +5,9 @@ abstract class IAuthenticationService {
 
   String getUserUuid();
   String getUserPhone();
+  String getUserEmail();
 }
 
-abstract class IPhoneAuthenticationService {
-  Future<void> loginWithPhone({
-    required String phone,
-    required void Function() onCodeSend,
-    required void Function() onError,
-  });
-
-  Future<void> verifyCode({
-    required String smsCode,
-    required void Function() onLoginSuccess,
-    required void Function() onShouldRegister,
-  });
+abstract interface class ILoginWithGoogleService {
+  Future<void> loginWithGoogle();
 }

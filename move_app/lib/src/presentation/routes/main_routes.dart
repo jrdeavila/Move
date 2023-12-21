@@ -6,9 +6,11 @@ abstract class MainRoutes {
 
   static final routes = [
     GetPage(
-      name: main,
-      page: () => const Main(),
-    ),
+        name: main,
+        page: () => const Main(),
+        binding: BindingsBuilder(() {
+          Get.put(LoginCtrl());
+        })),
     GetPage(
       name: loading,
       page: () => const LoadingPage(),

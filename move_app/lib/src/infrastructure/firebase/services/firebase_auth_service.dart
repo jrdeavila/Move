@@ -22,74 +22,52 @@ class FirebaseAuthService implements IAuthenticationService {
 
   @override
   String getUserPhone() {
-    return _firebaseAuth.currentUser!.phoneNumber!;
+    return _firebaseAuth.currentUser!.phoneNumber ?? "";
   }
 
   @override
   String getUserUuid() {
     return _firebaseAuth.currentUser!.uid;
   }
+
+  @override
+  String getUserEmail() {
+    return _firebaseAuth.currentUser!.email!;
+  }
 }
 
-@Singleton(as: IPhoneAuthenticationService)
-class FirebasePhoneAuthenticationService
-    implements IPhoneAuthenticationService {
+@Singleton(as: ILoginWithGoogleService)
+class LoginWithGoogleService implements ILoginWithGoogleService {
   final FirebaseAuth _firebaseAuth;
-  final IUserRepository _userRepository;
+  final GoogleSignIn _googleSignIn;
 
-  late String _verificationId;
-  int? _resendToken;
-
-  FirebasePhoneAuthenticationService({
+  LoginWithGoogleService({
     required FirebaseAuth firebaseAuth,
-    required IUserRepository userRepository,
+    required GoogleSignIn googleSignIn,
   })  : _firebaseAuth = firebaseAuth,
-        _userRepository = userRepository;
+        _googleSignIn = googleSignIn;
 
   @override
-  Future<void> loginWithPhone({
-    required String phone,
-    required void Function() onCodeSend,
-    required void Function() onError,
-    Duration timeout = const Duration(seconds: 60),
-  }) {
-    return _firebaseAuth.verifyPhoneNumber(
-      codeSent: (verificationId, forceResendingToken) {
-        _resendToken = forceResendingToken;
-        _verificationId = verificationId;
-        onCodeSend();
-      },
-      phoneNumber: phone,
-      forceResendingToken: _resendToken,
-      verificationCompleted: (phoneAuthCredential) {},
-      verificationFailed: (error) {
-        onError();
-        throw error;
-      },
-      codeAutoRetrievalTimeout: (code) {},
-      timeout: timeout,
-    );
-  }
-
-  @override
-  Future<void> verifyCode({
-    required String smsCode,
-    required void Function() onLoginSuccess,
-    required void Function() onShouldRegister,
-  }) async {
-    final credential = PhoneAuthProvider.credential(
-      verificationId: _verificationId,
-      smsCode: smsCode,
-    );
-
-    final userCredential = await _firebaseAuth.signInWithCredential(credential);
-
-    final existInfo =
-        await _userRepository.isUserExists(userCredential.user!.uid);
-    if (existInfo) {
-      return onLoginSuccess();
-    } else {
-      return onShouldRegister();
+  Future<void> loginWithGoogle() async {
+    final isSignedIn = await _googleSignIn.isSignedIn();
+    if (isSignedIn) {
+      await _googleSignIn.signOut();
     }
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) {
+      throw FirebaseAuthException(
+        code: 'ERROR_ABORTED_BY_USER',
+        message: 'Sign in aborted by user',
+      );
+    }
+
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await _firebaseAuth.signInWithCredential(credential);
   }
 }

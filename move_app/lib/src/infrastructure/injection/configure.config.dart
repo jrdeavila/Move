@@ -74,6 +74,7 @@ extension GetItInjectableX on _i1.GetIt {
     final firestoreModule = _$FirestoreModule();
     final firebaseStorageModule = _$FirebaseStorageModule();
     final flutterLocalNotificationModule = _$FlutterLocalNotificationModule();
+    final googleSignInModule = _$GoogleSignInModule();
     gh.lazySingleton<_i3.AudioPlayer>(() => audioPlayerModule.audioPlayer);
     await gh.lazySingletonAsync<_i4.Database>(
       () => databaseModule.database,
@@ -102,6 +103,10 @@ extension GetItInjectableX on _i1.GetIt {
     );
     await gh.lazySingletonAsync<_i9.FlutterLocalNotificationsPlugin>(
       () => flutterLocalNotificationModule.flutterLocalNotificationsPlugin,
+      preResolve: true,
+    );
+    await gh.lazySingletonAsync<_i9.GoogleSignIn>(
+      () => googleSignInModule.googleSignIn,
       preResolve: true,
     );
     gh.factory<_i9.IAboutCarSectionService>(() =>
@@ -183,6 +188,12 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i25.ListenMyBalanceUseCase(gh<_i9.IDriverBalanceService>()));
     gh.factory<_i9.IListenMyPointsUseCase>(
         () => _i25.ListenMyPointsUseCase(gh<_i9.IClientPointsService>()));
+    gh.singleton<_i9.ILoginWithGoogleService>(_i11.LoginWithGoogleService(
+      firebaseAuth: gh<_i8.FirebaseAuth>(),
+      googleSignIn: gh<_i9.GoogleSignIn>(),
+    ));
+    gh.factory<_i9.ILoginWithGoogleUseCase>(
+        () => _i26.LoginWithGoogleUseCase(gh<_i9.ILoginWithGoogleService>()));
     gh.factory<_i9.ILogoutUseCase>(
         () => _i26.LogoutUseCase(gh<_i9.IAuthenticationService>()));
     gh.factory<_i9.IMarkAsViewedRequestServiceService>(() =>
@@ -278,11 +289,6 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i9.IListenRequestServiceCounterOffersUseCase>(() =>
         _i15.ListenRequestServiceCounterOffersUseCase(
             serviceActionService: gh<_i9.IServiceActionService>()));
-    gh.singleton<_i9.IPhoneAuthenticationService>(
-        _i11.FirebasePhoneAuthenticationService(
-      firebaseAuth: gh<_i8.FirebaseAuth>(),
-      userRepository: gh<_i9.IUserRepository>(),
-    ));
     gh.factory<_i9.IRegisterUseCase>(() => _i26.RegisterUseCase(
           userRepository: gh<_i9.IUserRepository>(),
           authenticationService: gh<_i9.IAuthenticationService>(),
@@ -303,8 +309,6 @@ extension GetItInjectableX on _i1.GetIt {
               userService: gh<_i36.IUserRepository>(),
               uploadFile: gh<_i36.IUploadFile>(),
             ));
-    gh.factory<_i9.ISendCodeUseCase>(
-        () => _i26.SendCodeUseCase(gh<_i9.IPhoneAuthenticationService>()));
     gh.factory<_i9.ISendCounterOfferUseCase>(() => _i15.SendCounterOfferUseCase(
         serviceActionService: gh<_i9.IServiceDriverActionService>()));
     gh.factory<_i36.ISendDNISectionUseCase>(() => _i37.SendDNISectionUseCase(
@@ -364,8 +368,6 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i9.IFinishServiceDriverUseCase>(() =>
         _i15.FinishServiceDriverUseCase(
             serviceActionService: gh<_i9.IServiceFinishDriverActionService>()));
-    gh.factory<_i9.ILoginWithPhoneUseCase>(() =>
-        _i26.LoginWithPhoneUseCase(gh<_i9.IPhoneAuthenticationService>()));
     return this;
   }
 }
@@ -388,3 +390,5 @@ class _$FirebaseStorageModule extends _i41.FirebaseStorageModule {}
 
 class _$FlutterLocalNotificationModule
     extends _i41.FlutterLocalNotificationModule {}
+
+class _$GoogleSignInModule extends _i41.GoogleSignInModule {}

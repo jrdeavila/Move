@@ -1,132 +1,106 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:move_app/src/presentation/routes/routes.dart';
-import 'package:move_app/src/presentation/utils/dimensions.dart';
+import 'package:move_app/lib.dart';
 
-class Main extends StatelessWidget {
+class Main extends GetView<LoginCtrl> {
   const Main({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Padding(
-        padding: EdgeInsets.only(top: Dimensions.height10),
-        child: SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.only(left: Dimensions.width10),
-              child: Text('A',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.13,
-                    fontWeight: FontWeight.w700,
-                  )),
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/background.png',
+                fit: BoxFit.cover,
+              ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: Dimensions.screenHeight * 0.02,
-                  left: Dimensions.width10),
-              child: Text('DONDE',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.13,
-                    fontWeight: FontWeight.w700,
-                  )),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: Dimensions.screenHeight * 0.02,
-                  left: Dimensions.width10),
-              child: Text('QUIERAS',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.13,
-                    fontWeight: FontWeight.w700,
-                  )),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: Dimensions.screenHeight * 0.02,
-                  left: Dimensions.width10),
-              child: Text('NOSOTROS',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.14,
-                    fontWeight: FontWeight.w700,
-                  )),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: Dimensions.screenHeight * 0.02,
-                  left: Dimensions.width10),
-              child: Text('VAMOS.',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: Dimensions.screenWidth * 0.13,
-                    fontWeight: FontWeight.w700,
-                  )),
-            ),
-            Stack(
-              children: [
-                Container(
-                    height: Dimensions.screenHeight * 0.42,
-                    width: Dimensions.width90,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/background.png'),
-                            fit: BoxFit.contain))),
-                Positioned(
-                  top: Dimensions.screenHeight * 0.02,
-                  left: Dimensions.screenWidth * 0.1,
-                  child: Text('¡Explora la ciudad\ncon nosotros!',
-                      style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontSize: Dimensions.screenWidth * 0.065,
-                        fontWeight: FontWeight.w100,
-                      )),
-                ),
-                Positioned(
-                  top: Dimensions.screenHeight * 0.11,
-                  left: Dimensions.screenWidth * 0.1,
-                  child: Text('¡Empecemos!',
-                      style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontSize: Dimensions.screenWidth * 0.065,
-                        fontWeight: FontWeight.w700,
-                      )),
-                ),
-                Positioned(
-                  top: Dimensions.screenHeight * 0.24,
-                  left: Dimensions.screenWidth * 0.56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.offAllNamed(AuthenticationRoutes.login);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      minimumSize:
-                          Size(Dimensions.width15, Dimensions.buttonHeight),
-                    ),
-                    child: Text("Ingresar",
-                        style: GoogleFonts.inter(
-                          color: Colors.black,
-                          fontSize: Dimensions.screenWidth * 0.05,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.w700,
-                        )),
+            Positioned.fill(child: _buildMessage()),
+            Positioned(
+              bottom: 16.0,
+              right: 16.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  controller.loginWithGoogle();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 10.0,
                   ),
-                )
-              ],
-            ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("INGRESAR",
+                          style: GoogleFonts.montserrat(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
+                      const SizedBox(width: 10.0),
+                      const Icon(
+                        Icons.arrow_right_alt,
+                        size: 40.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
-        )),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildMessage() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "A DONDE",
+            style: GoogleFonts.montserrat(
+              fontSize: 40,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            "QUIERAS",
+            style: GoogleFonts.montserrat(
+              fontSize: 40,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            "NOSOTROS",
+            style: GoogleFonts.montserrat(
+              fontSize: 50,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            "VAMOS",
+            style: GoogleFonts.montserrat(
+              fontSize: 50,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          Text("¡Ingresa y explora tu ciudad con nosotros ya!",
+              style: GoogleFonts.montserrat(
+                fontSize: 20,
+                color: Colors.white,
+              )),
+        ],
       ),
     );
   }

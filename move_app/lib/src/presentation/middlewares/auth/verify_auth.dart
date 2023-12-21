@@ -6,7 +6,7 @@ class VerifyAuth extends GetMiddleware {
     if (Get.find<SessionCtrl>().user != null) {
       return null;
     } else {
-      return const RouteSettings(name: AuthenticationRoutes.login);
+      return const RouteSettings(name: MainRoutes.main);
     }
   }
 }

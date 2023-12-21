@@ -14,7 +14,39 @@
       },
       "oauth_client": [
         {
-          "client_id": "64558452563-kck6klf110907rtc6v7c54i00sak0t8f.apps.googleusercontent.com",
+          "client_id": "64558452563-8bapa3dkmr416vpst7jpmupi438hpnp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.move_app",
+            "certificate_hash": "c249c4ad348e02bcfa33df5819de3d4245c98392"
+          }
+        },
+        {
+          "client_id": "64558452563-g06l76tksb89rf18q12o5rg037qmiri7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.move_app",
+            "certificate_hash": "e707d58dfac1869ca520190a39689c1c6f55550c"
+          }
+        },
+        {
+          "client_id": "64558452563-hel4t206f26m3ilh800ljhaphhbkj4r8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.move_app",
+            "certificate_hash": "021adcf72ca4c8df2e73bd52af0097079cac870a"
+          }
+        },
+        {
+          "client_id": "64558452563-kfnqg4ka2ulp9c75mk0h9oaj1qelk1vg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.move_app",
+            "certificate_hash": "9dd9ccac8a272c69a579f570c218ce01bd6dfb38"
+          }
+        },
+        {
+          "client_id": "64558452563-f9hr21v7r1bf4idknkqki4b5brsrlaq1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +59,43 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "64558452563-kck6klf110907rtc6v7c54i00sak0t8f.apps.googleusercontent.com",
+              "client_id": "64558452563-f9hr21v7r1bf4idknkqki4b5brsrlaq1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "64558452563-r9q7ar2ba31jgh3st6smfs9gbb8ucqqo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.moveApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64558452563:android:75d65c35457beb86c55ba6",
+        "android_client_info": {
+          "package_name": "com.mevotaxis.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64558452563-f9hr21v7r1bf4idknkqki4b5brsrlaq1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8tuDvLiRFNDh-pNHmCzNKHjAVbSjI1tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64558452563-f9hr21v7r1bf4idknkqki4b5brsrlaq1.apps.googleusercontent.com",
               "client_type": 3
             },
             {

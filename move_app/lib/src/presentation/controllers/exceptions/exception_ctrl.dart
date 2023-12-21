@@ -92,4 +92,5 @@ Map<String, String> firebaseExceptionsCodeMap = {
   'invalid-phone-number': 'El número de teléfono no es válido',
   'too-many-requests':
       'Se bloqueó la solicitud debido a una actividad inusual. Inténtalo de nuevo después de un tiempo',
+  'ERROR_ABORTED_BY_USER': 'Acción cancelada por el usuario',
 };
