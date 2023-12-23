@@ -34,6 +34,7 @@ class App extends StatelessWidget {
         ),
         colorScheme: ColorScheme.fromSwatch(
           accentColor: color,
+          backgroundColor: Colors.grey[200]!,
           primarySwatch: MaterialColor(
             color.value,
             swatch,
