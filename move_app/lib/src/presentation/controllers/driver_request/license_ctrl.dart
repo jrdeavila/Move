@@ -69,10 +69,7 @@ class LicenseCtrl extends GetxController {
       _errorLicenseNumber.value = "Campo requerido";
       return;
     }
-    if (value.length < 12) {
-      _errorLicenseNumber.value = "El numero de licencia debe tener 12 digitos";
-      return;
-    }
+
     _errorLicenseNumber.value = null;
     return;
   }

@@ -44,7 +44,6 @@ class LicenseData extends GetView<LicenseCtrl> {
                     error: controller.errorLicenseNumber,
                     formatters: [
                       FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(12),
                     ],
                   ),
                   InputClassic(
