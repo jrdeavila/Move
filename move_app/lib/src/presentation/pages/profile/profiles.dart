@@ -17,16 +17,13 @@ class Profiles extends GetView<DetailsCtrl> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Padding(
-          padding: EdgeInsets.only(left: Dimensions.screenWidth * 0.21),
-          child: Text('Perfil',
-              style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: Dimensions.screenWidth * 0.05,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1,
-              )),
-        ),
+        title: Text('Perfil',
+            style: GoogleFonts.montserrat(
+              color: Colors.black,
+              fontSize: Dimensions.screenWidth * 0.05,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            )),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(

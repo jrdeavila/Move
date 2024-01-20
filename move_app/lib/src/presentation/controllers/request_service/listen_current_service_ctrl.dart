@@ -34,6 +34,7 @@ class ListenCurrentServiceCtrl extends GetxController {
   final Rx<RequestService?> _currentRequestService = Rx(null);
   final Rx<LatLng?> _driverLocation = Rx(null);
   final RxList<TimeLyfeOfOffer> _listCounterOffers = <TimeLyfeOfOffer>[].obs;
+  final RxBool _soundAvailable = true.obs;
 
   final RxDouble _currentOffer = 0.0.obs;
 
@@ -136,13 +137,20 @@ class ListenCurrentServiceCtrl extends GetxController {
   }
 
   void _playSound(values) {
-    if (currentRequestService?.status == RequestServiceStatus.started) {
+    if (currentRequestService?.status == RequestServiceStatus.started &&
+        _soundAvailable.value) {
       Get.find<SoundCtrl>().playSound();
+      _soundAvailable.value = false;
+      Future.delayed(
+          const Duration(seconds: 3), () => _soundAvailable.value = true);
       return;
     }
 
-    if (listCounterOffers.isNotEmpty) {
+    if (listCounterOffers.isNotEmpty && _soundAvailable.value) {
       Get.find<SoundCtrl>().playSound();
+      _soundAvailable.value = false;
+      Future.delayed(
+          const Duration(seconds: 3), () => _soundAvailable.value = true);
       return;
     }
   }

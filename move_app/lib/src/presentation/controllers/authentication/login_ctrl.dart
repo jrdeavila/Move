@@ -13,6 +13,8 @@ class LoginCtrl extends GetxController {
   void _showLoading(show) {
     if (show) {
       Get.offAllNamed(MainRoutes.loading);
+    } else {
+      Get.offAllNamed(MainRoutes.main);
     }
   }
 
@@ -22,7 +24,7 @@ class LoginCtrl extends GetxController {
         .loginWithGoogle()
         .onError((error, stackTrace) {
       _loading.value = false;
-      Get.snackbar("Error", error.toString());
+      throw error as Exception;
     }).whenComplete(() => _loading.value = false);
   }
 }

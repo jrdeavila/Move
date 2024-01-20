@@ -5,4 +5,4 @@ const mapsTileFallbackUrl =
 const mapsToken =
     "pk.eyJ1IjoianJkZWF2aWxhIiwiYSI6ImNsZnZudnQ0ODA2YTIzbXFxZHo0eWM4MnAifQ.D8OQD4rg_w4FOe1kg9EL1g";
 
-const googleMapsApiKey = "AIzaSyA49opAaeHWJTYkHbSy5VHUoD63Q38w3RM";
+const googleMapsApiKey = "AIzaSyBIEPC6BpJylFvX9nH5Fm02bRzLWUCzkLw";

@@ -22,7 +22,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             ),
             Positioned(
               right: 16.0,
-              bottom: 416.0,
+              bottom: 466.0,
               child: _buildLocationButton(),
             ),
             Positioned(
@@ -32,7 +32,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             ),
             _buildCounterOfferts(context),
             Positioned(
-              height: 400,
+              height: 450,
               bottom: 0,
               left: 0,
               right: 0,

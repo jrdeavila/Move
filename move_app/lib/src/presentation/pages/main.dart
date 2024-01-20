@@ -12,12 +12,6 @@ class Main extends GetView<LoginCtrl> {
         height: double.infinity,
         child: Stack(
           children: [
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/background.png',
-                fit: BoxFit.cover,
-              ),
-            ),
             Positioned.fill(child: _buildMessage()),
             Positioned(
               bottom: 16.0,
@@ -28,24 +22,25 @@ class Main extends GetView<LoginCtrl> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 30.0,
+                    horizontal: 10.0,
                     vertical: 10.0,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("INGRESAR",
+                      Image.asset(
+                        'assets/logo/google.png',
+                        width: 30.0,
+                        height: 30.0,
+                      ),
+                      const SizedBox(width: 10.0),
+                      Text("Ingresar",
                           style: GoogleFonts.montserrat(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           )),
-                      const SizedBox(width: 10.0),
-                      const Icon(
-                        Icons.arrow_right_alt,
-                        size: 40.0,
-                      ),
                     ],
                   ),
                 ),
@@ -61,22 +56,39 @@ class Main extends GetView<LoginCtrl> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "A DONDE",
-            style: GoogleFonts.montserrat(
-              fontSize: 40,
-              color: Colors.white,
-            ),
-          ),
-          Text(
-            "QUIERAS",
-            style: GoogleFonts.montserrat(
-              fontSize: 40,
-              color: Colors.white,
-            ),
+          Row(
+            children: [
+              Image.asset(
+                'assets/logo/logo_white.png',
+                width: 100.0,
+                height: 100.0,
+              ),
+              const SizedBox(width: 10.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "A DONDE",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "QUIERAS",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           Text(
             "NOSOTROS",
@@ -94,7 +106,7 @@ class Main extends GetView<LoginCtrl> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 20.0),
+          const SizedBox(height: 40.0),
           Text("¡Ingresa y explora tu ciudad con nosotros ya!",
               style: GoogleFonts.montserrat(
                 fontSize: 20,
