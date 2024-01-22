@@ -32,7 +32,6 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             ),
             _buildCounterOfferts(context),
             Positioned(
-              height: 450,
               bottom: 0,
               left: 0,
               right: 0,

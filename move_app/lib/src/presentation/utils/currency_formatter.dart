@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 String doubleCurrencyFormatter(double value) {
   final formatter = NumberFormat.currency(
-    customPattern: "COP #,##0.00",
+    customPattern: "#,##0.00 COP",
     decimalDigits: 0,
   );
 

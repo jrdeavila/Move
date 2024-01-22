@@ -20,4 +20,12 @@ AppUser userFromJson(Map<String, dynamic> json) => AppUser(
                 (element) => element.toString().split('.').last == e,
               ))
           .toList(),
+      driverInfo: json['driver_info'] != null
+          ? DriverInfo(
+              carBrand: (json['driver_info']['card_brand'] as String).trim(),
+              carPlate: (json['driver_info']['card_plate'] as String).trim(),
+              carImage: (json['driver_info']['card_image'] as String).trim(),
+              carModel: (json['driver_info']['card_model'] as String).trim(),
+            )
+          : null,
     );

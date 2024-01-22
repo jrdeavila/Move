@@ -5,10 +5,8 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    return FadeInUpBig(
-        child: Container(
-      width: Dimensions.screenWidth * 1,
-      height: Dimensions.screenHeight * 0.55,
+    return Container(
+      width: double.infinity,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -44,10 +42,11 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
                     Text('El conductor llegara en 5 minutos',
                         style: GoogleFonts.montserrat(
                           color: Colors.black,
-                          fontSize: Dimensions.screenWidth * 0.04,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                         )),
-                    Text('Negro Kia Picanto',
+                    Text(
+                        '${controller.currentRequestService!.driver!.driver.carBrand} ${controller.currentRequestService!.driver!.driver.carModel}',
                         style: GoogleFonts.montserrat(
                           color: Colors.black,
                           fontSize: Dimensions.screenWidth * 0.04,
@@ -68,7 +67,9 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
                             color: const Color.fromRGBO(140, 138, 142, 1),
                           ),
                           child: Center(
-                            child: Text('IOZ320',
+                            child: Text(
+                                controller.currentRequestService!.driver!.driver
+                                    .carPlate,
                                 style: GoogleFonts.montserrat(
                                   color: Colors.white,
                                   fontSize: Dimensions.screenWidth * 0.035,
@@ -82,9 +83,8 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
                                 controller.currentRequestService?.tee ?? 0),
                             style: GoogleFonts.montserrat(
                               color: Colors.black,
-                              fontSize: Dimensions.screenWidth * 0.045,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 1,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
                             )),
                       ],
                     )
@@ -105,7 +105,7 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
                     "Direccion de destino",
                 title: 'Destino',
               )),
-          const Spacer(),
+          const SizedBox(height: 20.0),
           ButtonClassic(
             text: "Cancelar",
             onPressed: () {
@@ -115,6 +115,6 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
           ),
         ],
       ),
-    ));
+    );
   }
 }

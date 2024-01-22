@@ -111,9 +111,9 @@ class DriverRequestRegisterCtrl extends GetxController {
 
   // ------------------------------------------------------------
 
-  void _fetchDriverRequest() {
+  Future<void> _fetchDriverRequest() {
     final useCase = getIt<IFetchDriverRequestUseCase>();
-    useCase
+    return useCase
         .call(FetchDriverRequestRequest(
       Get.find<SessionCtrl>().user!,
     ))
@@ -169,7 +169,8 @@ class DriverRequestRegisterCtrl extends GetxController {
     // TODO: implement showTermsAndConditions
   }
 
-  void routingByStatus() {
+  void routingByStatus() async {
+    await _fetchDriverRequest();
     if (_driverRequest.value.isSended) {
       Get.toNamed(DriverRequestRoutes.sended);
     }
