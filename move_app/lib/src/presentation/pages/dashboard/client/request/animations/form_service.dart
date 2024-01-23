@@ -25,6 +25,13 @@ class FormRequestService extends GetView<RequestServiceCtrl> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text("¿A DÓNDE VAMOS?",
+                style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                )),
+            const SizedBox(height: 20.0),
             Obx(() => AddressField(
                   color: Colors.blue,
                   name: controller.beginTravelPoint?.name ?? 'Recogida',
