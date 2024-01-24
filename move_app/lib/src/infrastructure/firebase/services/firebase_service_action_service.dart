@@ -44,10 +44,9 @@ class FirebaseServiceActionService implements IServiceActionService {
 
   @override
   Stream<List<RequestService>> getRequestServiceCounterOffers(
-      RequestService requestService) async* {
+      RequestService requestService) {
     final ref = _firestore.collection("services").doc(requestService.uuid);
-
-    yield* ref
+    return ref
         .collection("counter_offer")
         .where("status", isEqualTo: RequestServiceStatus.waiting.toString())
         .snapshots()

@@ -63,78 +63,64 @@ class CardClassic extends StatelessWidget {
 }
 
 class CardDescription extends StatelessWidget {
-  final String? title;
-  final String? description;
-  final Color? colorTitle;
+  final String title;
+  final String description;
+  final Color? textColor;
   final Color? color;
-  final String? root;
+  final String? imageAsset;
   final VoidCallback onPressed;
-  final double width;
-  final double height;
-  final double top;
-  final double left;
 
   const CardDescription({
     super.key,
-    this.title,
-    this.colorTitle,
+    required this.title,
+    this.textColor,
     this.color,
-    required this.root,
-    this.description,
+    required this.imageAsset,
+    required this.description,
     required this.onPressed,
-    required this.width,
-    required this.height,
-    required this.top,
-    required this.left,
-  });
+  }) : assert(description.length < 70);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: Dimensions.height2),
-        width: Dimensions.width80,
-        height: Dimensions.screenHeight * 0.2,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        width: 300,
+        height: 180,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Stack(children: [
-          Positioned(
-            top: Dimensions.screenHeight * 0.045,
-            left: Dimensions.screenWidth * 0.09,
-            child: Text(title!,
-                style: GoogleFonts.montserrat(
-                  color: colorTitle,
-                  fontSize: Dimensions.screenWidth * 0.06,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.5,
-                )),
-          ),
-          Positioned(
-            top: Dimensions.screenHeight * 0.093,
-            left: Dimensions.screenWidth * 0.09,
-            child: SizedBox(
-              width: Dimensions.width50,
-              child: Text(description!,
-                  style: GoogleFonts.montserrat(
-                    color: colorTitle,
-                    fontSize: Dimensions.screenWidth * 0.04,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1.5,
-                  )),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: GoogleFonts.montserrat(
+                      color: textColor,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                    )),
+                Text(description,
+                    style: GoogleFonts.montserrat(
+                      color: textColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ],
             ),
           ),
-          Positioned(
-            top: top,
-            left: left,
-            child: Image.asset(
-              root!,
-              width: width,
-              height: height,
-              fit: BoxFit.cover,
-            ),
+          const SizedBox(
+            width: 20,
+          ),
+          Image.asset(
+            imageAsset!,
+            width: 80,
+            height: 80,
+            fit: BoxFit.scaleDown,
           ),
         ]),
       ),

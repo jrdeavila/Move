@@ -63,13 +63,17 @@ class DetailsCtrl extends GetxController {
       uuid: appUser.uuid,
       firstname: _firstName.value,
       lastname: _lastName.value,
-      phone: _phone.value,
+      phone: PhoneConvert.toFirebase(numberPhone: _phone.value),
       email: _email.value,
       roles: appUser.roles,
     );
 
     final useCase = getIt<IUpdateProfileUseCase>();
     final result = await useCase.updateProfile(updateProfileRequest);
+    Get.find<BannerCtrl>().showSuccess(
+      "Operación exitosa 😄",
+      'Se ha actualizado correctamente su perfil',
+    );
 
     Get.find<SessionCtrl>().onUpdateProfileSuccess(result);
   }

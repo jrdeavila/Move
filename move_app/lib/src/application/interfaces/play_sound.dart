@@ -1,15 +1,12 @@
-import 'package:audioplayers/audioplayers.dart';
-
 abstract class IPlaySound {
   Future<void> call(PlaySoundRequest request);
+  Future<void> cancelSound();
 }
 
 class PlaySoundRequest {
-  final Source source;
-  final int times;
+  final String source;
 
   PlaySoundRequest({
     required this.source,
-    this.times = 1,
   });
 }

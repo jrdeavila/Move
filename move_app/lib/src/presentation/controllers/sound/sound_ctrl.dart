@@ -1,18 +1,21 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:move_app/lib.dart';
 
 class SoundCtrl extends GetxController {
   // ---------------------- Public Methods ----------------------
 
   Future<void> playSound() async {
+    if (kDebugMode) {
+      print("on play sound");
+    }
     final service = getIt<IPlaySound>();
-    return service
-        .call(PlaySoundRequest(source: AssetSource('sounds/new-service.mp3')));
+    await service.call(PlaySoundRequest(source: 'sounds/new-service.mp3'));
   }
 
-  Future<void> playSoundManyTimes([int times = 3]) async {
-    final service = getIt<IPlaySound>();
-    return service.call(PlaySoundRequest(
-        source: AssetSource('sounds/new-service.mp3'), times: times));
+  Future<void> cancelSound() async {
+    if (kDebugMode) {
+      print("on cancel sound");
+    }
+    getIt<IPlaySound>().cancelSound();
   }
 }

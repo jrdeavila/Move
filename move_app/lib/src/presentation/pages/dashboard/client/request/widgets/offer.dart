@@ -77,8 +77,7 @@ class _OfferCardItemState extends State<OfferCardItem> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            widget.offer?.offer.driver?.firstname ??
-                                "Sin nombre",
+                            widget.offer!.offer.driver!.firstname,
                             style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold,
                             ),
@@ -106,12 +105,13 @@ class _OfferCardItemState extends State<OfferCardItem> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Chevrolet Spark GT",
+                                    Text(
+                                        "${widget.offer!.offer.driver!.driverInfo!.carBrand} ${widget.offer!.offer.driver!.driverInfo!.carModel}",
                                         style: GoogleFonts.montserrat(
                                           fontSize: 12.0,
                                         )),
                                     Text(
-                                      "Placa: ABC-123",
+                                      "Placa: ${widget.offer!.offer.driver!.driverInfo!.carPlate}",
                                       style: GoogleFonts.montserrat(
                                         fontSize: 12.0,
                                       ),

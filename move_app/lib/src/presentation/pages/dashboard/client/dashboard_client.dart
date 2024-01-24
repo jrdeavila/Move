@@ -34,48 +34,41 @@ class DashboardClientView extends GetView<SessionCtrl> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       sliver: SliverList(
         delegate: SliverChildListDelegate([
-          Text('panel de control',
+          Text('Dashboard',
               style: GoogleFonts.montserrat(
                 color: Colors.black,
-                fontSize: Dimensions.screenWidth * 0.04,
+                fontSize: 25,
                 fontWeight: FontWeight.w400,
-                letterSpacing: 1.5,
               )),
           CardDescription(
-            title: 'Solicitar servicio',
+            title: 'Pedir un viaje',
             color: const Color.fromRGBO(255, 198, 65, 1),
-            colorTitle: Colors.white,
-            root: 'assets/images/car.png',
+            textColor: Colors.white,
+            imageAsset: 'assets/images/car.png',
             description: '¿Necesitas un viaje? ¡Estamos en camino!',
             onPressed: () {
               controller.goToRequestService();
             },
-            width: 96,
-            height: 80,
-            top: Dimensions.screenHeight * 0.095,
-            left: Dimensions.screenWidth * 0.59,
           ),
-          CardCompound(
-            title: 'Modo',
-            secondTitle: 'Conductor',
+          CardDescription(
+            title: 'Modo conductor',
+            description: '¿Quieres ser conductor? ¡Activa el modo conductor!',
             color: const Color.fromRGBO(217, 217, 217, 1),
-            colorTitle: Colors.white,
-            root: 'assets/images/steering.png',
+            textColor: Colors.black,
+            imageAsset: 'assets/images/steering.png',
             onPressed: () {
               controller.onChangeSessionToDriver();
             },
           ),
-          CardClassic(
+          CardDescription(
             title: 'Perfil',
+            description: 'Actualiza tu información',
+            textColor: Colors.white,
             color: Colors.black,
-            colorTitle: Colors.white,
-            root: 'assets/images/profile.png',
+            imageAsset: 'assets/images/profile.png',
             onPressed: () {
               controller.goToProfile();
             },
-            size: Dimensions.screenWidth * 0.12,
-            width: 100,
-            height: 100,
           ),
         ]),
       ),

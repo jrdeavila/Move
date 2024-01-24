@@ -10,7 +10,7 @@ class LoginCtrl extends GetxController {
     ever(_loading, _showLoading);
   }
 
-  void _showLoading(show) {
+  void _showLoading(bool show) {
     if (show) {
       Get.offAllNamed(MainRoutes.loading);
     } else {

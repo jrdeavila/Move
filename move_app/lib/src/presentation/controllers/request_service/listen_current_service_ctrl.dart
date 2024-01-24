@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:move_app/lib.dart';
 
@@ -34,7 +35,6 @@ class ListenCurrentServiceCtrl extends GetxController {
   final Rx<RequestService?> _currentRequestService = Rx(null);
   final Rx<LatLng?> _driverLocation = Rx(null);
   final RxList<TimeLyfeOfOffer> _listCounterOffers = <TimeLyfeOfOffer>[].obs;
-  final RxBool _soundAvailable = true.obs;
 
   final RxDouble _currentOffer = 0.0.obs;
 
@@ -58,10 +58,8 @@ class ListenCurrentServiceCtrl extends GetxController {
     super.onReady();
     ever(_currentRequestService, _routing);
     ever(_currentRequestService, _updateCurrentOffer);
-    everAll([
-      _currentRequestService,
-      _listCounterOffers,
-    ], _playSound);
+    ever(_currentRequestService, _playSoundOnStatusStarted);
+    ever(_listCounterOffers, _playSoundOnGetOffers);
     ever(_currentRequestService, _listenCounterOffers);
     ever(_currentRequestService, _listenDriverLocation);
     ever(_driverLocation, _moveCamera);
@@ -82,7 +80,8 @@ class ListenCurrentServiceCtrl extends GetxController {
   }
 
   void _listenCounterOffers(RequestService? requestService) {
-    if (requestService != null) {
+    if (requestService != null &&
+        requestService.status == RequestServiceStatus.waiting) {
       final useCase = getIt<IListenRequestServiceCounterOffersUseCase>();
       _streamSubscription?.cancel();
       _streamSubscription = useCase
@@ -136,22 +135,29 @@ class ListenCurrentServiceCtrl extends GetxController {
     }
   }
 
-  void _playSound(values) {
-    if (currentRequestService?.status == RequestServiceStatus.started &&
-        _soundAvailable.value) {
+  void _playSoundOnGetOffers(List<TimeLyfeOfOffer> offers) {
+    Get.find<SoundCtrl>().cancelSound();
+    if (offers.isNotEmpty) {
       Get.find<SoundCtrl>().playSound();
-      _soundAvailable.value = false;
-      Future.delayed(
-          const Duration(seconds: 3), () => _soundAvailable.value = true);
-      return;
+      Future.delayed(3.seconds, () {
+        Get.find<SoundCtrl>().cancelSound();
+      });
+      if (kDebugMode) {
+        print("get new offers");
+      }
     }
+  }
 
-    if (listCounterOffers.isNotEmpty && _soundAvailable.value) {
+  void _playSoundOnStatusStarted(RequestService? service) {
+    Get.find<SoundCtrl>().cancelSound();
+    if (service?.status == RequestServiceStatus.started) {
       Get.find<SoundCtrl>().playSound();
-      _soundAvailable.value = false;
-      Future.delayed(
-          const Duration(seconds: 3), () => _soundAvailable.value = true);
-      return;
+      Future.delayed(3.seconds, () {
+        Get.find<SoundCtrl>().cancelSound();
+      });
+      if (kDebugMode) {
+        print("service is started");
+      }
     }
   }
 

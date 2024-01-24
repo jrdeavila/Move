@@ -156,7 +156,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             TileLayer(
               urlTemplate: mapsTileUrl,
             ),
-            _buildPolylineLayer(),
+            _buildMyLocation(),
             _buildMarkerLayer(),
             _buildDriverLocationLayer(),
             _buildCurrentRequestServiceTravel(),
@@ -222,25 +222,17 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
     );
   }
 
-  PolylineLayer _buildPolylineLayer() {
-    return PolylineLayer(
-      polylines: [
-        if (controller.beginTravelPoint != null &&
-            controller.endTravelPoint != null)
-          Polyline(
-            points: [
-              LatLng(
-                controller.beginTravelPoint!.latitude,
-                controller.beginTravelPoint!.longitude,
-              ),
-              LatLng(
-                controller.endTravelPoint!.latitude,
-                controller.endTravelPoint!.longitude,
-              ),
-            ],
-            strokeWidth: 4.0,
-            color: Colors.redAccent,
+  MarkerLayer _buildMyLocation() {
+    return MarkerLayer(
+      markers: [
+        Marker(
+          point: Get.find<LocationCtrl>().currentLocation,
+          child: const Icon(
+            Icons.location_on,
+            size: 45.0,
+            color: Colors.orangeAccent,
           ),
+        ),
       ],
     );
   }

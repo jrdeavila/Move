@@ -45,7 +45,7 @@ class _DetailsState extends State<Details> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offAll(() => const Profiles());
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black),
         ),
@@ -107,6 +107,9 @@ class _DetailsState extends State<Details> {
                   isPassword: false,
                   isNumericKeyboard: true,
                   isDateInput: false,
+                  formatters: [
+                    PhoneInputFormatter(),
+                  ],
                 ),
                 InputClassic(
                   labelText: 'Correo',

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
 
@@ -29,31 +30,47 @@ class FirebaseServiceDriverActionService
         .where("status", isEqualTo: RequestServiceStatus.waiting.toString())
         .snapshots()
         .asyncExpand((event) async* {
-      final hasCurrentService = await _hasCurrentService(driver);
-      if (hasCurrentService) {
-        yield [];
-      } else {
-        final docsNoViewed = event.docs
-            .where((doc) => doc.data()['clientCreator'] != driver.uuid)
-            .where((doc) {
-          final driverViewed = doc.data()["viewedBy"] ?? [];
-          return !driverViewed.contains(driver.uuid);
-        }).toList();
-        final list = <RequestService>[];
+      final hasBalance = await _hasBalance(driver);
+      if (hasBalance) {
+        final hasCurrentService = await _hasCurrentService(driver);
+        if (hasCurrentService) {
+          yield [];
+        } else {
+          final docsNoViewed = event.docs
+              .where((doc) => doc.data()['clientCreator'] != driver.uuid)
+              .where((doc) {
+            final driverViewed = doc.data()["viewedBy"] ?? [];
+            return !driverViewed.contains(driver.uuid);
+          }).toList();
+          final list = <RequestService>[];
 
-        for (final doc in docsNoViewed) {
-          final clientCreator = await _getUser(doc["clientCreator"]);
+          for (final doc in docsNoViewed) {
+            final clientCreator = await _getUser(doc["clientCreator"]);
 
-          list.add(
-            requestServiceFromMapWithUserAndDriver(
-              doc.data(),
-              clientCreator: clientCreator,
-            ),
-          );
+            list.add(
+              requestServiceFromMapWithUserAndDriver(
+                doc.data(),
+                clientCreator: clientCreator,
+              ),
+            );
+          }
+
+          yield list;
         }
-
-        yield list;
+      } else {
+        yield [];
       }
+    });
+  }
+
+  Future<bool> _hasBalance(AppUser driver) {
+    return _firebaseFirestore
+        .collection("users")
+        .doc(driver.uuid)
+        .get()
+        .then((value) {
+      int balance = value.data()?["balance"] as int? ?? 0;
+      return balance > 0;
     });
   }
 

@@ -26,10 +26,17 @@ class ListenDriverCurrentServiceCtrl extends GetxController {
   void onReady() {
     super.onReady();
     ever(_currentRequestService, _routing);
+    ever(_currentRequestService, _cancelSound);
     _listenCurrentRequestService();
   }
 
   // ---------------------- Private Methods ----------------------
+
+  void _cancelSound(RequestService? requestService) {
+    if (requestService != null) {
+      Get.find<SoundCtrl>().cancelSound();
+    }
+  }
 
   void _routing(RequestService? requestService) {
     if (requestService != null) {
