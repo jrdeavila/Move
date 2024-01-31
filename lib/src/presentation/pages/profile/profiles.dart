@@ -111,7 +111,13 @@ class Profiles extends GetView<DetailsCtrl> {
                   );
                 }
                 return const SizedBox.shrink();
-              })
+              }),
+              CustomButton(
+                  text: 'Eliminar cuenta',
+                  icon: Icons.delete_outline_outlined,
+                  onPressed: () {
+                    controller.deleteAccount();
+                  }),
             ],
           ),
         ),

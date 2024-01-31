@@ -77,4 +77,92 @@ class DetailsCtrl extends GetxController {
 
     Get.find<SessionCtrl>().onUpdateProfileSuccess(result);
   }
+
+  void deleteAccount() {
+    Get.dialog(
+      DeleteAccountDialog(),
+    );
+  }
+}
+
+class DeleteAccountDialog extends StatelessWidget {
+  const DeleteAccountDialog({
+    super.key,
+  });
+
+  _showValidationDialog() {
+    Get.dialog(
+      ValidatePasswordDialog(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Eliminar cuenta'),
+      content: const Text(
+          '¿Está seguro que desea eliminar su cuenta? Esta acción no se puede deshacer.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.back();
+            _showValidationDialog();
+          },
+          child: const Text('Eliminar'),
+        ),
+      ],
+    );
+  }
+}
+
+class ValidatePasswordDialog extends StatelessWidget {
+  const ValidatePasswordDialog({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = TextEditingController();
+    return AlertDialog(
+      title: const Text('Validación de contraseña'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+              'Por favor, ingrese su contraseña para confirmar la eliminación de su cuenta.'),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: controller,
+            decoration: const InputDecoration(
+              labelText: 'Contraseña',
+              border: UnderlineInputBorder(),
+            ),
+            obscureText: true,
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.find<SessionCtrl>().deleteAccount(
+              password: controller.text,
+            );
+          },
+          child: const Text('Eliminar'),
+        ),
+      ],
+    );
+  }
 }

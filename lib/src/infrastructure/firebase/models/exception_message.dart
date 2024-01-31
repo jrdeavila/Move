@@ -7,6 +7,7 @@ class ExceptionMessage implements Exception {
 
   static Map<String, String> exceptionMessageCodes = {
     "driver-not-available": "El conductor no está disponible",
+    "password-not-match": "La contraseña no coincide",
   };
 
   @override

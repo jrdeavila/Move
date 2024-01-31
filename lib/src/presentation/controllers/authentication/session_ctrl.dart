@@ -161,4 +161,11 @@ class SessionCtrl extends GetxController {
   void goToShowServices() {
     Get.toNamed(ProfileRoutes.showServices);
   }
+
+  Future<void> deleteAccount({
+    required String password,
+  }) async {
+    await _userRepository.deleteUser(_user.value!);
+    return logout();
+  }
 }

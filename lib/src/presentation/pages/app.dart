@@ -33,6 +33,7 @@ class App extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        textTheme: GoogleFonts.montserratTextTheme(),
         colorScheme: ColorScheme.fromSwatch(
           accentColor: color,
           backgroundColor: Colors.grey[200]!,
