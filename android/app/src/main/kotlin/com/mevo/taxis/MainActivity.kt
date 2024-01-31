@@ -1,4 +1,4 @@
-package com.example.move_app
+package com.mevo.taxis
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity

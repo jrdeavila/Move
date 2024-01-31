@@ -19,7 +19,7 @@ import 'package:sqflite/sqflite.dart' as _i4;
 
 import '../../../lib.dart' as _i9;
 import '../../application/use_cases/authentication_use_case.dart' as _i26;
-import '../../application/use_cases/bonification_use_case.dart' as _i25;
+import '../../application/use_cases/bonus_use_case.dart' as _i25;
 import '../../application/use_cases/driver_request_use_cases.dart' as _i37;
 import '../../application/use_cases/fetch_driver_request_use_cases.dart'
     as _i35;
@@ -47,7 +47,7 @@ import '../firebase/services/firebase_service_action_service.dart' as _i14;
 import '../firebase/services/firebase_service_driver_action_service.dart'
     as _i27;
 import '../firebase/services/firebase_upload_file_service.dart' as _i32;
-import '../firebase/services/firebase_user_bonification_service.dart' as _i18;
+import '../firebase/services/firebase_user_bonus_service.dart' as _i18;
 import '../google/services/google_find_address_service.dart' as _i23;
 import '../sqflite/repositories/sqflite_travel_point_repository.dart' as _i31;
 import '../sqflite/services/find_known_address_service.dart' as _i38;
@@ -253,8 +253,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i9.ICancelRequestServiceUseCase>(() =>
         _i15.CancelRequestServiceUseCase(
             serviceActionService: gh<_i9.IServiceActionService>()));
-    gh.factory<_i9.IClientBonificationService>(() =>
-        _i19.FirebaseClientBonificationService(
+    gh.factory<_i9.IClientBonusService>(() => _i19.FirebaseClientbonusService(
           firebaseFirestore: gh<_i9.FirebaseFirestore>(),
           clientPointsService: gh<_i9.IClientPointsService>(),
           configurationService: gh<_i9.IConsultServiceConfigurationService>(),
@@ -360,7 +359,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i9.IServiceFinishDriverActionService>(
         () => _i27.FirebaseServiceFinishDriverActionService(
               firebaseFirestore: gh<_i9.FirebaseFirestore>(),
-              clientBoniticationService: gh<_i9.IClientBonificationService>(),
+              clientBonusService: gh<_i9.IClientBonusService>(),
               driverPaymentService: gh<_i9.IDriverPaymentService>(),
             ));
     gh.factory<_i9.IUpdateProfileUseCase>(() =>

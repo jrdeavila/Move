@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 final getIt = GetIt.instance;
 

@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class DriverRequestApproved extends GetView<DriverRequestRegisterCtrl> {
   const DriverRequestApproved({super.key});

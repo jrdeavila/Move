@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:move_app/src/src.dart';
+import 'package:mevo/src/src.dart';
 
 // --------------------------- PERSONAL INFO SECTION ---------------------------
 

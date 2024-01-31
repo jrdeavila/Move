@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class ServiceCanceled extends StatefulWidget {
   final Function(bool) onVisibilityChangedServiceCanceled;

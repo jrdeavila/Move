@@ -5,4 +5,4 @@ export 'firebase_profile_service.dart';
 export 'firebase_service_action_service.dart';
 export 'firebase_service_driver_action_service.dart';
 export 'firebase_upload_file_service.dart';
-export 'firebase_user_bonification_service.dart';
+export 'firebase_user_bonus_service.dart';

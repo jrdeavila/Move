@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 const lyfeTimeOfOffer = 12;
 

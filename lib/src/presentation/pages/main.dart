@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class Main extends GetView<LoginCtrl> {
   const Main({super.key});

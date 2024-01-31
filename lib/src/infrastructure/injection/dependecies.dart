@@ -6,7 +6,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:sqflite/sqflite.dart';
 

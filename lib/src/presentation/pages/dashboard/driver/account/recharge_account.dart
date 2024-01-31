@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class RechargeAccount extends StatefulWidget {
   const RechargeAccount({super.key});

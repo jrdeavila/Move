@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 void main() async {
   runZonedGuarded(() async {

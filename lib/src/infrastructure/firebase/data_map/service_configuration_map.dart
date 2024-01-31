@@ -1,8 +1,8 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 ServiceConfiguration serviceConfigurationFromJson(Map<String, dynamic> json) =>
     ServiceConfiguration(
-      clientBonification: json["client_bonification"],
+      clientbonus: json["client_bonus"],
       driverPaymentPercentage: json["driver_payment_percentage"],
       commonOfferts: List<ServiceCommonOffert>.from(
           (json["service_common_offert"] as List<dynamic>?)

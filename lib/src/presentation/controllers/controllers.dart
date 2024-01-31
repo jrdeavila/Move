@@ -1,6 +1,6 @@
 export 'authentication/authentication.dart';
 export 'banner/banner.dart';
-export 'bonification/bonification.dart';
+export 'bonus/bonus.dart';
 export 'driver_request/driver_request.dart';
 export 'exceptions/exceptions.dart';
 export 'notification/notification.dart';

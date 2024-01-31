@@ -1,8 +1,8 @@
-name: move_app
+name: mevo
 description: null
 publish_to: "none"
 
-version: 1.0.2-beta1.2.2+16
+version: 1.0.2-beta1.2.2+2
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
@@ -33,7 +33,7 @@ dependencies:
   get_it: ^7.6.4
   get_storage: ^2.1.1
   google_fonts: ^6.1.0
-  google_sign_in: ^6.2.1
+  google_sign_in: ^6.1.6
   http: ^1.1.0
   image_picker: ^1.0.4
   injectable: ^2.3.2

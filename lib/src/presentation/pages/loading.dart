@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});

@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 // ignore: must_be_immutable
 class RateForm extends StatefulWidget {

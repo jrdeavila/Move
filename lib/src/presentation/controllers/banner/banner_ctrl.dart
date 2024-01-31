@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class BannerCtrl extends GetxController {
   void showInfo(String title, String message) {

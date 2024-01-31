@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 // -------------------------------- DNI SECTION SERVICE --------------------------------
 @Injectable(as: IDNISectionService)

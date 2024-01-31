@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class LoginCtrl extends GetxController {
   final RxBool _loading = false.obs;

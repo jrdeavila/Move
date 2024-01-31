@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 import 'package:file_picker/file_picker.dart';
 
 @Injectable(as: IFileSearchService)

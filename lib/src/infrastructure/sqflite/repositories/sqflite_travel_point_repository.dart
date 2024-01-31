@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 import 'package:sqflite/sqflite.dart';
 
 @Injectable(as: ITravelPointRepository)

@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 Map<String, dynamic> userToJson(AppUser user) => <String, dynamic>{
       'uuid': user.uuid,

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 @Injectable(as: IAuthenticationService)
 class FirebaseAuthService implements IAuthenticationService {

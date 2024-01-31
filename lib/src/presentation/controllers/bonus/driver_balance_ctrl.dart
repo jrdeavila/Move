@@ -1,33 +1,33 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
-class ClientPointCtrl extends GetxController {
+class DriverBalanceCtrl extends GetxController {
   // ---------------------- Local variables ----------------------
   final AppUser user;
 
   // ---------------------- Constructor ----------------------
 
-  ClientPointCtrl({required this.user});
+  DriverBalanceCtrl({required this.user});
 
   // ---------------------- Observables ----------------------
 
-  final Rx<int> _points = Rx<int>(0);
+  final Rx<double> _balance = Rx<double>(0);
 
   // ---------------------- Getters ----------------------
 
-  int get points => _points.value;
+  double get balance => _balance.value;
 
   // ---------------------- Lyfecycles ----------------------
 
   @override
   void onReady() {
     super.onReady();
-    _getPoints();
+    _getBalance();
   }
 
   // ---------------------- Private methods ----------------------
 
-  void _getPoints() async {
-    final useCase = getIt<IListenMyPointsUseCase>();
-    _points.bindStream(useCase.getPoints(GetMyPointsRequest(user)));
+  void _getBalance() async {
+    final useCase = getIt<IListenMyBalanceUseCase>();
+    _balance.bindStream(useCase.getBalance(GetMyBalanceRequest(user)));
   }
 }

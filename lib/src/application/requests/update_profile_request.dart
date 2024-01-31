@@ -1,4 +1,4 @@
-import 'package:move_app/src/domain/domain.dart';
+import 'package:mevo/src/domain/domain.dart';
 
 class UpdateProfileRequest {
   final String uuid;

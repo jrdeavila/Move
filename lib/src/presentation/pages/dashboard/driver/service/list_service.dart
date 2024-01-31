@@ -1,4 +1,4 @@
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class ListServicePage extends GetView<ShowListServiceCtrl> {
   const ListServicePage({Key? key}) : super(key: key);

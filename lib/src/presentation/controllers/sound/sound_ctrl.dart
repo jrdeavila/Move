@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:move_app/lib.dart';
+import 'package:mevo/lib.dart';
 
 class SoundCtrl extends GetxController {
   // ---------------------- Public Methods ----------------------
