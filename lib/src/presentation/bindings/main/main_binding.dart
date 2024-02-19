@@ -5,8 +5,7 @@ class MainBinding extends Bindings {
   void dependencies() {
     Get.put(ExceptionCtrl(), permanent: true);
     Get.put(BannerCtrl(), permanent: true);
-    Get.put(SessionCtrl(), permanent: true);
     Get.put(SoundCtrl(), permanent: true);
-    Get.put(NotificationCtrl(), permanent: true);
+    Get.put(ConnectionCtrl(), permanent: true);
   }
 }

@@ -18,41 +18,42 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:sqflite/sqflite.dart' as _i4;
 
 import '../../../lib.dart' as _i9;
-import '../../application/use_cases/authentication_use_case.dart' as _i26;
-import '../../application/use_cases/bonus_use_case.dart' as _i25;
-import '../../application/use_cases/driver_request_use_cases.dart' as _i37;
+import '../../application/use_cases/authentication_use_case.dart' as _i27;
+import '../../application/use_cases/bonus_use_case.dart' as _i26;
+import '../../application/use_cases/driver_request_use_cases.dart' as _i38;
 import '../../application/use_cases/fetch_driver_request_use_cases.dart'
-    as _i35;
-import '../../application/use_cases/find_address_use_cases.dart' as _i24;
-import '../../application/use_cases/find_file_use_cases.dart' as _i21;
-import '../../application/use_cases/profile_use_case.dart' as _i40;
-import '../../application/use_cases/request_service_use_case.dart' as _i39;
+    as _i36;
+import '../../application/use_cases/find_address_use_cases.dart' as _i25;
+import '../../application/use_cases/find_file_use_cases.dart' as _i22;
+import '../../application/use_cases/profile_use_case.dart' as _i41;
+import '../../application/use_cases/request_service_use_case.dart' as _i40;
 import '../../application/use_cases/service_action_use_cases.dart' as _i15;
-import '../../src.dart' as _i36;
+import '../../src.dart' as _i37;
 import '../device/services/background_notification_service.dart' as _i12;
-import '../device/services/find_file.dart' as _i20;
-import '../device/services/play_sound.dart' as _i29;
+import '../device/services/connection_service.dart' as _i19;
+import '../device/services/find_file.dart' as _i21;
+import '../device/services/play_sound.dart' as _i30;
 import '../device/services/url_launcher_call_service.dart' as _i13;
 import '../device/services/whatsapp_chat_message.dart' as _i16;
-import '../domain/services/call_client_service.dart' as _i34;
+import '../domain/services/call_client_service.dart' as _i35;
 import '../domain/services/chat_client_service.dart' as _i17;
-import '../firebase/repositories/firebase_payment_repository.dart' as _i28;
-import '../firebase/repositories/firebase_user_repository.dart' as _i33;
+import '../firebase/repositories/firebase_payment_repository.dart' as _i29;
+import '../firebase/repositories/firebase_user_repository.dart' as _i34;
 import '../firebase/services/firebase_auth_service.dart' as _i11;
 import '../firebase/services/firebase_driver_request_service.dart' as _i10;
 import '../firebase/services/firebase_finish_service_actions_service.dart'
-    as _i19;
-import '../firebase/services/firebase_profile_service.dart' as _i30;
+    as _i20;
+import '../firebase/services/firebase_profile_service.dart' as _i31;
 import '../firebase/services/firebase_service_action_service.dart' as _i14;
 import '../firebase/services/firebase_service_driver_action_service.dart'
-    as _i27;
-import '../firebase/services/firebase_upload_file_service.dart' as _i32;
+    as _i28;
+import '../firebase/services/firebase_upload_file_service.dart' as _i33;
 import '../firebase/services/firebase_user_bonus_service.dart' as _i18;
-import '../google/services/google_find_address_service.dart' as _i23;
-import '../sqflite/repositories/sqflite_travel_point_repository.dart' as _i31;
-import '../sqflite/services/find_known_address_service.dart' as _i38;
-import '../uuid/generate_uuid_service.dart' as _i22;
-import 'dependecies.dart' as _i41;
+import '../google/services/google_find_address_service.dart' as _i24;
+import '../sqflite/repositories/sqflite_travel_point_repository.dart' as _i32;
+import '../sqflite/services/find_known_address_service.dart' as _i39;
+import '../uuid/generate_uuid_service.dart' as _i23;
+import 'dependecies.dart' as _i42;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -136,8 +137,10 @@ extension GetItInjectableX on _i1.GetIt {
         chatWithClientService: gh<_i9.IChatWithClientService>()));
     gh.factory<_i9.IClientPointsService>(() => _i18.FirebaseClientPointsService(
         firebaseFirestore: gh<_i9.FirebaseFirestore>()));
+    gh.lazySingleton<_i9.IConnectionService>(
+        () => _i19.DeviceConnectionService());
     gh.factory<_i9.IConsultServiceConfigurationService>(() =>
-        _i19.FirebaseConsultServiceConfigurationService(
+        _i20.FirebaseConsultServiceConfigurationService(
             firestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IDNISectionService>(() => _i10.FirebaseDNISectionService(
         firebaseFirestore: gh<_i9.FirebaseFirestore>()));
@@ -148,27 +151,27 @@ extension GetItInjectableX on _i1.GetIt {
         _i10.FirebaseDriverLicenseSectionService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IDriverPaymentService>(() =>
-        _i19.FirebaseDriverPaymentService(
+        _i20.FirebaseDriverPaymentService(
           firebaseFirestore: gh<_i9.FirebaseFirestore>(),
           driverBalanceService: gh<_i9.IDriverBalanceService>(),
           configurationService: gh<_i9.IConsultServiceConfigurationService>(),
         ));
-    gh.factory<_i9.IFileSearchService>(() => _i20.FindFileService());
+    gh.factory<_i9.IFileSearchService>(() => _i21.FindFileService());
     gh.factory<_i9.IFindFileUseCase>(
-        () => _i21.FindFileUseCase(gh<_i9.IFileSearchService>()));
+        () => _i22.FindFileUseCase(gh<_i9.IFileSearchService>()));
     gh.factory<_i9.IFinishDriverRequestService>(() =>
         _i10.FirebaseFinishDriverRequestService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
-    gh.factory<_i9.IGenerateUuid>(() => _i22.GenerateUuidService());
+    gh.factory<_i9.IGenerateUuid>(() => _i23.GenerateUuidService());
     gh.factory<_i9.IGetAddressByGeopointService>(
-        () => _i23.GoogleGetAddressByGeopointService(gh<_i5.Dio>()));
+        () => _i24.GoogleGetAddressByGeopointService(gh<_i5.Dio>()));
     gh.factory<_i9.IGetAddressByGeopointUseCase>(() =>
-        _i24.GetMyAddressByGeopointUseCase(
+        _i25.GetMyAddressByGeopointUseCase(
             gh<_i9.IGetAddressByGeopointService>()));
     gh.factory<_i9.IGetAddressByQueryService>(
-        () => _i23.GoogleFindAddressService(gh<_i5.Dio>()));
+        () => _i24.GoogleFindAddressService(gh<_i5.Dio>()));
     gh.factory<_i9.IGetAddressesByQueryUseCase>(() =>
-        _i24.GetAddressesByQueryUseCase(gh<_i9.IGetAddressByQueryService>()));
+        _i25.GetAddressesByQueryUseCase(gh<_i9.IGetAddressByQueryService>()));
     gh.factory<_i9.IGetDriverLocationService>(() =>
         _i14.FirebaseGetDriverLocationService(
             firestore: gh<_i9.FirebaseFirestore>()));
@@ -176,7 +179,7 @@ extension GetItInjectableX on _i1.GetIt {
         _i10.FirebaseGetDriverRequestService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IGetMyPointsUseCase>(
-        () => _i25.GetMyPointsUseCase(gh<_i9.IClientPointsService>()));
+        () => _i26.GetMyPointsUseCase(gh<_i9.IClientPointsService>()));
     gh.factory<_i9.IGetServiceCommonOffertsUseCase>(() =>
         _i15.GetServiceCommonOffertsUseCase(
             configurationService:
@@ -185,19 +188,19 @@ extension GetItInjectableX on _i1.GetIt {
         _i15.ListenDriverLocationUseCase(
             getDriverLocationService: gh<_i9.IGetDriverLocationService>()));
     gh.factory<_i9.IListenMyBalanceUseCase>(
-        () => _i25.ListenMyBalanceUseCase(gh<_i9.IDriverBalanceService>()));
+        () => _i26.ListenMyBalanceUseCase(gh<_i9.IDriverBalanceService>()));
     gh.factory<_i9.IListenMyPointsUseCase>(
-        () => _i25.ListenMyPointsUseCase(gh<_i9.IClientPointsService>()));
+        () => _i26.ListenMyPointsUseCase(gh<_i9.IClientPointsService>()));
     gh.singleton<_i9.ILoginWithGoogleService>(_i11.LoginWithGoogleService(
       firebaseAuth: gh<_i8.FirebaseAuth>(),
       googleSignIn: gh<_i9.GoogleSignIn>(),
     ));
     gh.factory<_i9.ILoginWithGoogleUseCase>(
-        () => _i26.LoginWithGoogleUseCase(gh<_i9.ILoginWithGoogleService>()));
+        () => _i27.LoginWithGoogleUseCase(gh<_i9.ILoginWithGoogleService>()));
     gh.factory<_i9.ILogoutUseCase>(
-        () => _i26.LogoutUseCase(gh<_i9.IAuthenticationService>()));
+        () => _i27.LogoutUseCase(gh<_i9.IAuthenticationService>()));
     gh.factory<_i9.IMarkAsViewedRequestServiceService>(() =>
-        _i27.FirebaseMarkAsViewedRequestServiceService(
+        _i28.FirebaseMarkAsViewedRequestServiceService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IMarkAsViewedRequestServiceUseCase>(() =>
         _i15.MarkAsViewedRequestServiceUseCase(
@@ -210,10 +213,10 @@ extension GetItInjectableX on _i1.GetIt {
         _i10.FirebaseOwnerShipSectionService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IPaymentRepository>(
-        () => _i28.FirebasePaymentRepository(gh<_i9.FirebaseFirestore>()));
-    gh.factory<_i9.IPlaySound>(() => _i29.AudioPlayerPlaySound());
+        () => _i29.FirebasePaymentRepository(gh<_i9.FirebaseFirestore>()));
+    gh.factory<_i9.IPlaySound>(() => _i30.AudioPlayerPlaySound());
     gh.factory<_i9.IProfileService>(() =>
-        _i30.FirebaseProfileService(firestore: gh<_i9.FirebaseFirestore>()));
+        _i31.FirebaseProfileService(firestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.ISendDriverRequestService>(() =>
         _i10.FirebaseSendDriverRequestService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
@@ -221,7 +224,7 @@ extension GetItInjectableX on _i1.GetIt {
         _i14.FirebaseServiceActionService(
             firestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IServiceDriverActionService>(() =>
-        _i27.FirebaseServiceDriverActionService(
+        _i28.FirebaseServiceDriverActionService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.ISoatSectionService>(() => _i10.FirebaseSoatSectionService(
         firebaseFirestore: gh<_i9.FirebaseFirestore>()));
@@ -229,14 +232,14 @@ extension GetItInjectableX on _i1.GetIt {
         _i10.FirebaseTechnicalReviewSectionService(
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.ITravelPointRepository>(
-        () => _i31.SqfliteTravelPointRepository(gh<_i4.Database>()));
+        () => _i32.SqfliteTravelPointRepository(gh<_i4.Database>()));
     gh.factory<_i9.IUpdateProfileLocationDataUseCase>(() =>
         _i15.UpdateProfileLocationDataUseCase(
             profileService: gh<_i9.IProfileService>()));
-    gh.factory<_i9.IUploadFile>(() => _i32.FirebaseUploadFileService(
+    gh.factory<_i9.IUploadFile>(() => _i33.FirebaseUploadFileService(
         firebaseStorage: gh<_i9.FirebaseStorage>()));
     gh.factory<_i9.IUserRepository>(() =>
-        _i33.FirebaseUserRepository(firestore: gh<_i9.FirebaseFirestore>()));
+        _i34.FirebaseUserRepository(firestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IAcceptCounterOfferUseCase>(() =>
         _i15.AcceptCounterOfferUseCase(
             serviceActionService: gh<_i9.IServiceActionService>()));
@@ -244,7 +247,7 @@ extension GetItInjectableX on _i1.GetIt {
         _i15.AcceptRequestServiceUseCase(
             serviceActionService: gh<_i9.IServiceDriverActionService>()));
     gh.factory<_i9.ICallClientService>(
-        () => _i34.CallClientService(gh<_i9.ICallService>()));
+        () => _i35.CallClientService(gh<_i9.ICallService>()));
     gh.factory<_i9.ICallClientUseCase>(() => _i15.CallClientUseCase(
         callClientService: gh<_i9.ICallClientService>()));
     gh.factory<_i9.ICancelCounterOfferUseCase>(() =>
@@ -253,26 +256,26 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i9.ICancelRequestServiceUseCase>(() =>
         _i15.CancelRequestServiceUseCase(
             serviceActionService: gh<_i9.IServiceActionService>()));
-    gh.factory<_i9.IClientBonusService>(() => _i19.FirebaseClientbonusService(
+    gh.factory<_i9.IClientBonusService>(() => _i20.FirebaseClientbonusService(
           firebaseFirestore: gh<_i9.FirebaseFirestore>(),
           clientPointsService: gh<_i9.IClientPointsService>(),
           configurationService: gh<_i9.IConsultServiceConfigurationService>(),
         ));
     gh.factory<_i9.IFetchDriverRequestUseCase>(() =>
-        _i35.FetchDriverRequestUseCase(
+        _i36.FetchDriverRequestUseCase(
             driverRequestService: gh<_i9.IGetDriverRequestService>()));
-    gh.factory<_i36.IFinishDriverRequestUseCase>(
-        () => _i37.FinishDriverRequestUseCase(
-              driverRequestService: gh<_i36.IFinishDriverRequestService>(),
-              userService: gh<_i36.IUserRepository>(),
+    gh.factory<_i37.IFinishDriverRequestUseCase>(
+        () => _i38.FinishDriverRequestUseCase(
+              driverRequestService: gh<_i37.IFinishDriverRequestService>(),
+              userService: gh<_i37.IUserRepository>(),
             ));
     gh.factory<_i9.IGetKnownAddressesService>(() =>
-        _i38.SqfliteGetKnownAddressesService(gh<_i9.ITravelPointRepository>()));
+        _i39.SqfliteGetKnownAddressesService(gh<_i9.ITravelPointRepository>()));
     gh.factory<_i9.IGetKnownAddressesUseCase>(() =>
-        _i24.GetKnownAddressesUseCase(gh<_i9.IGetKnownAddressesService>()));
+        _i25.GetKnownAddressesUseCase(gh<_i9.IGetKnownAddressesService>()));
     gh.factory<_i9.IGetPaymentsUseCase>(
-        () => _i39.GetPaymentsUseCase(gh<_i9.IPaymentRepository>()));
-    gh.factory<_i9.IGetUserUseCase>(() => _i26.GetUserUseCase(
+        () => _i40.GetPaymentsUseCase(gh<_i9.IPaymentRepository>()));
+    gh.factory<_i9.IGetUserUseCase>(() => _i27.GetUserUseCase(
           authenticationService: gh<_i9.IAuthenticationService>(),
           userRepository: gh<_i9.IUserRepository>(),
         ));
@@ -288,82 +291,82 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i9.IListenRequestServiceCounterOffersUseCase>(() =>
         _i15.ListenRequestServiceCounterOffersUseCase(
             serviceActionService: gh<_i9.IServiceActionService>()));
-    gh.factory<_i9.IRegisterUseCase>(() => _i26.RegisterUseCase(
+    gh.factory<_i9.IRegisterUseCase>(() => _i27.RegisterUseCase(
           userRepository: gh<_i9.IUserRepository>(),
           authenticationService: gh<_i9.IAuthenticationService>(),
         ));
     gh.factory<_i9.ISaveAddressService>(
-        () => _i38.SqfliteSaveAddressService(gh<_i9.ITravelPointRepository>()));
+        () => _i39.SqfliteSaveAddressService(gh<_i9.ITravelPointRepository>()));
     gh.factory<_i9.ISaveAddressUseCase>(
-        () => _i24.SaveAddressUseCase(gh<_i9.ISaveAddressService>()));
-    gh.factory<_i36.ISendAboutCarSectionUseCase>(
-        () => _i37.SendAboutCarSectionUseCase(
-              aboutCarSectionService: gh<_i36.IAboutCarSectionService>(),
-              userService: gh<_i36.IUserRepository>(),
-              uploadFile: gh<_i36.IUploadFile>(),
+        () => _i25.SaveAddressUseCase(gh<_i9.ISaveAddressService>()));
+    gh.factory<_i37.ISendAboutCarSectionUseCase>(
+        () => _i38.SendAboutCarSectionUseCase(
+              aboutCarSectionService: gh<_i37.IAboutCarSectionService>(),
+              userService: gh<_i37.IUserRepository>(),
+              uploadFile: gh<_i37.IUploadFile>(),
             ));
-    gh.factory<_i36.ISendAboutMeSectionUseCase>(
-        () => _i37.SendAboutMeSectionUseCase(
-              aboutMeSectionService: gh<_i36.IAboutMeSectionService>(),
-              userService: gh<_i36.IUserRepository>(),
-              uploadFile: gh<_i36.IUploadFile>(),
+    gh.factory<_i37.ISendAboutMeSectionUseCase>(
+        () => _i38.SendAboutMeSectionUseCase(
+              aboutMeSectionService: gh<_i37.IAboutMeSectionService>(),
+              userService: gh<_i37.IUserRepository>(),
+              uploadFile: gh<_i37.IUploadFile>(),
             ));
     gh.factory<_i9.ISendCounterOfferUseCase>(() => _i15.SendCounterOfferUseCase(
         serviceActionService: gh<_i9.IServiceDriverActionService>()));
-    gh.factory<_i36.ISendDNISectionUseCase>(() => _i37.SendDNISectionUseCase(
-          dniSectionService: gh<_i36.IDNISectionService>(),
-          userService: gh<_i36.IUserRepository>(),
-          uploadFile: gh<_i36.IUploadFile>(),
+    gh.factory<_i37.ISendDNISectionUseCase>(() => _i38.SendDNISectionUseCase(
+          dniSectionService: gh<_i37.IDNISectionService>(),
+          userService: gh<_i37.IUserRepository>(),
+          uploadFile: gh<_i37.IUploadFile>(),
         ));
-    gh.factory<_i36.ISendDriverLicenseSectionUseCase>(() =>
-        _i37.SendDriverLicenseSectionUseCase(
-          driverLicenseSectionService: gh<_i36.IDriverLicenseSectionService>(),
-          userService: gh<_i36.IUserRepository>(),
-          uploadFile: gh<_i36.IUploadFile>(),
+    gh.factory<_i37.ISendDriverLicenseSectionUseCase>(() =>
+        _i38.SendDriverLicenseSectionUseCase(
+          driverLicenseSectionService: gh<_i37.IDriverLicenseSectionService>(),
+          userService: gh<_i37.IUserRepository>(),
+          uploadFile: gh<_i37.IUploadFile>(),
         ));
-    gh.factory<_i36.ISendDriverRequestUseCase>(
-        () => _i37.SendDriverRequestUseCase(
-              driverRequestService: gh<_i36.ISendDriverRequestService>(),
-              userService: gh<_i36.IUserRepository>(),
+    gh.factory<_i37.ISendDriverRequestUseCase>(
+        () => _i38.SendDriverRequestUseCase(
+              driverRequestService: gh<_i37.ISendDriverRequestService>(),
+              userService: gh<_i37.IUserRepository>(),
             ));
-    gh.factory<_i36.ISendNoCriminalRecordSectionUseCase>(
-        () => _i37.SendNoCriminalRecordSectionUseCase(
+    gh.factory<_i37.ISendNoCriminalRecordSectionUseCase>(
+        () => _i38.SendNoCriminalRecordSectionUseCase(
               noCriminalRecordSectionService:
-                  gh<_i36.INoCriminalRecordSectionService>(),
-              userService: gh<_i36.IUserRepository>(),
-              uploadFile: gh<_i36.IUploadFile>(),
+                  gh<_i37.INoCriminalRecordSectionService>(),
+              userService: gh<_i37.IUserRepository>(),
+              uploadFile: gh<_i37.IUploadFile>(),
             ));
-    gh.factory<_i36.ISendOwnerShipCardSectionUseCase>(() =>
-        _i37.SendOwnerShipCardSectionUseCase(
-          ownerShipCardSectionService: gh<_i36.IOwnerShipCardSectionService>(),
-          userService: gh<_i36.IUserRepository>(),
-          uploadFile: gh<_i36.IUploadFile>(),
+    gh.factory<_i37.ISendOwnerShipCardSectionUseCase>(() =>
+        _i38.SendOwnerShipCardSectionUseCase(
+          ownerShipCardSectionService: gh<_i37.IOwnerShipCardSectionService>(),
+          userService: gh<_i37.IUserRepository>(),
+          uploadFile: gh<_i37.IUploadFile>(),
         ));
     gh.factory<_i9.ISendRequestServiceUseCase>(
         () => _i15.SendRequestServiceUseCase(
               serviceActionService: gh<_i9.IServiceActionService>(),
               generateUuid: gh<_i9.IGenerateUuid>(),
             ));
-    gh.factory<_i36.ISendSoatSectionUseCase>(() => _i37.SendSoatSectionUseCase(
-          soatSectionService: gh<_i36.ISoatSectionService>(),
-          userService: gh<_i36.IUserRepository>(),
-          uploadFile: gh<_i36.IUploadFile>(),
+    gh.factory<_i37.ISendSoatSectionUseCase>(() => _i38.SendSoatSectionUseCase(
+          soatSectionService: gh<_i37.ISoatSectionService>(),
+          userService: gh<_i37.IUserRepository>(),
+          uploadFile: gh<_i37.IUploadFile>(),
         ));
-    gh.factory<_i36.ISendTechnicalReviewSectionUseCase>(
-        () => _i37.SendTechnicalReviewSectionUseCase(
+    gh.factory<_i37.ISendTechnicalReviewSectionUseCase>(
+        () => _i38.SendTechnicalReviewSectionUseCase(
               technicalReviewSectionService:
-                  gh<_i36.ITechnicalReviewSectionService>(),
-              userService: gh<_i36.IUserRepository>(),
-              uploadFile: gh<_i36.IUploadFile>(),
+                  gh<_i37.ITechnicalReviewSectionService>(),
+              userService: gh<_i37.IUserRepository>(),
+              uploadFile: gh<_i37.IUploadFile>(),
             ));
     gh.factory<_i9.IServiceFinishDriverActionService>(
-        () => _i27.FirebaseServiceFinishDriverActionService(
+        () => _i28.FirebaseServiceFinishDriverActionService(
               firebaseFirestore: gh<_i9.FirebaseFirestore>(),
               clientBonusService: gh<_i9.IClientBonusService>(),
               driverPaymentService: gh<_i9.IDriverPaymentService>(),
             ));
     gh.factory<_i9.IUpdateProfileUseCase>(() =>
-        _i40.UpdateProfileUseCase(userRepository: gh<_i9.IUserRepository>()));
+        _i41.UpdateProfileUseCase(userRepository: gh<_i9.IUserRepository>()));
     gh.factory<_i9.IFinishServiceDriverUseCase>(() =>
         _i15.FinishServiceDriverUseCase(
             serviceActionService: gh<_i9.IServiceFinishDriverActionService>()));
@@ -371,23 +374,23 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$AudioPlayerModule extends _i41.AudioPlayerModule {}
+class _$AudioPlayerModule extends _i42.AudioPlayerModule {}
 
-class _$DatabaseModule extends _i41.DatabaseModule {}
+class _$DatabaseModule extends _i42.DatabaseModule {}
 
-class _$DioModule extends _i41.DioModule {}
+class _$DioModule extends _i42.DioModule {}
 
-class _$FirebaseAppModule extends _i41.FirebaseAppModule {}
+class _$FirebaseAppModule extends _i42.FirebaseAppModule {}
 
-class _$AppCheckModule extends _i41.AppCheckModule {}
+class _$AppCheckModule extends _i42.AppCheckModule {}
 
-class _$FirebaseAuthModule extends _i41.FirebaseAuthModule {}
+class _$FirebaseAuthModule extends _i42.FirebaseAuthModule {}
 
-class _$FirestoreModule extends _i41.FirestoreModule {}
+class _$FirestoreModule extends _i42.FirestoreModule {}
 
-class _$FirebaseStorageModule extends _i41.FirebaseStorageModule {}
+class _$FirebaseStorageModule extends _i42.FirebaseStorageModule {}
 
 class _$FlutterLocalNotificationModule
-    extends _i41.FlutterLocalNotificationModule {}
+    extends _i42.FlutterLocalNotificationModule {}
 
-class _$GoogleSignInModule extends _i41.GoogleSignInModule {}
+class _$GoogleSignInModule extends _i42.GoogleSignInModule {}

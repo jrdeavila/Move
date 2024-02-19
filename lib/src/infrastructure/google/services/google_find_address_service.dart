@@ -23,12 +23,12 @@ class GoogleGetAddressByGeopointService
           "key": googleMapsApiKey,
         }).then((value) {
       final response = GoogleGeocodeResponse.fromJson(value.data);
+      var first = response.results.firstOrNull;
       return TravelPoint(
-        name: response.results.first.formattedAddress,
-        address: response.results.first.formattedAddress,
-        latitude: response.results.first.geometry.location.latitude ?? latitude,
-        longitude:
-            response.results.first.geometry.location.longitude ?? longitude,
+        name: first?.formattedAddress ?? "Unknown Address",
+        address: first?.formattedAddress ?? "Unknown Address",
+        latitude: first?.geometry.location.latitude ?? latitude,
+        longitude: first?.geometry.location.longitude ?? longitude,
       );
     });
   }

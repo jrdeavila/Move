@@ -48,6 +48,7 @@ class App extends StatelessWidget {
         ...MainRoutes.routes,
         ...AuthenticationRoutes.routes,
         ...DashboardRoutes.routes,
+        ...ConnectionRoutes.routes,
       ],
       initialRoute: MainRoutes.loading,
       initialBinding: MainBinding(),

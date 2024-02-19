@@ -54,8 +54,6 @@ class ButtonBorderClassic extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
-        onPrimary: borderColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
           side: BorderSide(color: borderColor, width: 4),
