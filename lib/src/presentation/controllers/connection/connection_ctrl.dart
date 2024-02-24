@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:mevo/lib.dart';
+import 'package:mevo/src/presentation/controllers/permission/permission_ctrl.dart';
 
 class ConnectionCtrl extends GetxController {
   // =========================== Observables ==============================
+
   final RxBool _hasConnection = false.obs;
 
   // =========================== Lifecycle Hooks ==============================
@@ -29,10 +31,14 @@ class ConnectionCtrl extends GetxController {
 
   void _redirectToNoConnectionPage(bool hasConnection) {
     if (hasConnection) {
-      Get.put(SessionCtrl(), permanent: true);
-      Get.put(NotificationCtrl(), permanent: true);
+      final permissionCtrl = Get.put(PermissionCtrl(), permanent: true);
+      permissionCtrl.showDialog().then((value) {
+        Get.put(NotificationCtrl(), permanent: true);
+        Get.put(SessionCtrl(), permanent: true);
+      });
     } else {
       Get.offAllNamed(ConnectionRoutes.noConnection);
+      Get.delete<PermissionCtrl>();
       Get.delete<SessionCtrl>();
       Get.delete<NotificationCtrl>();
     }
