@@ -72,6 +72,8 @@ class FirebaseConsultServiceConfigurationService
         .collection("settings")
         .doc("service_configuration")
         .get()
-        .then((value) => serviceConfigurationFromJson(value.data()!));
+        .then((value) {
+      return serviceConfigurationFromJson(value.data()!);
+    });
   }
 }

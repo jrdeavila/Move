@@ -22,11 +22,17 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def keyStoreProperties = new Properties()
-def keyStorePropertiesFile = rootProject.file('key.properties')
-if (keyStorePropertiesFile.exists()) {
-    keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
+def keyProperties = new Properties()
+def keyPropertiesFile = rootProject.file('key.properties')
+if (keyPropertiesFile.exists()) {
+    keyProperties.load(new FileInputStream(keyPropertiesFile))
 }
+
+def configKeyAlias = keyProperties.getProperty('keyAlias')
+def configKeyPassword = keyProperties.getProperty('keyPassword')
+def configStoreFile = keyProperties.getProperty('storeFile')
+def configStorePassword = keyProperties.getProperty('storePassword')
+
 
 android {
     namespace "com.mevo.taxis"
@@ -56,15 +62,14 @@ android {
         compileSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true
     }
 
     signingConfigs{
         release {
-            // keyAlias keyStoreProperties['keyAlias']
-            // keyPassword keyStoreProperties['keyPassword']
-            // storeFile file(keyStoreProperties['storeFile'])
-            // storePassword keyStoreProperties['storePassword']
+            keyAlias configKeyAlias 
+            keyPassword configKeyPassword 
+            storeFile file(configStoreFile) 
+            storePassword configStorePassword 
         }
     }
     buildTypes {

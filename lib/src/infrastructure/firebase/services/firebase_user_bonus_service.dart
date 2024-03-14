@@ -45,12 +45,13 @@ class FirebaseDriverBalanceService implements IDriverBalanceService {
   }) : _firebaseFirestore = firebaseFirestore;
 
   @override
-  Future<double> getBalance(AppUser driver) {
-    return _firebaseFirestore
+  Future<double> getBalance(AppUser driver) async {
+    final res = await _firebaseFirestore
         .collection("users")
         .doc(driver.uuid)
         .get()
-        .then((value) => value.data()?["balance"] ?? 0);
+        .then<int>((value) => value.data()?["balance"] ?? 0);
+    return res.toDouble();
   }
 
   @override

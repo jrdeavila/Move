@@ -68,7 +68,14 @@ class ListenDriverCurrentServiceCtrl extends GetxController {
           ),
         )
         .then((value) => _loading.value = false)
-        .onError((error, stackTrace) => _loading.value = false);
+        .onError((error, stackTrace) {
+      _loading.value = false;
+      Get.find<BannerCtrl>().showInfo(
+        "Error al finalizar servicio",
+        "Algo salió mal, por favor intenta de nuevo.",
+      );
+      return false;
+    });
   }
 
   void callClient() {

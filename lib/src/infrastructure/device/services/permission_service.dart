@@ -19,16 +19,15 @@ class DevicePermissionService implements IPermissionService {
   }
 
   @override
-  Future<bool> requestPermission(Permission permission) {
-    return _permissionMap[permission]
-            ?.request()
-            .then((value) => value.isGranted) ??
-        Future.value(false);
+  Future<bool> requestPermission(Permission permission) async {
+    final res = await _permissionMap[permission]?.request();
+    await Future.delayed(const Duration(milliseconds: 1000));
+    return res == permission_handler.PermissionStatus.granted;
   }
 
   @override
   Future<bool> requestPermissions(List<Permission> permissions) {
-    verifyAndRequestPermission(Permission permission) async {
+    Future<bool> verifyAndRequestPermission(Permission permission) async {
       final status = await hasPermission(permission);
       if (status) {
         return true;
@@ -36,9 +35,10 @@ class DevicePermissionService implements IPermissionService {
       return await requestPermission(permission);
     }
 
-    final futures = Future.wait(permissions.map(verifyAndRequestPermission));
+    final futures = permissions.map(verifyAndRequestPermission);
 
-    return futures.then((value) => value.every((element) => element));
+    return Future.wait(futures)
+        .then((value) => value.every((element) => element));
   }
 
   @override

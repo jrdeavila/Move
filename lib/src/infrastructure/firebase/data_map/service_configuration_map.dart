@@ -2,8 +2,8 @@ import 'package:mevo/lib.dart';
 
 ServiceConfiguration serviceConfigurationFromJson(Map<String, dynamic> json) =>
     ServiceConfiguration(
-      clientbonus: json["client_bonus"],
-      driverPaymentPercentage: json["driver_payment_percentage"],
+      clientbonus: json["client_bonification"] as int,
+      driverPaymentPercentage: json["driver_payment_percentage"] as double,
       commonOfferts: List<ServiceCommonOffert>.from(
           (json["service_common_offert"] as List<dynamic>?)
                   ?.map((x) => serviceCommonOffertFromJson(x)) ??
