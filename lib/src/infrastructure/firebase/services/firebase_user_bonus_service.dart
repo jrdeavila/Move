@@ -50,7 +50,7 @@ class FirebaseDriverBalanceService implements IDriverBalanceService {
         .collection("users")
         .doc(driver.uuid)
         .get()
-        .then<int>((value) => value.data()?["balance"] ?? 0);
+        .then((value) => value.data()?["balance"] ?? 0);
     return res.toDouble();
   }
 

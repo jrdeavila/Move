@@ -74,6 +74,9 @@ class ListenDriverCurrentServiceCtrl extends GetxController {
         "Error al finalizar servicio",
         "Algo salió mal, por favor intenta de nuevo.",
       );
+      if (error != null) {
+        Get.find<ExceptionCtrl>().onDebugException(error, stackTrace);
+      }
       return false;
     });
   }
