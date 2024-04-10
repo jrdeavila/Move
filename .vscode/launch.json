@@ -41,13 +41,21 @@
             "flutterMode": "release",
             "deviceId": "emulator-5556",
         },
+        {
+            "name": "Real Device",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "192.168.4.205:5000",
+        }
     ],
     "compounds": [
         {
             "name": "All Devices",
             "configurations": [
                 "Pixel 7 Pro",
-                "Pixel 6a"
+                "Pixel 6a",
+                "Real Device"
+
             ]
         },
         {

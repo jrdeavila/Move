@@ -67,7 +67,7 @@ class CardDescription extends StatelessWidget {
   final String description;
   final Color? textColor;
   final Color? color;
-  final String? imageAsset;
+  final IconData icon;
   final VoidCallback onPressed;
 
   const CardDescription({
@@ -75,7 +75,7 @@ class CardDescription extends StatelessWidget {
     required this.title,
     this.textColor,
     this.color,
-    required this.imageAsset,
+    required this.icon,
     required this.description,
     required this.onPressed,
   }) : assert(description.length < 70);
@@ -96,18 +96,18 @@ class CardDescription extends StatelessWidget {
         child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(title,
                     style: GoogleFonts.montserrat(
                       color: textColor,
-                      fontSize: 25,
+                      fontSize: 28,
                       fontWeight: FontWeight.w600,
                     )),
                 Text(description,
                     style: GoogleFonts.montserrat(
                       color: textColor,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     )),
               ],
@@ -116,11 +116,10 @@ class CardDescription extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          Image.asset(
-            imageAsset!,
-            width: 80,
-            height: 80,
-            fit: BoxFit.scaleDown,
+          Icon(
+            icon,
+            color: textColor,
+            size: 80,
           ),
         ]),
       ),

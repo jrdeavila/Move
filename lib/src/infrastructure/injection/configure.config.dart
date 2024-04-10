@@ -181,6 +181,11 @@ extension GetItInjectableX on _i1.GetIt {
             firebaseFirestore: gh<_i9.FirebaseFirestore>()));
     gh.factory<_i9.IGetMyPointsUseCase>(
         () => _i26.GetMyPointsUseCase(gh<_i9.IClientPointsService>()));
+    gh.factory<_i9.IGetPointsPerTravelUseCase>(() =>
+        _i26.GetPointsPerTravelUseCase(
+            gh<_i9.IConsultServiceConfigurationService>()));
+    gh.factory<_i9.IGetQuotaPerPointUseCase>(() => _i26.GetQuotaPerPointUseCase(
+        gh<_i9.IConsultServiceConfigurationService>()));
     gh.factory<_i9.IGetServiceCommonOffertsUseCase>(() =>
         _i15.GetServiceCommonOffertsUseCase(
             configurationService:

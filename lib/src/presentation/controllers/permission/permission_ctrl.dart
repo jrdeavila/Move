@@ -40,13 +40,7 @@ class PermissionCtrl extends GetxController {
             child: const Text('Cerrar aplicación'),
           ),
           TextButton(
-            onPressed: () {
-              requestPermissions(onResult: (value) {
-                if (value) {
-                  Get.back();
-                }
-              });
-            },
+            onPressed: () {},
             child: const Text('Permitir'),
           ),
         ]);

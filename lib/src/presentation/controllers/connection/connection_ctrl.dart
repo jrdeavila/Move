@@ -31,11 +31,8 @@ class ConnectionCtrl extends GetxController {
 
   void _redirectToNoConnectionPage(bool hasConnection) {
     if (hasConnection) {
-      final permissionCtrl = Get.put(PermissionCtrl(), permanent: true);
-      permissionCtrl.showDialog().then((value) {
-        Get.put(NotificationCtrl(), permanent: true);
-        Get.put(SessionCtrl(), permanent: true);
-      });
+      Get.put(NotificationCtrl(), permanent: true);
+      Get.put(SessionCtrl(), permanent: true);
     } else {
       Get.offAllNamed(ConnectionRoutes.noConnection);
       Get.delete<PermissionCtrl>();

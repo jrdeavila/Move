@@ -2,11 +2,13 @@ class ServiceConfiguration {
   final int clientbonus;
   final double driverPaymentPercentage;
   final List<ServiceCommonOffert> commonOfferts;
+  final int quotaOfPointsForBonus;
 
   ServiceConfiguration({
     required this.clientbonus,
     required this.driverPaymentPercentage,
     required this.commonOfferts,
+    required this.quotaOfPointsForBonus,
   });
 }
 

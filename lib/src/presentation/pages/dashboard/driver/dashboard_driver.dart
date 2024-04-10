@@ -8,7 +8,6 @@ class DashboardDriver extends GetView<SessionCtrl> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: CustomScrollView(
-          physics: const NeverScrollableScrollPhysics(),
           slivers: [_buildAppBar(), _buildDashboardItems()],
         ));
   }
@@ -31,7 +30,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
                 title: 'Servicios',
                 color: const Color.fromRGBO(255, 198, 65, 1),
                 textColor: Colors.white,
-                imageAsset: 'assets/images/person.png',
+                icon: Icons.location_on,
                 description:
                     'Descubre las solicitudes de viaje de los pasajeros',
                 onPressed: () {
@@ -72,7 +71,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
             description: '¿Quieres pedir un viaje? ¡Activa el modo cliente!',
             color: const Color.fromRGBO(217, 217, 217, 1),
             textColor: Colors.black,
-            imageAsset: 'assets/images/people-client.png',
+            icon: Icons.person,
             onPressed: () {
               controller.onChangeSessionToClient();
             },
@@ -82,7 +81,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
             description: 'Actualiza tu información',
             textColor: Colors.white,
             color: Colors.black,
-            imageAsset: 'assets/images/profile.png',
+            icon: Icons.person,
             onPressed: () {
               controller.goToProfile();
             },

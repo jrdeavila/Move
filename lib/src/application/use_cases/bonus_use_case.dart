@@ -33,3 +33,26 @@ class ListenMyBalanceUseCase implements IListenMyBalanceUseCase {
     return _driverBalanceService.listenBalance(request.user);
   }
 }
+
+@Injectable(as: IGetQuotaPerPointUseCase)
+class GetQuotaPerPointUseCase implements IGetQuotaPerPointUseCase {
+  final IConsultServiceConfigurationService _consultServiceConfigurationService;
+
+  GetQuotaPerPointUseCase(this._consultServiceConfigurationService);
+  @override
+  Future<int> getQuotaPerPoint() async {
+    return (await _consultServiceConfigurationService.get())
+        .quotaOfPointsForBonus;
+  }
+}
+
+@Injectable(as: IGetPointsPerTravelUseCase)
+class GetPointsPerTravelUseCase implements IGetPointsPerTravelUseCase {
+  final IConsultServiceConfigurationService _consultServiceConfigurationService;
+
+  GetPointsPerTravelUseCase(this._consultServiceConfigurationService);
+  @override
+  Future<int> getPointsPerTravel() async {
+    return (await _consultServiceConfigurationService.get()).clientbonus;
+  }
+}

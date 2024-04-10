@@ -11,3 +11,11 @@ abstract class IListenMyPointsUseCase {
 abstract class IListenMyBalanceUseCase {
   Stream<double> getBalance(GetMyBalanceRequest request);
 }
+
+abstract class IGetQuotaPerPointUseCase {
+  Future<int> getQuotaPerPoint();
+}
+
+abstract class IGetPointsPerTravelUseCase {
+  Future<int> getPointsPerTravel();
+}

@@ -24,7 +24,6 @@ class DashboardClientView extends GetView<SessionCtrl> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      physics: const NeverScrollableScrollPhysics(),
       slivers: [_buildAppBar(), _buildDashboardItems()],
     );
   }
@@ -44,7 +43,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
             title: 'Pedir un viaje',
             color: const Color.fromRGBO(255, 198, 65, 1),
             textColor: Colors.white,
-            imageAsset: 'assets/images/car.png',
+            icon: Icons.location_on,
             description: '¿Necesitas un viaje? ¡Estamos en camino!',
             onPressed: () {
               controller.goToRequestService();
@@ -55,7 +54,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
             description: '¿Quieres ser conductor? ¡Activa el modo conductor!',
             color: const Color.fromRGBO(217, 217, 217, 1),
             textColor: Colors.black,
-            imageAsset: 'assets/images/steering.png',
+            icon: Icons.directions_car,
             onPressed: () {
               controller.onChangeSessionToDriver();
             },
@@ -65,7 +64,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
             description: 'Actualiza tu información',
             textColor: Colors.white,
             color: Colors.black,
-            imageAsset: 'assets/images/profile.png',
+            icon: Icons.person,
             onPressed: () {
               controller.goToProfile();
             },
@@ -141,31 +140,61 @@ class DashboardClientView extends GetView<SessionCtrl> {
             )));
   }
 
-  Column _buildPointSection() {
+  Widget _buildPointSection() {
     final clientPointsCtrl = Get.find<ClientPointCtrl>();
-    return Column(
-      children: [
-        Text('Puntos',
-            style: GoogleFonts.montserrat(
-              color: Colors.black,
-              fontSize: Dimensions.screenWidth * 0.04,
-              fontWeight: FontWeight.w300,
-            )),
-        const SizedBox(height: 5),
-        Row(
-          children: [
-            Obx(() => Text(clientPointsCtrl.points.toString(),
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: Dimensions.screenWidth * 0.07,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.2,
-                ))),
-            const SizedBox(width: 5),
-            Icon(Icons.star, color: Colors.yellow[700]),
+    return GestureDetector(
+      onTap: () {
+        clientPointsCtrl.goToPoints();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
           ],
         ),
-      ],
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Puntos',
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w300,
+                    )),
+                const SizedBox(width: 5),
+                const Icon(
+                  Icons.chevron_right,
+                  color: Colors.black,
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                Obx(() => Text(clientPointsCtrl.points.toString(),
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.2,
+                    ))),
+                const SizedBox(width: 5),
+                Icon(Icons.star, color: Colors.yellow[700]),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
