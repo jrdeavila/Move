@@ -97,13 +97,15 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
                 color: Colors.blue,
                 adress: controller.currentRequestService?.origin.address ??
                     "Direccion de origen",
-                title: 'Origen',
+                title:
+                    controller.currentRequestService?.origin.name ?? "Origen",
               )),
           Obx(() => CardDetails(
                 color: const Color.fromRGBO(255, 198, 65, 1),
                 adress: controller.currentRequestService?.destination.address ??
                     "Direccion de destino",
-                title: 'Destino',
+                title: controller.currentRequestService?.destination.name ??
+                    "Destino",
               )),
           const SizedBox(height: 20.0),
           ButtonClassic(

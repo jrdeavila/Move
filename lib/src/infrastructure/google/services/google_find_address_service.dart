@@ -57,6 +57,7 @@ class GoogleFindAddressService implements IGetAddressByQueryService {
       "https://places.googleapis.com/v1/places:searchText",
       data: {
         "textQuery": query,
+        "languageCode": "es",
         "maxResultCount": 10,
         if (latitudeRef != null && longitudeRef != null)
           "locationBias": {

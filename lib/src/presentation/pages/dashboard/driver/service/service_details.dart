@@ -129,13 +129,14 @@ class ServiceDetailsDriver extends GetView<ListenDriverCurrentServiceCtrl> {
               color: Colors.blue,
               adress: controller.currentRequestService?.origin.address ??
                   'Dirección de origen',
-              title: 'Origen',
+              title: controller.currentRequestService?.origin.name ?? 'Origen',
             ),
             CardDetails(
               color: const Color.fromRGBO(255, 198, 65, 1),
               adress: controller.currentRequestService?.destination.address ??
                   'Dirección de destino',
-              title: 'Destino',
+              title: controller.currentRequestService?.destination.name ??
+                  'Destino',
             ),
             const Spacer(),
             ButtonClassic(

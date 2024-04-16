@@ -36,7 +36,10 @@ class CancelRequestServiceUseCase implements ICancelRequestServiceUseCase {
   }) : _serviceActionService = serviceActionService;
   @override
   Future<void> cancelRequestService(CancelRequestServiceRequest request) {
-    return _serviceActionService.cancelRequestService(request.requestService);
+    return _serviceActionService.cancelRequestService(
+      request: request.requestService,
+      reason: request.reason,
+    );
   }
 }
 
@@ -52,6 +55,11 @@ class ListenCurrentRequestServiceUseCase
   Stream<RequestService?> listen(ListenCurrentRequestServiceRequest request) {
     return _serviceActionService.listenCurrentRequestService(request.user);
   }
+
+  @override
+  Future<RequestService?> get(ListenCurrentRequestServiceRequest request) {
+    return _serviceActionService.getCurrentRequestService(request.user);
+  }
 }
 
 @Injectable(as: IListenDriverLocationUseCase)
@@ -65,6 +73,12 @@ class ListenDriverLocationUseCase implements IListenDriverLocationUseCase {
   @override
   Stream<DriverLocation?> listen(ListenDriverLocationRequest request) {
     return _getDriverLocationService.listen(request.driver);
+  }
+
+  @override
+  Future<DriverLocation?> get(
+      ListenDriverLocationRequest listenDriverLocationRequest) {
+    return _getDriverLocationService.get(listenDriverLocationRequest.driver);
   }
 }
 
@@ -296,5 +310,22 @@ class ChatWithClientUseCase implements IChatWithClientUseCase {
   @override
   Future<void> chat(ChatWithClientRequest request) {
     return _chatWithClientService.chat(request.client);
+  }
+}
+
+@Injectable(as: IQualifyRequestServiceUseCase)
+class QualifyRequestServiceUseCase implements IQualifyRequestServiceUseCase {
+  final IQualifyRequestServiceService _qualifyRequestServiceService;
+
+  QualifyRequestServiceUseCase({
+    required IQualifyRequestServiceService qualifyRequestServiceService,
+  }) : _qualifyRequestServiceService = qualifyRequestServiceService;
+
+  @override
+  Future<void> qualifyService(QualifyRequestServiceRequest request) {
+    return _qualifyRequestServiceService.qualifyService(
+      request.requestService,
+      request.rating,
+    );
   }
 }

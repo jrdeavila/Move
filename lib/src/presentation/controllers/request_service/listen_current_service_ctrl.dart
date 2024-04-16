@@ -2,23 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mevo/lib.dart';
 
-const lyfeTimeOfOffer = 12;
-
-class TimeLyfeOfOffer {
-  final RequestService offer;
-  final VoidCallback onTimeOut;
-
-  Timer get timer => Timer(const Duration(seconds: lyfeTimeOfOffer), onTimeOut);
-
-  TimeLyfeOfOffer({
-    required this.offer,
-    required this.onTimeOut,
-  });
-}
-
 class ListenCurrentServiceCtrl extends GetxController {
   // ---------------------- Final Variables ----------------------
   final AppUser user;
+  Timer? _timer;
 
   // ---------------------- Constructor ----------------------
 
@@ -28,22 +15,24 @@ class ListenCurrentServiceCtrl extends GetxController {
 
   // ---------------------- No Observable ----------------------
 
-  StreamSubscription<List<RequestService>>? _streamSubscription;
+  // StreamSubscription<List<RequestService>>? _streamSubscription;
 
   // ---------------------- Observables ----------------------
 
   final Rx<RequestService?> _currentRequestService = Rx(null);
   final Rx<LatLng?> _driverLocation = Rx(null);
-  final RxList<TimeLyfeOfOffer> _listCounterOffers = <TimeLyfeOfOffer>[].obs;
-
+  RxList<RequestService> _listCounterOffers = <RequestService>[].obs;
+  final RxBool _loading = false.obs;
   final RxDouble _currentOffer = 0.0.obs;
 
   // ---------------------- Getters ----------------------
 
   RequestService? get currentRequestService => _currentRequestService.value;
   LatLng? get driverLocation => _driverLocation.value;
-  List<TimeLyfeOfOffer> get listCounterOffers => _listCounterOffers;
+  List<RequestService> get listCounterOffers => _listCounterOffers;
   double get currentOffer => _currentOffer.value;
+
+  bool get loading => _loading.value;
 
   bool get enableDecrementOffer500 =>
       currentOffer <= (_currentRequestService.value?.tee ?? 0);
@@ -57,8 +46,9 @@ class ListenCurrentServiceCtrl extends GetxController {
   void onReady() {
     super.onReady();
     ever(_currentRequestService, _routing);
+    ever(_currentRequestService, _showQualificationDialog);
     ever(_currentRequestService, _updateCurrentOffer);
-    ever(_currentRequestService, _playSoundOnStatusStarted);
+    // ever(_currentRequestService, _playSoundOnStatusStarted);
     ever(_listCounterOffers, _playSoundOnGetOffers);
     ever(_currentRequestService, _listenCounterOffers);
     ever(_currentRequestService, _listenDriverLocation);
@@ -70,10 +60,31 @@ class ListenCurrentServiceCtrl extends GetxController {
   void onClose() {
     _currentRequestService.close();
     _driverLocation.close();
+    _timer?.cancel();
     super.onClose();
   }
 
   // ---------------------- Private Methods ----------------------
+
+  void _showQualificationDialog(RequestService? requestService) async {
+    if (requestService?.status == RequestServiceStatus.finished) {
+      if (Get.isDialogOpen!) {
+        Get.back();
+      }
+      final rating = await Get.dialog(
+        const QualificationDialog(),
+      );
+
+      if (rating != null) {
+        qualifyService(rating);
+      }
+    }
+    if (requestService?.status == RequestServiceStatus.qualified) {
+      if (Get.isDialogOpen!) {
+        Get.back();
+      }
+    }
+  }
 
   void _updateCurrentOffer(RequestService? requestService) {
     _currentOffer.value = requestService?.tee ?? 0;
@@ -83,31 +94,17 @@ class ListenCurrentServiceCtrl extends GetxController {
     if (requestService != null &&
         requestService.status == RequestServiceStatus.waiting) {
       final useCase = getIt<IListenRequestServiceCounterOffersUseCase>();
-      _streamSubscription?.cancel();
-      _streamSubscription = useCase
-          .listen(ListenRequestServiceCounterOffersRequest(
-              requestService: requestService))
-          .listen((event) {
-        var itemsNotAdded = event
-            .where((element) =>
-                !_listCounterOffers.any((e) => e.offer.uuid == element.uuid))
-            .map((e) => TimeLyfeOfOffer(
-                  offer: e,
-                  onTimeOut: () {
-                    final useCase = getIt<ICancelCounterOfferUseCase>();
-                    useCase.cancelCounterOffer(
-                      CancelCounterOfferRequest(
-                        requestService: requestService,
-                        offer: e,
-                      ),
-                    );
-                    _listCounterOffers
-                        .removeWhere((element) => element.offer.uuid == e.uuid);
-                  },
-                ))
-            .toList();
-        _listCounterOffers.value = itemsNotAdded;
-      });
+      List<RequestService> lastOffers = _listCounterOffers;
+      _listCounterOffers = RxList(lastOffers);
+      _listCounterOffers.bindStream(useCase.listen(
+        ListenRequestServiceCounterOffersRequest(
+          requestService: requestService,
+        ),
+      ));
+      _listCounterOffers.refresh();
+    } else {
+      _listCounterOffers.clear();
+      _listCounterOffers = <RequestService>[].obs;
     }
   }
 
@@ -117,25 +114,28 @@ class ListenCurrentServiceCtrl extends GetxController {
     }
   }
 
-  void _listenDriverLocation(RequestService? requestService) {
+  void _listenDriverLocation(RequestService? requestService) async {
     if (requestService != null &&
         requestService.status == RequestServiceStatus.started) {
       final useCase = getIt<IListenDriverLocationUseCase>();
-      final stream = useCase.listen(
+      final future = useCase.get(
         ListenDriverLocationRequest(
           driver: requestService.driver!,
         ),
       );
-      _driverLocation.bindStream(stream.map((event) => event != null
+      final location = await future;
+      _driverLocation.value = location != null
           ? LatLng(
-              event.latitude,
-              event.longitude,
+              location.latitude,
+              location.longitude,
             )
-          : null));
+          : null;
+    } else {
+      _driverLocation.value = null;
     }
   }
 
-  void _playSoundOnGetOffers(List<TimeLyfeOfOffer> offers) {
+  void _playSoundOnGetOffers(List<RequestService> offers) {
     Get.find<SoundCtrl>().cancelSound();
     if (offers.isNotEmpty) {
       Get.find<SoundCtrl>().playSound();
@@ -148,19 +148,6 @@ class ListenCurrentServiceCtrl extends GetxController {
     }
   }
 
-  void _playSoundOnStatusStarted(RequestService? service) {
-    Get.find<SoundCtrl>().cancelSound();
-    if (service?.status == RequestServiceStatus.started) {
-      Get.find<SoundCtrl>().playSound();
-      Future.delayed(3.seconds, () {
-        Get.find<SoundCtrl>().cancelSound();
-      });
-      if (kDebugMode) {
-        print("service is started");
-      }
-    }
-  }
-
   void _routing(RequestService? requestService) {
     if (requestService != null) {
       Get.toNamed(ProfileRoutes.requestService);
@@ -168,42 +155,88 @@ class ListenCurrentServiceCtrl extends GetxController {
   }
 
   void _listenCurrentRequestService() async {
-    final useCase = getIt<IListenCurrentRequestServiceUseCase>();
-    final stream = useCase.listen(
-      ListenCurrentRequestServiceRequest(
-        user: user,
-      ),
-    );
-    _currentRequestService.bindStream(stream);
+    callback() async {
+      final useCase = getIt<IListenCurrentRequestServiceUseCase>();
+      final future = useCase.get(
+        ListenCurrentRequestServiceRequest(
+          user: user,
+        ),
+      );
+      _currentRequestService.value = await future;
+    }
+
+    await callback();
+    _timer = Timer.periodic(10.seconds, (timer) async {
+      await callback();
+    });
   }
 
   // ---------------------- Public Methods ----------------------
 
   void cancelRequestService() async {
-    final useCase = getIt<ICancelRequestServiceUseCase>();
-    await useCase.cancelRequestService(
-      CancelRequestServiceRequest(
-        requestService: currentRequestService!,
+    bool? result = await Get.dialog<bool>(
+      const CancelDialog(),
+    );
+
+    if (result == null || !result) {
+      return;
+    }
+
+    CancelReasonItem? item = await Get.dialog<CancelReasonItem>(
+      CancelReasonDialog(
+        reasons: [
+          CancelReasonItem(
+            reason: RequestServiceCancelReason.notNeedService,
+            title: "No necesito el servicio",
+          ),
+          CancelReasonItem(
+            reason: RequestServiceCancelReason.notConvincedPrice,
+            title: "No me convence el precio",
+          ),
+          CancelReasonItem(
+            reason: RequestServiceCancelReason.notConvincedDriver,
+            title: "No me convence el conductor",
+          ),
+          CancelReasonItem(
+            reason: RequestServiceCancelReason.other,
+            title: "Otro",
+          ),
+        ],
       ),
     );
-    clearStreams();
+
+    if (item == null) {
+      return;
+    }
+
+    _loading.value = true;
+
+    final useCase = getIt<ICancelRequestServiceUseCase>();
+    await useCase
+        .cancelRequestService(
+          CancelRequestServiceRequest(
+            requestService: currentRequestService!,
+            reason: item.reason,
+          ),
+        )
+        .onError((error, stackTrace) => _loading.value = false);
+    _loading.value = false;
   }
 
-  void acceptDriverOffert(RequestService requestService) {
+  void acceptDriverOffert(RequestService requestService) async {
     final useCase = getIt<IAcceptCounterOfferUseCase>();
-    useCase.acceptCounterOffer(
+    _loading.value = true;
+    await useCase
+        .acceptCounterOffer(
       AcceptCounterOfferRequest(
         requestService: currentRequestService!,
         offer: requestService,
       ),
-    );
-    clearStreams();
-  }
-
-  void clearStreams() {
-    _streamSubscription?.cancel();
-    _streamSubscription = null;
-    _driverLocation.value = null;
+    )
+        .onError((error, stackTrace) {
+      _loading.value = false;
+    });
+    _loading.value = false;
   }
 
   void decrementOffer500() {
@@ -223,5 +256,19 @@ class ListenCurrentServiceCtrl extends GetxController {
       ),
     );
     _currentRequestService.value?.tee = currentOffer;
+  }
+
+  void qualifyService(double rating) async {
+    final useCase = getIt<IQualifyRequestServiceUseCase>();
+    _loading.value = true;
+    await useCase
+        .qualifyService(
+          QualifyRequestServiceRequest(
+            requestService: currentRequestService!,
+            rating: rating,
+          ),
+        )
+        .onError((error, stackTrace) => _loading.value = false);
+    _loading.value = false;
   }
 }

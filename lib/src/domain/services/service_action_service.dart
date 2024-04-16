@@ -2,8 +2,12 @@ import 'package:mevo/lib.dart';
 
 abstract class IServiceActionService {
   Future<void> sendRequestService(RequestService request);
-  Future<void> cancelRequestService(RequestService request);
+  Future<void> cancelRequestService({
+    required RequestService request,
+    required RequestServiceCancelReason reason,
+  });
   Stream<RequestService?> listenCurrentRequestService(AppUser clientCreator);
+  Future<RequestService?> getCurrentRequestService(AppUser clientCreator);
   Future<void> acceptCounterOffer(
       RequestService requestService, RequestService counterOffer);
   Stream<List<RequestService>> getRequestServiceCounterOffers(
@@ -34,6 +38,8 @@ abstract class IServiceDriverActionService {
 
 abstract class IGetDriverLocationService {
   Stream<DriverLocation?> listen(AppUser driver);
+
+  Future<DriverLocation?> get(AppUser driver);
 }
 
 abstract class IServiceFinishDriverActionService {
@@ -50,4 +56,8 @@ abstract interface class IChatWithClientService {
 
 abstract interface class ICallClientService {
   Future<void> call(AppUser client);
+}
+
+abstract class IQualifyRequestServiceService {
+  Future<void> qualifyService(RequestService requestService, double rating);
 }

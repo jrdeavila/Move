@@ -9,11 +9,14 @@ class FirebaseServiceActionService implements IServiceActionService {
     required FirebaseFirestore firestore,
   }) : _firestore = firestore;
   @override
-  Future<void> cancelRequestService(RequestService request) {
-    return _firestore
-        .collection('services')
-        .doc(request.uuid)
-        .update({'status': RequestServiceStatus.canceled.toString()});
+  Future<void> cancelRequestService({
+    required RequestService request,
+    required RequestServiceCancelReason reason,
+  }) {
+    return _firestore.collection('services').doc(request.uuid).update({
+      'status': RequestServiceStatus.canceled.toString(),
+      'reason': reason.toString(),
+    });
   }
 
   @override
@@ -24,6 +27,7 @@ class FirebaseServiceActionService implements IServiceActionService {
         .where('status', whereIn: [
           RequestServiceStatus.waiting.toString(),
           RequestServiceStatus.started.toString(),
+          RequestServiceStatus.finished.toString(),
         ])
         .snapshots()
         .asyncMap((event) async {
@@ -100,7 +104,10 @@ class FirebaseServiceActionService implements IServiceActionService {
       RequestService requestService, RequestService counterOffer) async {
     final driverIsAvailable = await _driverIsAvailable(counterOffer.driver!);
     if (driverIsAvailable) {
-      await cancelRequestService(requestService);
+      await cancelRequestService(
+        request: requestService,
+        reason: RequestServiceCancelReason.driverNotAvailable,
+      );
       await _acceptCounterOffer(requestService, counterOffer);
       counterOffer.status = RequestServiceStatus.started;
       await sendRequestService(counterOffer);
@@ -144,6 +151,33 @@ class FirebaseServiceActionService implements IServiceActionService {
         )
         .get()
         .then((value) => !value.docs.isNotEmpty);
+  }
+
+  @override
+  Future<RequestService?> getCurrentRequestService(AppUser clientCreator) {
+    return _firestore
+        .collection('services')
+        .where("clientCreator", isEqualTo: clientCreator.uuid)
+        .where('status', whereIn: [
+          RequestServiceStatus.waiting.toString(),
+          RequestServiceStatus.started.toString(),
+          RequestServiceStatus.finished.toString(),
+        ])
+        .get()
+        .then((event) async {
+          if (event.docs.isEmpty) {
+            return Future.value(null);
+          }
+          final creator = await _getUser(event.docs.first['clientCreator']);
+          final driver = event.docs.first.data()['driver'] != null
+              ? await _getUser(event.docs.first['driver'])
+              : null;
+          return requestServiceFromMapWithUserAndDriver(
+            event.docs.first.data(),
+            clientCreator: creator,
+            driver: driver,
+          );
+        });
   }
 }
 
@@ -246,6 +280,13 @@ class FirebaseGetDriverLocationService implements IGetDriverLocationService {
         .doc(driver.uuid)
         .snapshots()
         .map((event) {
+      return driverLocationFromMap(event.data()?['location'] as GeoPoint?);
+    });
+  }
+
+  @override
+  Future<DriverLocation?> get(AppUser driver) {
+    return _firestore.collection('users').doc(driver.uuid).get().then((event) {
       return driverLocationFromMap(event.data()?['location'] as GeoPoint?);
     });
   }

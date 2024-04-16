@@ -27,32 +27,36 @@ class CardDetails extends StatelessWidget {
             SizedBox(
               width: Dimensions.screenWidth * 0.03,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.montserrat(
-                    color: Colors.black,
-                    fontSize: Dimensions.screenWidth * 0.04,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: Dimensions.screenHeight * 0.01,
-                ),
-                SizedBox(
-                  width: Dimensions.screenWidth * 0.7,
-                  child: Text(
-                    adress,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
                     style: GoogleFonts.montserrat(
                       color: Colors.black,
                       fontSize: Dimensions.screenWidth * 0.04,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  SizedBox(
+                    height: Dimensions.screenHeight * 0.01,
+                  ),
+                  SizedBox(
+                    width: Dimensions.screenWidth * 0.7,
+                    child: Text(
+                      adress,
+                      style: GoogleFonts.montserrat(
+                        color: Colors.black,
+                        fontSize: Dimensions.screenWidth * 0.04,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             )
           ],
         ),

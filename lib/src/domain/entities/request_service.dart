@@ -15,6 +15,15 @@ enum RequestServiceStatus {
   started,
   canceled,
   finished,
+  qualified,
+}
+
+enum RequestServiceCancelReason {
+  driverNotAvailable,
+  other,
+  notConvincedDriver,
+  notConvincedPrice,
+  notNeedService,
 }
 
 class RequestService {
@@ -26,7 +35,6 @@ class RequestService {
   final Payment payment;
   RequestServiceStatus status;
   double tee;
-  List<RequestService> offers = [];
 
   RequestService({
     required this.uuid,

@@ -109,14 +109,15 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
   }
 
   Obx _buildLoading() {
-    return Obx(() => controller.loading
-        ? Container(
-            color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-        : const SizedBox.shrink());
+    return Obx(
+        () => controller.loading || Get.find<ListenCurrentServiceCtrl>().loading
+            ? Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : const SizedBox.shrink());
   }
 
   FloatingActionButton _buildBackButton() {

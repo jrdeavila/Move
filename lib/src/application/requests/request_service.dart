@@ -20,9 +20,11 @@ class SendRequestServiceRequest {
 
 class CancelRequestServiceRequest {
   final RequestService requestService;
+  final RequestServiceCancelReason reason;
 
   CancelRequestServiceRequest({
     required this.requestService,
+    required this.reason,
   });
 }
 

@@ -2,6 +2,7 @@ export 'bindings/bindings.dart';
 export 'config/config.dart';
 export 'controllers/controllers.dart';
 export 'middlewares/middlewares.dart';
+export 'models/models.dart';
 export 'pages/pages.dart';
 export 'routes/routes.dart';
 export 'transitions/transitions.dart';

@@ -10,10 +10,14 @@ abstract class ICancelRequestServiceUseCase {
 
 abstract class IListenCurrentRequestServiceUseCase {
   Stream<RequestService?> listen(ListenCurrentRequestServiceRequest request);
+  Future<RequestService?> get(ListenCurrentRequestServiceRequest request);
 }
 
 abstract class IListenDriverLocationUseCase {
   Stream<DriverLocation?> listen(ListenDriverLocationRequest request);
+
+  Future<DriverLocation?> get(
+      ListenDriverLocationRequest listenDriverLocationRequest);
 }
 
 abstract class IListenRequestServiceCounterOffersUseCase {
@@ -32,6 +36,10 @@ abstract class IAcceptCounterOfferUseCase {
 abstract class IChangeRequestServiceOfferUseCase {
   Future<void> changeRequestServiceOffer(
       ChangeRequestServiceOfferRequest request);
+}
+
+abstract class IQualifyRequestServiceUseCase {
+  Future<void> qualifyService(QualifyRequestServiceRequest request);
 }
 
 //-------------------------------- Driver --------------------------------

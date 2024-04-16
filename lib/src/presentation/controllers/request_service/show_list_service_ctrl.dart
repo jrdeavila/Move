@@ -66,17 +66,16 @@ class ShowListServiceCtrl extends GetxController {
 
   void _listenRequestService() {
     final useCase = getIt<IListenAllRequestServiceUseCase>();
-    _listRequestService.bindStream(useCase
+    useCase
         .listen(
       ListenAllRequestServiceRequest(
         driver: user,
       ),
     )
-        .map((event) {
-      var itemsNoAdded = event.where(
-          (element) => !_listRequestService.any((e) => e.uuid == element.uuid));
-      return itemsNoAdded.toList();
-    }));
+        .listen((event) {
+      _listRequestService.value = event;
+      _listRequestService.refresh();
+    });
   }
 
   void _fetchServiceCommonOffert() {
