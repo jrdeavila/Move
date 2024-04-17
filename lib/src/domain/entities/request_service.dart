@@ -72,6 +72,7 @@ class TravelPoint {
 enum PaymentType {
   virtual,
   cash,
+  points,
 }
 
 class Payment {

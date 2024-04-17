@@ -262,4 +262,21 @@ class ListenCurrentServiceCtrl extends GetxController {
         .onError((error, stackTrace) => _loading.value = false);
     _loading.value = false;
   }
+
+  void payWithPoints() async {
+    final useCase = getIt<IPayRequestServiceWithPointsUseCase>();
+    _loading.value = true;
+    await useCase
+        .payRequestService(PayRequestServiceWithPointsRequest(
+      requestService: _currentRequestService.value!,
+    ))
+        .onError((error, stackTrace) {
+      if (error != null) {
+        Get.find<ExceptionCtrl>().onDebugException(error, stackTrace);
+      }
+      _loading.value = false;
+    });
+
+    _loading.value = false;
+  }
 }

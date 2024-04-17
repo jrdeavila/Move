@@ -61,10 +61,10 @@ class SearchAddressModal extends GetView<RequestServiceCtrl> {
             child: Obx(() => ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final travelPoint = controller.addressessSearched[index];
+                    final travelPoint = controller.addressesSearched[index];
                     return TravelPointItem(travelPoint: travelPoint);
                   },
-                  itemCount: controller.addressessSearched.length,
+                  itemCount: controller.addressesSearched.length,
                 )),
           ),
         ],
@@ -319,7 +319,7 @@ class SetTeeModal extends GetView<RequestServiceCtrl> {
             ),
             Obx(() => PaymentButton(
                   value: controller.currentPayment,
-                  payments: controller.paymentsAbailables,
+                  payments: controller.paymentsAvailable,
                   onSelectMethod: controller.setCurrentPayment,
                 )),
             const SizedBox(
@@ -565,4 +565,7 @@ Icon iconByPaymentType(PaymentType type) => ({
       PaymentType.virtual: const Icon(
         Icons.phone_iphone_sharp,
       ),
+      PaymentType.points: const Icon(
+        Icons.control_point_rounded,
+      )
     }[type]!);

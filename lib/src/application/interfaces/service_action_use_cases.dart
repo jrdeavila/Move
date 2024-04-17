@@ -42,6 +42,10 @@ abstract class IQualifyRequestServiceUseCase {
   Future<void> qualifyService(QualifyRequestServiceRequest request);
 }
 
+abstract class IPayRequestServiceWithPointsUseCase {
+  Future<void> payRequestService(PayRequestServiceWithPointsRequest request);
+}
+
 //-------------------------------- Driver --------------------------------
 
 abstract class IListenAllRequestServiceUseCase {

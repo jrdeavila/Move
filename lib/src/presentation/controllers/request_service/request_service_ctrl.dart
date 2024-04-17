@@ -19,8 +19,8 @@ class RequestServiceCtrl extends GetxController {
   TextEditingController endNeighborhoodController = TextEditingController();
 
   // ----------------------- Observables -------------------------------
-  final RxList<TravelPoint> _addressessSearched = RxList();
-  final RxList<Payment> _paymentsAbailables = RxList();
+  final RxList<TravelPoint> _addressesSearched = RxList();
+  final RxList<Payment> _paymentsAvailable = RxList();
   final RxBool _loading = RxBool(false);
 
   // Fields to request service
@@ -32,10 +32,10 @@ class RequestServiceCtrl extends GetxController {
   // ----------------------- Getters -------------------------------
 
   bool get loading => _loading.value;
-  List<TravelPoint> get addressessSearched => _addressessSearched;
+  List<TravelPoint> get addressesSearched => _addressesSearched;
   TravelPoint? get beginTravelPoint => _beginTravelPoint.value;
   TravelPoint? get endTravelPoint => _endTravelPoint.value;
-  List<Payment> get paymentsAbailables => _paymentsAbailables;
+  List<Payment> get paymentsAvailable => _paymentsAvailable;
   Payment get currentPayment => _currentPayment.value;
   double get teeValue => _teeValue.value;
 
@@ -46,7 +46,11 @@ class RequestServiceCtrl extends GetxController {
   }
 
   void setCurrentPayment(Payment payment) {
-    _currentPayment.value = payment;
+    if (payment.type == PaymentType.points) {
+      _validatePaymentWIthPoints(payment);
+    } else {
+      _currentPayment.value = payment;
+    }
   }
 
   void setTeeValue(num unformattedValue) {
@@ -92,14 +96,17 @@ class RequestServiceCtrl extends GetxController {
   void _fetchPayments() async {
     final useCase = getIt<IGetPaymentsUseCase>();
     final payments = await useCase.get();
-    _paymentsAbailables.value = payments;
+    _paymentsAvailable.value = [
+      Payment(name: "Redimir puntos", type: PaymentType.points),
+      ...payments,
+    ];
     _currentPayment.value = payments.first;
   }
 
   void _fetchKnownAddresses(String tag) async {
     final useCase = getIt<IGetKnownAddressesUseCase>();
     final res = await useCase.getKnownAddresses(tag: tag);
-    _addressessSearched.value = res;
+    _addressesSearched.value = res;
   }
 
   void _sendRequestService() async {
@@ -134,6 +141,17 @@ class RequestServiceCtrl extends GetxController {
         .sendRequestService(request)
         .onError((error, stackTrace) => _loading.value = false);
     _loading.value = false;
+  }
+
+  bool _validatePaymentWIthPoints(Payment payment) {
+    if (Get.find<ClientPointCtrl>().pointsInMoney >= teeValue && teeValue > 0) {
+      _currentPayment.value = payment;
+      return true;
+    } else {
+      Get.find<BannerCtrl>().showInfo("No tienes suficientes puntos",
+          "Por favor, escoge otro método de pago");
+      return false;
+    }
   }
 
   // ----------------------- Public Methods -------------------------------
@@ -173,6 +191,13 @@ class RequestServiceCtrl extends GetxController {
       return;
     }
 
+    if (currentPayment.type == PaymentType.points) {
+      final res = _validatePaymentWIthPoints(currentPayment);
+      if (!res) {
+        return;
+      }
+    }
+
     _sendRequestService();
   }
 
@@ -197,7 +222,7 @@ class RequestServiceCtrl extends GetxController {
         longitudeRef: Get.find<LocationCtrl>().currentLocation.longitude,
       ),
     );
-    _addressessSearched.value = addresses;
+    _addressesSearched.value = addresses;
   }
 
   void selectTravelPoint(TravelPoint travelPoint) {

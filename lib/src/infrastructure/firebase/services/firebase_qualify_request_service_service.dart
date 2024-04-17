@@ -25,7 +25,7 @@ class FirebaseQualifyRequestServiceService
       var docs = (await driverRef.collection("qualifications").get()).docs;
       final totalRating = docs
               .map((e) => e.data()['rating'] as double)
-              .fold(0.0, (previousValue, element) => element) /
+              .fold(0.0, (previousValue, element) => element + previousValue) /
           docs.length;
 
       await driverRef.update({

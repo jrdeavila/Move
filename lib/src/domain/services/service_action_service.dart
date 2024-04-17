@@ -42,6 +42,10 @@ abstract class IGetDriverLocationService {
   Future<DriverLocation?> get(AppUser driver);
 }
 
+abstract class IPayRequestServiceWithPointsService {
+  Future<void> payRequestService(RequestService requestService);
+}
+
 abstract class IServiceFinishDriverActionService {
   Future<void> finish(RequestService requestService);
 }

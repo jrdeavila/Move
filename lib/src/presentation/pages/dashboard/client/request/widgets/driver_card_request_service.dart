@@ -84,10 +84,12 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
           ),
         ),
         const Spacer(),
-        CardActionButton(
-            color: Get.theme.colorScheme.primary,
-            text: "Contra Oferta",
-            onPressed: () => controller.showContraOffertModal(requestService)),
+        if (requestService.payment.type != PaymentType.points)
+          CardActionButton(
+              color: Get.theme.colorScheme.primary,
+              text: "Contra Oferta",
+              onPressed: () =>
+                  controller.showContraOffertModal(requestService)),
         const SizedBox(width: 5.0),
         CardActionButton(
             color: Colors.blueAccent,

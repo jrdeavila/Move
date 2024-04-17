@@ -110,13 +110,37 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
                     "Destino",
               )),
           const SizedBox(height: 20.0),
-          ButtonClassic(
-            text: "Cancelar",
-            onPressed: () {
-              controller.cancelRequestService();
-            },
-            color: const Color.fromRGBO(224, 26, 25, 1),
-          ),
+          Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ButtonClassic(
+                    text: "Cancelar",
+                    onPressed: () {
+                      controller.cancelRequestService();
+                    },
+                    color: const Color.fromRGBO(224, 26, 25, 1),
+                  ),
+                ),
+                if (controller.currentRequestService?.payment.type ==
+                    PaymentType.points) ...[
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: ButtonClassic(
+                      text: "Pagar",
+                      onPressed: () {
+                        controller.payWithPoints();
+                      },
+                      color: Colors.blue,
+                    ),
+                  )
+                ]
+              ],
+            );
+          }),
         ],
       ),
     );

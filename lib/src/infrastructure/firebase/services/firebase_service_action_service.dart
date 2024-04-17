@@ -192,6 +192,8 @@ RequestService requestServiceFromMapWithUserAndDriver(
         return PaymentType.virtual;
       case 'PaymentType.cash':
         return PaymentType.cash;
+      case 'PaymentType.points':
+        return PaymentType.points;
       default:
         return PaymentType.cash;
     }

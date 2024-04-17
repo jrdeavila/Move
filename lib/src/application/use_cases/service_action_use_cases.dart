@@ -329,3 +329,19 @@ class QualifyRequestServiceUseCase implements IQualifyRequestServiceUseCase {
     );
   }
 }
+
+@Injectable(as: IPayRequestServiceWithPointsUseCase)
+class PayRequestServiceWithPointsUseCase
+    implements IPayRequestServiceWithPointsUseCase {
+  final IPayRequestServiceWithPointsService _payRequestServiceWithPointsService;
+
+  PayRequestServiceWithPointsUseCase({
+    required IPayRequestServiceWithPointsService
+        payRequestServiceWithPointsService,
+  }) : _payRequestServiceWithPointsService = payRequestServiceWithPointsService;
+  @override
+  Future<void> payRequestService(PayRequestServiceWithPointsRequest request) {
+    return _payRequestServiceWithPointsService
+        .payRequestService(request.requestService);
+  }
+}

@@ -41,6 +41,7 @@ class FirebaseServiceDriverActionService
             final driverViewed = doc.data()["viewedBy"] ?? [];
             return !driverViewed.contains(driver.uuid);
           }).toList();
+
           final list = <RequestService>[];
 
           for (final doc in docsNoViewed) {
