@@ -62,6 +62,7 @@ class RegisterUseCase implements IRegisterUseCase {
         lastname: registerRequest.lastname,
         phone: registerRequest.phone,
         email: _authenticationService.getUserEmail(),
+        rating: 0,
         roles: [
           AppUserRole.client,
         ]);

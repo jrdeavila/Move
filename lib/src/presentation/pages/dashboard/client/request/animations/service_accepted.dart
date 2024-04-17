@@ -32,7 +32,9 @@ class ServiceAccepted extends GetView<ListenCurrentServiceCtrl> {
               Obx(() => UserProfile(
                     user:
                         "${controller.currentRequestService!.driver?.firstname}",
-                    score: '4,5',
+                    score: controller.currentRequestService!.driver?.rating!
+                            .toStringAsPrecision(2) ??
+                        "5.0",
                     colorText: Colors.black,
                   )),
               Expanded(

@@ -9,6 +9,7 @@ class DetailsCtrl extends GetxController {
   final RxBool _isDriver = false.obs;
   final RxBool _isClient = false.obs;
   final RxBool _isAdmin = false.obs;
+  final RxDouble _rating = 0.0.obs;
 
   // -----------------------------------
   String get firstname => _firstName.value;
@@ -18,6 +19,7 @@ class DetailsCtrl extends GetxController {
   bool get isDriver => _isDriver.value;
   bool get isClient => _isClient.value;
   bool get isAdmin => _isAdmin.value;
+  double get rating => _rating.value;
 
   // -----------------------------------
   void setPhone(String text) {
@@ -53,6 +55,7 @@ class DetailsCtrl extends GetxController {
     _isDriver.value = Get.find<SessionCtrl>().user!.isDriver;
     _isClient.value = Get.find<SessionCtrl>().user!.isClient;
     _isAdmin.value = Get.find<SessionCtrl>().user!.isAdmin;
+    _rating.value = Get.find<SessionCtrl>().user!.rating ?? 0.0;
   }
 
   // -----------------------------------

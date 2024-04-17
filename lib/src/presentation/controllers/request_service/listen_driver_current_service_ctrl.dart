@@ -61,7 +61,7 @@ class ListenDriverCurrentServiceCtrl extends GetxController {
   void finishService() async {
     final useCase = getIt<IFinishServiceDriverUseCase>();
     _loading.value = true;
-    useCase
+    await useCase
         .finish(
           FinishServiceDriverRequest(
             requestService: currentRequestService!,
@@ -74,9 +74,6 @@ class ListenDriverCurrentServiceCtrl extends GetxController {
         "Error al finalizar servicio",
         "Algo salió mal, por favor intenta de nuevo.",
       );
-      if (error != null) {
-        Get.find<ExceptionCtrl>().onDebugException(error, stackTrace);
-      }
       return false;
     });
   }

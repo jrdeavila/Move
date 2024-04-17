@@ -6,6 +6,7 @@ class AppUser {
   final String email;
   final List<AppUserRole> roles;
   final DriverInfo? driverInfo;
+  final double? rating;
 
   AppUser({
     required this.uuid,
@@ -15,6 +16,7 @@ class AppUser {
     required this.email,
     required this.roles,
     this.driverInfo,
+    this.rating,
   });
 
   bool get isAdmin => roles.contains(AppUserRole.admin);

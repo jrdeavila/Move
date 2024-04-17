@@ -63,14 +63,16 @@ class Profiles extends GetView<DetailsCtrl> {
                         Icons.star,
                         color: Color.fromRGBO(255, 193, 7, 1),
                       ),
-                      Text(
-                        '4.5',
-                        style: GoogleFonts.montserrat(
-                          fontSize: Dimensions.screenWidth * 0.04,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
+                      Obx(() {
+                        return Text(
+                          controller.rating.toStringAsPrecision(2),
+                          style: GoogleFonts.montserrat(
+                            fontSize: Dimensions.screenWidth * 0.04,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        );
+                      }),
                     ],
                   )),
               SizedBox(

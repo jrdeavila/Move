@@ -15,6 +15,9 @@ AppUser userFromJson(Map<String, dynamic> json) => AppUser(
       lastname: json['lastname'] as String,
       phone: json['phone'] as String,
       email: json['email'] as String,
+      rating: json['rating'] is int
+          ? (json['rating'] as int).toDouble()
+          : json['rating'] as double?,
       roles: (json['roles'] as List<dynamic>)
           .map((e) => AppUserRole.values.firstWhere(
                 (element) => element.toString().split('.').last == e,

@@ -5,7 +5,6 @@ import 'package:mevo/lib.dart';
 class ListenCurrentServiceCtrl extends GetxController {
   // ---------------------- Final Variables ----------------------
   final AppUser user;
-  Timer? _timer;
 
   // ---------------------- Constructor ----------------------
 
@@ -60,7 +59,6 @@ class ListenCurrentServiceCtrl extends GetxController {
   void onClose() {
     _currentRequestService.close();
     _driverLocation.close();
-    _timer?.cancel();
     super.onClose();
   }
 
@@ -155,20 +153,13 @@ class ListenCurrentServiceCtrl extends GetxController {
   }
 
   void _listenCurrentRequestService() async {
-    callback() async {
-      final useCase = getIt<IListenCurrentRequestServiceUseCase>();
-      final future = useCase.get(
-        ListenCurrentRequestServiceRequest(
-          user: user,
-        ),
-      );
-      _currentRequestService.value = await future;
-    }
-
-    await callback();
-    _timer = Timer.periodic(10.seconds, (timer) async {
-      await callback();
-    });
+    final useCase = getIt<IListenCurrentRequestServiceUseCase>();
+    final stream = useCase.listen(
+      ListenCurrentRequestServiceRequest(
+        user: user,
+      ),
+    );
+    _currentRequestService.bindStream(stream);
   }
 
   // ---------------------- Public Methods ----------------------
