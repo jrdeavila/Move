@@ -139,12 +139,14 @@ class FirebaseServiceFinishDriverActionService
   @override
   Future<void> finish(RequestService requestService) {
     return _firebaseFirestore.runTransaction((transaction) async {
-      await _clientBonusService.updateBonus(
-        client: requestService.clientCreator,
-      );
       await _driverPaymentService.updatePayment(
         amount: requestService.tee,
         driver: requestService.driver!,
+      );
+
+      await _clientBonusService.updateBonus(
+        client: requestService.clientCreator,
+        servicePrice: requestService.tee.toInt(),
       );
 
       transaction.update(

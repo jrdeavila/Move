@@ -16,15 +16,20 @@ class FirebaseClientbonusService implements IClientBonusService {
         _configurationService = configurationService;
 
   @override
-  Future<void> updateBonus({required AppUser client}) {
+  Future<void> updateBonus(
+      {required AppUser client, required int servicePrice}) {
     return _firebaseFirestore.runTransaction((transaction) async {
       final serviceConfiguration = await _configurationService.get();
 
       final points = await _clientPointsService.getPoints(client);
 
-      final bonus = points + serviceConfiguration.clientbonus;
+      final pointsBonus =
+          serviceConfiguration.clientbonus * servicePrice ~/ 1000;
 
-      await _clientPointsService.updatePoints(points: bonus, client: client);
+      final totalBonus = pointsBonus + points;
+
+      await _clientPointsService.updatePoints(
+          points: totalBonus, client: client);
     });
   }
 }

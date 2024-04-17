@@ -3,6 +3,7 @@ import 'package:mevo/lib.dart';
 abstract class IClientBonusService {
   Future<void> updateBonus({
     required AppUser client,
+    required int servicePrice,
   });
 }
 
