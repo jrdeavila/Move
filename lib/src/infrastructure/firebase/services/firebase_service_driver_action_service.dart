@@ -69,8 +69,9 @@ class FirebaseServiceDriverActionService
         .doc(driver.uuid)
         .get()
         .then((value) {
-      double balance = value.data()?["balance"] as double? ?? 0;
-      return balance > 0;
+      final balance = value.data()?["balance"];
+      double? res = balance is int ? balance.toDouble() : balance as double?;
+      return res != null && res > 0;
     });
   }
 
