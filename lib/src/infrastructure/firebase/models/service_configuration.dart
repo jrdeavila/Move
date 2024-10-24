@@ -1,21 +1,21 @@
 class ServiceConfiguration {
-  final int clientBonification;
+  final int clientBonus;
   final double driverPaymentPercentage;
-  final List<ServiceCommonOffert> commonOfferts;
+  final List<ServiceCommonOffer> commonOffers;
 
   ServiceConfiguration({
-    required this.clientBonification,
+    required this.clientBonus,
     required this.driverPaymentPercentage,
-    required this.commonOfferts,
+    required this.commonOffers,
   });
 }
 
-class ServiceCommonOffert {
-  final double offert;
+class ServiceCommonOffer {
+  final double offer;
   final int uses;
 
-  ServiceCommonOffert({
-    required this.offert,
+  ServiceCommonOffer({
+    required this.offer,
     required this.uses,
   });
 }

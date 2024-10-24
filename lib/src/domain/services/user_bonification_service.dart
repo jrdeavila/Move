@@ -1,7 +1,7 @@
 import 'package:move_app/lib.dart';
 
-abstract class IClientBonificationService {
-  Future<void> updateBonification({
+abstract class IClientBonusService {
+  Future<void> updateBonus({
     required AppUser client,
   });
 }

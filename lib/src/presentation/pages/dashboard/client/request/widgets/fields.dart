@@ -1,4 +1,3 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:move_app/lib.dart';
 
 class FeeButton extends GetView<RequestServiceCtrl> {
@@ -11,7 +10,7 @@ class FeeButton extends GetView<RequestServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = CurrencyTextInputFormatter(
+    final formatter = CurrencyTextInputFormatter.currency(
       decimalDigits: 0,
       symbol: 'COP ',
     );

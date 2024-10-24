@@ -1,13 +1,13 @@
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
 
-@Injectable(as: IClientBonificationService)
-class FirebaseClientBonificationService implements IClientBonificationService {
+@Injectable(as: IClientBonusService)
+class FirebaseClientBonusService implements IClientBonusService {
   final FirebaseFirestore _firebaseFirestore;
   final IClientPointsService _clientPointsService;
   final IConsultServiceConfigurationService _configurationService;
 
-  FirebaseClientBonificationService({
+  FirebaseClientBonusService({
     required FirebaseFirestore firebaseFirestore,
     required IClientPointsService clientPointsService,
     required IConsultServiceConfigurationService configurationService,
@@ -16,16 +16,15 @@ class FirebaseClientBonificationService implements IClientBonificationService {
         _configurationService = configurationService;
 
   @override
-  Future<void> updateBonification({required AppUser client}) {
+  Future<void> updateBonus({required AppUser client}) {
     return _firebaseFirestore.runTransaction((transaction) async {
       final serviceConfiguration = await _configurationService.get();
 
       final points = await _clientPointsService.getPoints(client);
 
-      final bonification = points + serviceConfiguration.clientBonification;
+      final bonus = points + serviceConfiguration.clientBonus;
 
-      await _clientPointsService.updatePoints(
-          points: bonification, client: client);
+      await _clientPointsService.updatePoints(points: bonus, client: client);
     });
   }
 }

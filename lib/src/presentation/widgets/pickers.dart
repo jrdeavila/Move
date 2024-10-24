@@ -95,9 +95,18 @@ class _ImagePickerState extends State<ImagePicker> {
   }
 }
 
-class SelectImageMenu extends StatelessWidget {
+class SelectImageMenu extends StatefulWidget {
   final bool canRemove;
   const SelectImageMenu({super.key, required this.canRemove});
+
+  @override
+  State<SelectImageMenu> createState() => _SelectImageMenuState();
+}
+
+class _SelectImageMenuState extends State<SelectImageMenu> {
+  void _onResult(ResultImagePicker result) {
+    Navigator.of(context).pop(result);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,13 +114,11 @@ class SelectImageMenu extends StatelessWidget {
     return SelectMenu(backgroundColor: Colors.white, children: [
       MenuAction(
           icon: Icons.image,
-          text: "Galeria",
+          text: "Galería",
           foregroundColor: foregroundColor,
           onTap: () {
             PickImageUtility.pickImage().then((value) {
-              Navigator.of(context).pop(ResultImagePicker(
-                image: value,
-              ));
+              _onResult(ResultImagePicker(image: value));
             });
           }),
       MenuAction(
@@ -120,13 +127,11 @@ class SelectImageMenu extends StatelessWidget {
         foregroundColor: foregroundColor,
         onTap: () {
           PickImageUtility.takePhoto().then((value) {
-            Navigator.of(context).pop(ResultImagePicker(
-              image: value,
-            ));
+            _onResult(ResultImagePicker(image: value));
           });
         },
       ),
-      if (canRemove)
+      if (widget.canRemove)
         MenuAction(
           icon: Icons.delete,
           text: "Quitar imagen",

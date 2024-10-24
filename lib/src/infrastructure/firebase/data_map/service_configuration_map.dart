@@ -2,16 +2,16 @@ import 'package:move_app/lib.dart';
 
 ServiceConfiguration serviceConfigurationFromJson(Map<String, dynamic> json) =>
     ServiceConfiguration(
-      clientBonification: json["client_bonification"],
+      clientBonus: json["client_bonification"],
       driverPaymentPercentage: json["driver_payment_percentage"],
-      commonOfferts: List<ServiceCommonOffert>.from(
+      commonOffers: List<ServiceCommonOffer>.from(
           (json["service_common_offert"] as List<dynamic>?)
                   ?.map((x) => serviceCommonOffertFromJson(x)) ??
               []),
     );
 
-ServiceCommonOffert serviceCommonOffertFromJson(Map<String, dynamic> json) =>
-    ServiceCommonOffert(
-      offert: json["offert"].toDouble(),
+ServiceCommonOffer serviceCommonOffertFromJson(Map<String, dynamic> json) =>
+    ServiceCommonOffer(
+      offer: json["offert"].toDouble(),
       uses: json["uses"] as int,
     );

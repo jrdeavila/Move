@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:move_app/lib.dart';
 
@@ -126,21 +125,21 @@ class FirebaseServiceDriverActionService
 class FirebaseServiceFinishDriverActionService
     implements IServiceFinishDriverActionService {
   final FirebaseFirestore _firebaseFirestore;
-  final IClientBonificationService _clientBoniticationService;
+  final IClientBonusService _clientBonusService;
   final IDriverPaymentService _driverPaymentService;
 
   FirebaseServiceFinishDriverActionService({
     required FirebaseFirestore firebaseFirestore,
-    required IClientBonificationService clientBoniticationService,
+    required IClientBonusService clientBonusService,
     required IDriverPaymentService driverPaymentService,
   })  : _firebaseFirestore = firebaseFirestore,
-        _clientBoniticationService = clientBoniticationService,
+        _clientBonusService = clientBonusService,
         _driverPaymentService = driverPaymentService;
 
   @override
   Future<void> finish(RequestService requestService) {
     return _firebaseFirestore.runTransaction((transaction) async {
-      await _clientBoniticationService.updateBonification(
+      await _clientBonusService.updateBonus(
         client: requestService.clientCreator,
       );
       await _driverPaymentService.updatePayment(

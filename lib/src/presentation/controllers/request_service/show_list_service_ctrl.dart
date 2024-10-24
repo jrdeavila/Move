@@ -15,14 +15,14 @@ class ShowListServiceCtrl extends GetxController {
   // ---------------------------- Observables ----------------------------
 
   final RxList<RequestService> _listRequestService = <RequestService>[].obs;
-  final RxList<ServiceCommonOffert> _listServiceCommonOffert =
-      <ServiceCommonOffert>[].obs;
+  final RxList<ServiceCommonOffer> _listServiceCommonOffert =
+      <ServiceCommonOffer>[].obs;
   final RxDouble _currentOffert = 0.0.obs;
 
   // ---------------------------- Getters ----------------------------
 
   List<RequestService> get listRequestService => _listRequestService;
-  List<ServiceCommonOffert> get listServiceCommonOffert =>
+  List<ServiceCommonOffer> get listServiceCommonOffert =>
       _listServiceCommonOffert;
   double get currentOffert => _currentOffert.value;
 
@@ -98,14 +98,14 @@ class ShowListServiceCtrl extends GetxController {
         });
   }
 
-  void onSelectCommonOffert(ServiceCommonOffert serviceCommonOffert,
+  void onSelectCommonOffert(ServiceCommonOffer serviceCommonOffert,
       RequestService requestService) async {
     final useCase = getIt<ISendCounterOfferUseCase>();
     await useCase.sendCounterOffer(
       SendCounterOfferRequest(
         driver: user,
         requestService: requestService,
-        counterOffer: serviceCommonOffert.offert,
+        counterOffer: serviceCommonOffert.offer,
       ),
     );
     Get.find<BannerCtrl>().showInfo(

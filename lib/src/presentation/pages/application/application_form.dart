@@ -5,10 +5,12 @@ class ApplicationForm extends GetView<DriverRequestRegisterCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Get.delete<DriverRequestRegisterCtrl>();
-        return Future.value(true);
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && result != null) {
+          Get.delete<DriverRequestRegisterCtrl>();
+        }
       },
       child: Scaffold(
         backgroundColor: Colors.white,
