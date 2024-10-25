@@ -22,7 +22,23 @@ class GoogleGetAddressByGeopointService
           "latlng": "$latitude,$longitude",
           "key": googleMapsApiKey,
         }).then((value) {
+      if (value.data == null) {
+        return TravelPoint(
+          name: "Desconocido",
+          address: "Desconocido",
+          latitude: latitude,
+          longitude: longitude,
+        );
+      }
       final response = GoogleGeocodeResponse.fromJson(value.data);
+      if (response.results.isEmpty) {
+        return TravelPoint(
+          name: "Desconocido",
+          address: "Desconocido",
+          latitude: latitude,
+          longitude: longitude,
+        );
+      }
       return TravelPoint(
         name: response.results.first.formattedAddress,
         address: response.results.first.formattedAddress,

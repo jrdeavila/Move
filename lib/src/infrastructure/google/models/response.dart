@@ -93,7 +93,7 @@ class Location {
 }
 
 class GoogleGeocodeResponse {
-  PlusCode plusCode;
+  PlusCode? plusCode;
   List<Result> results;
   String status;
 
@@ -105,14 +105,16 @@ class GoogleGeocodeResponse {
 
   factory GoogleGeocodeResponse.fromJson(Map<String, dynamic> json) =>
       GoogleGeocodeResponse(
-        plusCode: PlusCode.fromJson(json["plus_code"]),
+        plusCode: json["plus_code"] != null
+            ? PlusCode.fromJson(json["plus_code"])
+            : null,
         results:
             List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
         status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
-        "plus_code": plusCode.toJson(),
+        "plus_code": plusCode?.toJson(),
         "results": List<dynamic>.from(results.map((x) => x.toJson())),
         "status": status,
       };

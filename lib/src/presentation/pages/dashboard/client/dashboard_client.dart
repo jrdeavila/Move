@@ -23,13 +23,35 @@ class DashboardClientView extends GetView<SessionCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      slivers: [_buildAppBar(), _buildDashboardItems()],
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      final height = constraints.maxHeight * 0.2;
+      final fontSize = width * 0.06;
+      final fontDescription = width * 0.04;
+      final imageSize = width * 0.2;
+      return CustomScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        slivers: [
+          _buildAppBar(),
+          _buildDashboardItems(
+            width: width,
+            height: height,
+            fontSize: fontSize,
+            fontDescription: fontDescription,
+            imageSize: imageSize,
+          )
+        ],
+      );
+    });
   }
 
-  SliverPadding _buildDashboardItems() {
+  SliverPadding _buildDashboardItems({
+    required double width,
+    required double height,
+    required double fontSize,
+    required double fontDescription,
+    required double imageSize,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       sliver: SliverList(
@@ -40,7 +62,12 @@ class DashboardClientView extends GetView<SessionCtrl> {
                 fontSize: 25,
                 fontWeight: FontWeight.w400,
               )),
-          CardDescription(
+          DashboardCard(
+            width: width,
+            height: height,
+            fontSize: fontSize,
+            descriptionFontSize: fontDescription,
+            imageSize: imageSize,
             title: 'Pedir un viaje',
             color: const Color.fromRGBO(255, 198, 65, 1),
             textColor: Colors.white,
@@ -50,7 +77,12 @@ class DashboardClientView extends GetView<SessionCtrl> {
               controller.goToRequestService();
             },
           ),
-          CardDescription(
+          DashboardCard(
+            width: width,
+            height: height,
+            fontSize: fontSize,
+            descriptionFontSize: fontDescription,
+            imageSize: imageSize,
             title: 'Modo conductor',
             description: '¿Quieres ser conductor? ¡Activa el modo conductor!',
             color: const Color.fromRGBO(217, 217, 217, 1),
@@ -60,7 +92,12 @@ class DashboardClientView extends GetView<SessionCtrl> {
               controller.onChangeSessionToDriver();
             },
           ),
-          CardDescription(
+          DashboardCard(
+            width: width,
+            height: height,
+            fontSize: fontSize,
+            descriptionFontSize: fontDescription,
+            imageSize: imageSize,
             title: 'Perfil',
             description: 'Actualiza tu información',
             textColor: Colors.white,
