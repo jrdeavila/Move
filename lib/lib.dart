@@ -12,6 +12,7 @@ export 'package:get/get.dart';
 export 'package:get_storage/get_storage.dart';
 export 'package:google_fonts/google_fonts.dart';
 export 'package:google_sign_in/google_sign_in.dart';
+export 'package:wakelock_plus/wakelock_plus.dart';
 export 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 export 'firebase_options.dart';
