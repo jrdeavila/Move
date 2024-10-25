@@ -9,7 +9,7 @@ class DashboardDriver extends GetView<SessionCtrl> {
         backgroundColor: Colors.white,
         body: LayoutBuilder(builder: (context, contraints) {
           final width = contraints.maxWidth;
-          final height = contraints.maxHeight;
+          final height = contraints.maxHeight * 0.2;
           final fontSize = width * 0.06;
           final fontDescription = width * 0.04;
           final imageSize = width * 0.2;

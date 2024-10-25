@@ -37,7 +37,6 @@ class ShowListServiceCtrl extends GetxController {
     ever(_listRequestService, _notifyInBackgroud);
     ever(_listRequestService, _routing);
     _listenRequestService();
-    _fetchServiceCommonOffert();
   }
 
   // ---------------------------- Private Methods -----------------------------
@@ -78,15 +77,24 @@ class ShowListServiceCtrl extends GetxController {
     });
   }
 
-  void _fetchServiceCommonOffert() {
+  void _fetchServiceCommonOffert(double value) {
     final useCase = getIt<IGetServiceCommonOffertsUseCase>();
-    useCase.get().then((value) => _listServiceCommonOffert.addAll(value));
+    useCase
+        .get(
+          GetServiceCommonOffertsRequest(
+            price: value,
+          ),
+        )
+        .then((value) => _listServiceCommonOffert.value = value);
   }
 
   // ---------------------------- Public Methods -----------------------------
 
   void showContraOffertModal(RequestService requestService) {
     _currentOffert.value = requestService.tee;
+    _fetchServiceCommonOffert(
+      requestService.tee,
+    );
     showModalBottomSheet(
         context: Get.context!,
         backgroundColor: Colors.transparent,

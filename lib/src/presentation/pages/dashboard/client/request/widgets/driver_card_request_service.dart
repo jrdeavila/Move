@@ -2,9 +2,13 @@ import 'package:mevo/lib.dart';
 
 class CardRequestService extends GetView<ShowListServiceCtrl> {
   final RequestService requestService;
+  final double width;
+  final double height;
   const CardRequestService({
     super.key,
     required this.requestService,
+    required this.width,
+    required this.height,
   });
 
   @override
@@ -12,7 +16,9 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
     return FadeInRightBig(
       child: Container(
         padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        margin: const EdgeInsets.only(bottom: 20.0),
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -54,6 +60,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
             const SizedBox(height: 10.0),
             _buildServiceDetails(),
             const SizedBox(height: 10.0),
+            Spacer(),
             _buildActions(),
           ],
         ),
@@ -62,6 +69,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
   }
 
   Row _buildActions() {
+    final minFontSize = width * 0.03;
     return Row(
       children: [
         GestureDetector(
@@ -76,7 +84,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
               Text(
                 "Quitar",
                 style: GoogleFonts.montserrat(
-                  fontSize: 12.0,
+                  fontSize: minFontSize,
                   color: Colors.grey[600],
                 ),
               ),
@@ -86,20 +94,25 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
         const Spacer(),
         if (requestService.payment.type != PaymentType.points)
           CardActionButton(
-              color: Get.theme.colorScheme.primary,
-              text: "Contra Oferta",
-              onPressed: () =>
-                  controller.showContraOffertModal(requestService)),
+            color: Get.theme.colorScheme.primary,
+            text: "Contra Oferta",
+            fontSize: minFontSize,
+            onPressed: () => controller.showContraOffertModal(requestService),
+          ),
         const SizedBox(width: 5.0),
         CardActionButton(
-            color: Colors.blueAccent,
-            text: "Aceptar",
-            onPressed: () => controller.sendCounterOffert(requestService)),
+          color: Colors.blueAccent,
+          text: "Aceptar",
+          fontSize: minFontSize,
+          onPressed: () => controller.sendCounterOffert(requestService),
+        ),
       ],
     );
   }
 
   Row _buildServiceDetails() {
+    final minFontSize = width * 0.03;
+    final maxFontSize = width * 0.04;
     return Row(
       children: [
         Expanded(
@@ -108,10 +121,9 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Metodo de Pago',
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 12.0,
+                'Método de Pago',
+                style: TextStyle(
+                  fontSize: minFontSize,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -120,13 +132,14 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
                 children: [
                   iconByPaymentType(
                     requestService.payment.type,
+                    size: maxFontSize,
                   ),
                   Text(
                     requestService.payment.name,
-                    style: GoogleFonts.montserrat(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
+                      fontSize: minFontSize,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
@@ -142,18 +155,16 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
             children: [
               Text(
                 'Tarifa',
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 12.0,
+                style: TextStyle(
+                  fontSize: minFontSize,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 5.0),
               Text(
                 doubleCurrencyFormatter(requestService.tee),
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 18.0,
+                style: TextStyle(
+                  fontSize: maxFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -171,12 +182,14 @@ class CardActionButton extends StatelessWidget {
     required this.color,
     required this.text,
     required this.onPressed,
+    this.fontSize = 14.0,
     this.disabled = false,
   });
 
   final Color color;
   final String text;
   final bool disabled;
+  final double fontSize;
   final VoidCallback onPressed;
 
   @override
@@ -193,7 +206,7 @@ class CardActionButton extends StatelessWidget {
           text,
           style: GoogleFonts.montserrat(
             color: Colors.white,
-            fontSize: 14.0,
+            fontSize: fontSize,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -214,36 +227,39 @@ class AddressInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Icon(
-              Icons.location_on,
-              color: isOrigin ? Colors.blueAccent : Colors.redAccent,
-            ),
-            const SizedBox(width: 10.0),
-            Expanded(
-              child: Text(
-                travelPoint.name,
-                style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
+    return LayoutBuilder(builder: (context, constraints) {
+      final minFontSize = constraints.maxWidth * 0.035;
+      final maxFontSize = constraints.maxWidth * 0.05;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.location_on,
+                color: isOrigin ? Colors.blueAccent : Colors.redAccent,
+              ),
+              const SizedBox(width: 10.0),
+              Expanded(
+                child: Text(
+                  travelPoint.name,
+                  style: TextStyle(
+                    fontSize: maxFontSize,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        Text(
-          travelPoint.address,
-          style: GoogleFonts.montserrat(
-            fontSize: 14.0,
+            ],
           ),
-        ),
-      ],
-    );
+          Text(
+            travelPoint.address,
+            style: TextStyle(
+              fontSize: minFontSize,
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

@@ -94,23 +94,26 @@ class OffertItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: width,
-        padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          color: Get.theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Text(
-          doubleCurrencyFormatterWithoutSign(offert.offer),
-          style: GoogleFonts.montserrat(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+      child: LayoutBuilder(builder: (context, constraints) {
+        final fontSize = constraints.maxWidth * 0.04;
+        return Container(
+          width: width,
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Get.theme.colorScheme.primary,
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          textAlign: TextAlign.center,
-        ),
-      ),
+          child: Text(
+            doubleCurrencyFormatterWithoutSign(offert.offer),
+            style: GoogleFonts.montserrat(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      }),
     );
   }
 }

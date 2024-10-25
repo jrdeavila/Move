@@ -163,3 +163,11 @@ class CallClientRequest {
 
   CallClientRequest({required this.client});
 }
+
+
+class GetServiceCommonOffertsRequest {
+  final double price;
+  GetServiceCommonOffertsRequest({
+    required this.price,
+  });
+}

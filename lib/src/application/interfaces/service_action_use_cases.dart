@@ -74,7 +74,7 @@ abstract class IFinishServiceDriverUseCase {
 }
 
 abstract class IGetServiceCommonOffertsUseCase {
-  Future<List<ServiceCommonOffer>> get();
+  Future<List<ServiceCommonOffer>> get(GetServiceCommonOffertsRequest request);
 }
 
 abstract class IMarkAsViewedRequestServiceUseCase {

@@ -32,8 +32,9 @@ class DashboardClientView extends GetView<SessionCtrl> {
       return CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
-          _buildAppBar(),
+          _buildAppBar(context),
           _buildDashboardItems(
+            context,
             width: width,
             height: height,
             fontSize: fontSize,
@@ -45,7 +46,8 @@ class DashboardClientView extends GetView<SessionCtrl> {
     });
   }
 
-  SliverPadding _buildDashboardItems({
+  SliverPadding _buildDashboardItems(
+    BuildContext context, {
     required double width,
     required double height,
     required double fontSize,
@@ -69,7 +71,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
             descriptionFontSize: fontDescription,
             imageSize: imageSize,
             title: 'Pedir un viaje',
-            color: const Color.fromRGBO(255, 198, 65, 1),
+            color: Theme.of(context).colorScheme.primary,
             textColor: Colors.white,
             icon: Icons.location_on,
             description: '¿Necesitas un viaje? ¡Estamos en camino!',
@@ -85,7 +87,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
             imageSize: imageSize,
             title: 'Modo conductor',
             description: '¿Quieres ser conductor? ¡Activa el modo conductor!',
-            color: const Color.fromRGBO(217, 217, 217, 1),
+            color: Theme.of(context).colorScheme.tertiary,
             textColor: Colors.black,
             icon: Icons.directions_car,
             onPressed: () {
@@ -112,7 +114,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
     );
   }
 
-  SliverAppBar _buildAppBar() {
+  SliverAppBar _buildAppBar(BuildContext context) {
     return SliverAppBar(
         actions: [
           TextButton(
@@ -172,13 +174,13 @@ class DashboardClientView extends GetView<SessionCtrl> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  _buildPointSection(),
+                  _buildPointSection(context),
                 ],
               ),
             )));
   }
 
-  Widget _buildPointSection() {
+  Widget _buildPointSection(BuildContext context) {
     final clientPointsCtrl = Get.find<ClientPointCtrl>();
     return GestureDetector(
       onTap: () {

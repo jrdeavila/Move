@@ -239,13 +239,22 @@ class GetServiceCommonOffertsUseCase
   }) : _configurationService = configurationService;
 
   @override
-  Future<List<ServiceCommonOffer>> get() {
-    return _configurationService.get().then((value) {
-      final offerts = value.commonOfferts;
-      offerts.sort((a, b) => a.uses.compareTo(b.uses));
-      // Get only first 9 elements
-      return offerts.take(9).toList();
-    });
+  Future<List<ServiceCommonOffer>> get(GetServiceCommonOffertsRequest request) {
+    // Calcular ofertas comunes del 30% y 50$ de la tarifa
+    final offerValues = [
+      request.price + 500,
+      request.price + 2000,
+      request.price * 1.3,
+      request.price * 1.5,
+    ];
+
+    final offers = offerValues.map((value) {
+      return ServiceCommonOffer(
+        offer: value,
+        uses: 0,
+      );
+    }).toList();
+    return Future.value(offers);
   }
 }
 

@@ -558,14 +558,17 @@ class PaymentTypeModal extends StatelessWidget {
   }
 }
 
-Icon iconByPaymentType(PaymentType type) => ({
-      PaymentType.cash: const Icon(
+Icon iconByPaymentType(PaymentType type, {double size = 20.0}) => ({
+      PaymentType.cash: Icon(
         Icons.monetization_on_rounded,
+        size: size,
       ),
-      PaymentType.virtual: const Icon(
+      PaymentType.virtual: Icon(
         Icons.phone_iphone_sharp,
+        size: size,
       ),
-      PaymentType.points: const Icon(
+      PaymentType.points: Icon(
         Icons.control_point_rounded,
+        size: size,
       )
     }[type]!);

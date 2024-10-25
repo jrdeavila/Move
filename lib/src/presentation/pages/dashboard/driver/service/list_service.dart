@@ -48,16 +48,23 @@ class ListServicePage extends GetView<ShowListServiceCtrl> {
           child: NoServiceYetMessage(),
         );
       } else {
-        return ListView.builder(
-          itemCount: controller.listRequestService.length,
-          itemBuilder: (context, index) {
-            final requestService = controller.listRequestService[index];
+        return LayoutBuilder(builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final height = constraints.maxHeight * 0.40;
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            itemCount: controller.listRequestService.length,
+            itemBuilder: (context, index) {
+              final requestService = controller.listRequestService[index];
 
-            return CardRequestService(
-              requestService: requestService,
-            );
-          },
-        );
+              return CardRequestService(
+                width: width,
+                height: height,
+                requestService: requestService,
+              );
+            },
+          );
+        });
       }
     });
   }
