@@ -86,7 +86,7 @@ class OffertItem extends StatelessWidget {
     required this.onTap,
   });
 
-  final ServiceCommonOffert offert;
+  final ServiceCommonOffer offert;
   final double width;
   final VoidCallback onTap;
 
@@ -102,7 +102,7 @@ class OffertItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Text(
-          doubleCurrencyFormatterWithoutSign(offert.offert),
+          doubleCurrencyFormatterWithoutSign(offert.offer),
           style: GoogleFonts.montserrat(
             fontSize: 18,
             fontWeight: FontWeight.bold,

@@ -7,12 +7,35 @@ class DashboardDriver extends GetView<SessionCtrl> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: CustomScrollView(
-          slivers: [_buildAppBar(), _buildDashboardItems()],
-        ));
+        body: LayoutBuilder(builder: (context, contraints) {
+          final width = contraints.maxWidth;
+          final height = contraints.maxHeight;
+          final fontSize = width * 0.06;
+          final fontDescription = width * 0.04;
+          final imageSize = width * 0.2;
+          return CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            slivers: [
+              _buildAppBar(),
+              _buildDashboardItems(
+                width: width,
+                height: height,
+                fontSize: fontSize,
+                fontDescription: fontDescription,
+                imageSize: imageSize,
+              )
+            ],
+          );
+        }));
   }
 
-  SliverPadding _buildDashboardItems() {
+  SliverPadding _buildDashboardItems({
+    required double width,
+    required double height,
+    required double fontSize,
+    required double fontDescription,
+    required double imageSize,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       sliver: SliverList(
@@ -26,7 +49,12 @@ class DashboardDriver extends GetView<SessionCtrl> {
           Obx(() {
             final hasBalance = Get.find<DriverBalanceCtrl>().balance > 0;
             if (hasBalance) {
-              return CardDescription(
+              return DashboardCard(
+                width: width,
+                height: height,
+                fontSize: fontSize,
+                descriptionFontSize: fontDescription,
+                imageSize: imageSize,
                 title: 'Servicios',
                 color: const Color.fromRGBO(255, 198, 65, 1),
                 textColor: Colors.white,
@@ -66,7 +94,12 @@ class DashboardDriver extends GetView<SessionCtrl> {
               ),
             );
           }),
-          CardDescription(
+          DashboardCard(
+            width: width,
+            height: height,
+            fontSize: fontSize,
+            descriptionFontSize: fontDescription,
+            imageSize: imageSize,
             title: 'Modo Cliente',
             description: '¿Quieres pedir un viaje? ¡Activa el modo cliente!',
             color: const Color.fromRGBO(217, 217, 217, 1),
@@ -76,7 +109,12 @@ class DashboardDriver extends GetView<SessionCtrl> {
               controller.onChangeSessionToClient();
             },
           ),
-          CardDescription(
+          DashboardCard(
+            width: width,
+            height: height,
+            fontSize: fontSize,
+            descriptionFontSize: fontDescription,
+            imageSize: imageSize,
             title: 'Perfil',
             description: 'Actualiza tu información',
             textColor: Colors.white,

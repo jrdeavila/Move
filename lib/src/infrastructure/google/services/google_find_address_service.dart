@@ -22,13 +22,29 @@ class GoogleGetAddressByGeopointService
           "latlng": "$latitude,$longitude",
           "key": googleMapsApiKey,
         }).then((value) {
+      if (value.data == null) {
+        return TravelPoint(
+          name: "Desconocido",
+          address: "Desconocido",
+          latitude: latitude,
+          longitude: longitude,
+        );
+      }
       final response = GoogleGeocodeResponse.fromJson(value.data);
-      var first = response.results.firstOrNull;
+      if (response.results.isEmpty) {
+        return TravelPoint(
+          name: "Desconocido",
+          address: "Desconocido",
+          latitude: latitude,
+          longitude: longitude,
+        );
+      }
+      final first = response.results.first;
       return TravelPoint(
-        name: first?.formattedAddress ?? "Unknown Address",
-        address: first?.formattedAddress ?? "Unknown Address",
-        latitude: first?.geometry.location.latitude ?? latitude,
-        longitude: first?.geometry.location.longitude ?? longitude,
+        name: first.formattedAddress,
+        address: first.formattedAddress,
+        latitude: first.geometry.location.latitude ?? latitude,
+        longitude: first.geometry.location.longitude ?? longitude,
       );
     });
   }

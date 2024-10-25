@@ -5,11 +5,13 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   cloud_firestore
+  connectivity_plus
   file_selector_windows
   firebase_auth
   firebase_core
   firebase_storage
   geolocator_windows
+  permission_handler_windows
   syncfusion_pdfviewer_windows
   url_launcher_windows
 )

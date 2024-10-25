@@ -26,7 +26,8 @@ dependencies:
     sdk: flutter
   flutter_cache_manager: ^3.3.1
   flutter_keyboard_visibility: ^5.4.1
-  flutter_local_notifications: ^16.2.0
+  flutter_local_notifications: ^17.2.4
+  flutter_overlay_window: ^0.4.5
   flutter_map: ^6.1.0
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^2.0.9

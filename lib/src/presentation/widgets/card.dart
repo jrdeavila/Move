@@ -62,15 +62,20 @@ class CardClassic extends StatelessWidget {
   }
 }
 
-class CardDescription extends StatelessWidget {
+class DashboardCard extends StatelessWidget {
   final String title;
   final String description;
   final Color? textColor;
   final Color? color;
   final IconData icon;
   final VoidCallback onPressed;
+  final double width;
+  final double height;
+  final double fontSize;
+  final double descriptionFontSize;
+  final double imageSize;
 
-  const CardDescription({
+  const DashboardCard({
     super.key,
     required this.title,
     this.textColor,
@@ -78,6 +83,11 @@ class CardDescription extends StatelessWidget {
     required this.icon,
     required this.description,
     required this.onPressed,
+    required this.width,
+    required this.height,
+    required this.fontSize,
+    required this.descriptionFontSize,
+    required this.imageSize,
   }) : assert(description.length < 70);
 
   @override
@@ -85,10 +95,10 @@ class CardDescription extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
+        width: width,
+        height: height,
         margin: const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        width: 300,
-        height: 180,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(20),
@@ -101,13 +111,13 @@ class CardDescription extends StatelessWidget {
                 Text(title,
                     style: GoogleFonts.montserrat(
                       color: textColor,
-                      fontSize: 28,
+                      fontSize: fontSize,
                       fontWeight: FontWeight.w600,
                     )),
                 Text(description,
                     style: GoogleFonts.montserrat(
                       color: textColor,
-                      fontSize: 14,
+                      fontSize: descriptionFontSize,
                       fontWeight: FontWeight.w500,
                     )),
               ],
@@ -119,7 +129,7 @@ class CardDescription extends StatelessWidget {
           Icon(
             icon,
             color: textColor,
-            size: 80,
+            size: imageSize,
           ),
         ]),
       ),

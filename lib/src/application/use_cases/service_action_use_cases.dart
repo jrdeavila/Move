@@ -239,7 +239,7 @@ class GetServiceCommonOffertsUseCase
   }) : _configurationService = configurationService;
 
   @override
-  Future<List<ServiceCommonOffert>> get() {
+  Future<List<ServiceCommonOffer>> get() {
     return _configurationService.get().then((value) {
       final offerts = value.commonOfferts;
       offerts.sort((a, b) => a.uses.compareTo(b.uses));

@@ -1,7 +1,7 @@
 class ServiceConfiguration {
   final int clientbonus;
   final double driverPaymentPercentage;
-  final List<ServiceCommonOffert> commonOfferts;
+  final List<ServiceCommonOffer> commonOfferts;
   final int quotaOfPointsForBonus;
 
   ServiceConfiguration({
@@ -12,12 +12,12 @@ class ServiceConfiguration {
   });
 }
 
-class ServiceCommonOffert {
-  final double offert;
+class ServiceCommonOffer {
+  final double offer;
   final int uses;
 
-  ServiceCommonOffert({
-    required this.offert,
+  ServiceCommonOffer({
+    required this.offer,
     required this.uses,
   });
 }

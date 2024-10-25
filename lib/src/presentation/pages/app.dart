@@ -18,32 +18,35 @@ class App extends StatelessWidget {
       800: color,
       900: color,
     };
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        appBarTheme: AppBarTheme(
-          elevation: 0.0,
-          toolbarHeight: kToolbarHeight + 50.0,
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          titleTextStyle: GoogleFonts.montserrat(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        textTheme: GoogleFonts.montserratTextTheme(),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: color,
-          backgroundColor: Colors.grey[200]!,
-          primarySwatch: MaterialColor(
-            color.value,
-            swatch,
-          ),
-          brightness: Brightness.light,
+    var theme = ThemeData(
+      useMaterial3: true,
+      appBarTheme: AppBarTheme(
+        elevation: 0.0,
+        toolbarHeight: kToolbarHeight + 50.0,
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        titleTextStyle: GoogleFonts.montserrat(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
         ),
       ),
+      textTheme: GoogleFonts.montserratTextTheme(
+        Theme.of(context).textTheme,
+      ),
+      colorScheme: ColorScheme.fromSwatch(
+        accentColor: color,
+        backgroundColor: Colors.grey[200]!,
+        primarySwatch: MaterialColor(
+          color.value,
+          swatch,
+        ),
+        brightness: Brightness.light,
+      ),
+    );
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: theme,
       getPages: [
         ...MainRoutes.routes,
         ...AuthenticationRoutes.routes,

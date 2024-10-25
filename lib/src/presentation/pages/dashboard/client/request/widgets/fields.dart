@@ -10,7 +10,7 @@ class FeeButton extends GetView<RequestServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = CurrencyTextInputFormatter(
+    final formatter = CurrencyTextInputFormatter.currency(
       decimalDigits: 0,
       symbol: 'COP ',
     );

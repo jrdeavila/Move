@@ -1,14 +1,4 @@
 {
-    "cSpell.words": [
-        "audioplayers",
-        "cupertino",
-        "firestore",
-        "geolocator",
-        "mevo",
-        "overlayment",
-        "pdfviewer",
-        "sqflite",
-        "syncfusion",
-        "uuid"
-    ]
+  "cmake.sourceDirectory": "C:/Users/ASESORADMIN/Desktop/Move/linux",
+  "cSpell.words": ["firstname", "lastname", "montserrat", "RGBO", "uuid"]
 }
