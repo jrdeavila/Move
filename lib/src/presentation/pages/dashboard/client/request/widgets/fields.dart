@@ -14,6 +14,10 @@ class FeeButton extends GetView<RequestServiceCtrl> {
       decimalDigits: 0,
       symbol: 'COP ',
     );
+    final fontSize = MediaQuery.of(context).size.width * 0.04;
+    final padding = MediaQuery.of(context).size.width * 0.025;
+    final iconSize = MediaQuery.of(context).size.width * 0.08;
+    final minIconSize = MediaQuery.of(context).size.width * 0.06;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -21,27 +25,28 @@ class FeeButton extends GetView<RequestServiceCtrl> {
           color: Colors.grey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(padding),
         child: Row(
           children: [
-            const Icon(
+            Icon(
               Icons.payments_rounded,
               color: Colors.redAccent,
-              size: 30.0,
+              size: iconSize,
             ),
             const SizedBox(width: 10.0),
             Obx(() => Text(
                   controller.teeValue > 0
                       ? formatter.formatDouble(controller.teeValue)
                       : "Ofrezca su tarifa",
-                  style: GoogleFonts.montserrat(
+                  style: TextStyle(
                     color: Colors.black,
-                    fontSize: 18.0,
+                    fontSize: fontSize,
                   ),
                 )),
             const Spacer(),
             Obx(
-              () => iconByPaymentType(controller.currentPayment.type),
+              () => iconByPaymentType(controller.currentPayment.type,
+                  size: minIconSize),
             )
           ],
         ),
@@ -66,6 +71,10 @@ class AddressField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = MediaQuery.of(context).size.width * 0.04;
+    final minFontSize = MediaQuery.of(context).size.width * 0.03;
+    final padding = MediaQuery.of(context).size.width * 0.025;
+    final iconSize = MediaQuery.of(context).size.width * 0.08;
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -73,7 +82,7 @@ class AddressField extends StatelessWidget {
           Icon(
             Icons.location_on_rounded,
             color: color,
-            size: 30.0,
+            size: iconSize,
           ),
           const SizedBox(width: 10.0),
           Expanded(
@@ -82,26 +91,25 @@ class AddressField extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(padding),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     name,
-                    style: GoogleFonts.montserrat(
-                      color: Colors.black,
-                      fontSize: 18.0,
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
+                      fontSize: fontSize,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     address,
-                    style: GoogleFonts.montserrat(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 12.0,
+                      fontSize: minFontSize,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

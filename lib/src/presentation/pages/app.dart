@@ -5,6 +5,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WakelockPlus.enable();
     var theme = ThemeData(
       useMaterial3: true,
       appBarTheme: AppBarTheme(

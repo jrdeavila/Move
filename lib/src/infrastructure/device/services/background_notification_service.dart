@@ -12,11 +12,12 @@ class BackgroundNotificationService implements IBackgroundNotificationService {
   }) : _flutterLocalNotificationsPlugin = flutterLocalNotificationsPlugin;
 
   @override
-  void showNotification({required String title, required String body}) {
+  void showNotification(
+      {required int id, required String title, required String body}) {
     if (Platform.isIOS) {
       _showOnIosNotification(title: title, body: body);
     } else {
-      _showOnAndroidNotification(title: title, body: body);
+      _showOnAndroidNotification(id: id, title: title, body: body);
     }
   }
 
@@ -26,7 +27,7 @@ class BackgroundNotificationService implements IBackgroundNotificationService {
   }
 
   Future<void> _showOnAndroidNotification(
-      {required String title, required String body}) {
+      {required int id, required String title, required String body}) {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'channelID', 'channelName',
@@ -39,7 +40,7 @@ class BackgroundNotificationService implements IBackgroundNotificationService {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     return _flutterLocalNotificationsPlugin.show(
-      0,
+      id,
       title,
       body,
       platformChannelSpecifics,

@@ -1,0 +1,82 @@
+{
+  // Dame la configuración para poder correr una aplicacion de flutter en modo debug y release
+  // en dos o mas dispositivos al mismo tiempo
+  // Los dos emuladores que se van a usar son:
+  // 1. Sdk Gphone16k x86 64 (mobile) - emulator-5554 - Android 15
+  // 2. Sdk Gphone16k x86 64 (mobile) - emulator-5556 - Android 15
+
+  // Para poder correr la aplicacion en dos o mas dispositivos al mismo tiempo
+  // se debe de agregar la propiedad "deviceId" en la configuracion de cada dispositivo
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Mevo Debug",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554",
+      "program": "lib/main.dart",
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Mevo Release",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554",
+      "program": "lib/main.dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Mevo Debug 2",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5556",
+      "program": "lib/main.dart",
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Mevo Release 2",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "emulator-5556",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Mevo Real Device Debug",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "192.168.1.14:1031",
+      "program": "lib/main.dart",
+      "flutterMode": "debug"
+    },
+    {
+      "name": "Mevo Real Device Release",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "192.168.1.14:1031",
+      "flutterMode": "release"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Mevo Debug Emulators",
+      "configurations": ["Mevo Debug", "Mevo Debug 2"]
+    },
+    {
+      "name": "Mevo Release Emulators",
+      "configurations": ["Mevo Release", "Mevo Release 2"]
+    },
+    {
+      "name": "Mevo Debug All",
+      "configurations": ["Mevo Debug", "Mevo Debug 2", "Mevo Real Device Debug"]
+    },
+    {
+      "name": "Mevo Release All",
+      "configurations": [
+        "Mevo Release",
+        "Mevo Release 2",
+        "Mevo Real Device Release"
+      ]
+    }
+  ]
+}

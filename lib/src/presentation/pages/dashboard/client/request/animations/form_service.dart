@@ -7,6 +7,7 @@ class FormRequestService extends GetView<RequestServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = MediaQuery.of(context).size.width * 0.05;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -26,12 +27,12 @@ class FormRequestService extends GetView<RequestServiceCtrl> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text("¿A DÓNDE VAMOS?",
-                style: GoogleFonts.montserrat(
-                  fontSize: 20,
+                style: TextStyle(
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 )),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 10.0),
             Obx(() => AddressField(
                   color: Colors.blue,
                   name: controller.beginTravelPoint?.name ?? 'Recogida',

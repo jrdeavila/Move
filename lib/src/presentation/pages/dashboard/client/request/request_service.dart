@@ -2,9 +2,17 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mevo/lib.dart';
 
-class RequestServicePage extends GetView<RequestServiceCtrl> {
+class RequestServicePage extends StatefulWidget {
   const RequestServicePage({super.key});
 
+  @override
+  State<RequestServicePage> createState() => _RequestServicePageState();
+}
+
+class _RequestServicePageState extends State<RequestServicePage> {
+  final controller = Get.find<RequestServiceCtrl>();
+  final GlobalKey _actionKey = GlobalKey();
+  final double _actionMargin = 16.0;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -22,7 +30,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             ),
             Positioned(
               right: 16.0,
-              bottom: 466.0,
+              bottom: _actionMargin,
               child: _buildLocationButton(),
             ),
             Positioned(
@@ -32,6 +40,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
             ),
             _buildCounterOfferts(context),
             Positioned(
+              key: _actionKey,
               bottom: 0,
               left: 0,
               right: 0,
@@ -44,6 +53,14 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
         ),
       ),
     );
+  }
+
+  void _getActionSize() {
+    if (_actionKey.currentContext == null) {
+      return;
+    }
+    print("Action size: ${_actionKey.currentContext!.size}");
+    setState(() {});
   }
 
   Widget _buildCounterOfferts(context) {
@@ -95,6 +112,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
   Widget _buildCurrentAction(BuildContext context) {
     final ListenCurrentServiceCtrl listenCurrentServiceCtrl =
         Get.find<ListenCurrentServiceCtrl>();
+    listenCurrentServiceCtrl.setActionChangeCallback(_getActionSize);
     return Obx(() {
       if (listenCurrentServiceCtrl.currentRequestService?.status ==
           RequestServiceStatus.waiting) {
@@ -121,7 +139,7 @@ class RequestServicePage extends GetView<RequestServiceCtrl> {
   }
 
   FloatingActionButton _buildBackButton() {
-    return FloatingActionButton(
+    return FloatingActionButton.small(
       onPressed: () {
         final listenCurrentServiceCtrl = Get.find<ListenCurrentServiceCtrl>();
         if (listenCurrentServiceCtrl.currentRequestService == null) {

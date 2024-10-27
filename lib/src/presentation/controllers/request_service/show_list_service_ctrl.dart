@@ -1,4 +1,6 @@
-import 'package:flutter_overlay_window/flutter_overlay_window.dart';
+import 'dart:developer';
+
+import 'package:flutter/services.dart';
 import 'package:mevo/lib.dart';
 import 'package:flutter/widgets.dart'; // Necesario para AppLifecycleState
 
@@ -54,37 +56,22 @@ class ShowListServiceCtrl extends GetxController with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
       _notifyInBackground();
-      _showOverlayWindow(); // Muestra la ventana superpuesta cuando está en segundo plano
-    } else if (state == AppLifecycleState.resumed) {
-      FlutterOverlayWindow
-          .closeOverlay(); // Cierra la ventana superpuesta al volver al primer plano
     }
   }
 
   // Muestra una ventana superpuesta con contenido personalizado
   void _showOverlayWindow() async {
-    // Verifica si el permiso está concedido, si no lo está, lo solicita.
-    if (await FlutterOverlayWindow.isPermissionGranted()) {
-      // Muestra la ventana superpuesta con el contenido personalizado
-      FlutterOverlayWindow.showOverlay(
-        height: 200,
-        width: 300,
-        enableDrag: true, // Permite mover la ventana
-        alignment: OverlayAlignment.center,
-        overlayContent:
-            'Nueva solicitud de servicio', // Contenido que aparecerá en la ventana
-      );
-    } else {
-      // Solicita el permiso si no está concedido
-      await FlutterOverlayWindow.requestPermission();
-    }
+    log('Mostrando ventana superpuesta');
+    MethodChannel _channel = const MethodChannel('com.mevo.taxis/foreground');
+    await _channel.invokeMethod('bringAppToFront');
   }
 
   // Notificaciones en segundo plano cuando la aplicación está pausada
   void _notifyInBackground() {
     Get.find<NotificationCtrl>().showNotification(
-      title: 'Nueva solicitud de servicio',
-      body: 'Tienes una nueva solicitud de servicio',
+      id: 9,
+      title: 'Estás en segundo plano',
+      body: 'Ahora puedes recibir solicitudes de servicio sin abrir la app',
     );
   }
 
@@ -92,11 +79,28 @@ class ShowListServiceCtrl extends GetxController with WidgetsBindingObserver {
   void _handleNewServiceRequest() {
     _playSound();
     _routing();
+    _showNotification();
+    _returnToForeground();
+    _showOverlayWindow();
   }
+
+  // Regresa a la aplicación cuando se recibe una nueva solicitud de servicio
+  void _returnToForeground() {}
 
   // Redirige al conductor a la pantalla de servicios si hay nuevas solicitudes
   void _routing() {
     Get.toNamed(ProfileRoutes.showServices);
+  }
+
+  // Muestra una notificación cuando hay una nueva solicitud de servicio
+  void _showNotification() {
+    // Si la app esta en segundo plano mostrar notificación
+
+    Get.find<NotificationCtrl>().showNotification(
+      id: _listRequestService.length,
+      title: 'Nueva solicitud de servicio',
+      body: 'Tienes una nueva solicitud de servicio',
+    );
   }
 
   // Reproduce un sonido cuando hay una nueva solicitud
@@ -114,9 +118,9 @@ class ShowListServiceCtrl extends GetxController with WidgetsBindingObserver {
         _listRequestService.refresh();
       },
       onError: (error) {
-        Get.find<NotificationCtrl>().showNotification(
-          title: 'Error de conexión',
-          body: 'No se pudo obtener las solicitudes de servicio',
+        Get.find<BannerCtrl>().showError(
+          'Error de conexión',
+          'No se pudo obtener las solicitudes de servicio',
         );
       },
     );

@@ -13,6 +13,5 @@ Future<void> configureDependencies() {
   return Future.wait([
     getIt.init(),
     GetStorage.init(),
-    WakelockPlus.enable(),
   ]);
 }

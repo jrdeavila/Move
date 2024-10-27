@@ -12,54 +12,54 @@ class CardDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = MediaQuery.of(context).size.height * 0.02;
+    final minFontSize = MediaQuery.of(context).size.height * 0.015;
+    final paddingY = MediaQuery.of(context).size.height * 0.005;
+    final paddingX = MediaQuery.of(context).size.width * 0.05;
+    final iconSize = MediaQuery.of(context).size.height * 0.04;
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: Dimensions.screenHeight * 0.01),
-      child: SizedBox(
-        width: Dimensions.screenWidth * 0.8,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.album,
-              color: color,
-            ),
-            SizedBox(
-              width: Dimensions.screenWidth * 0.03,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.montserrat(
+      padding: EdgeInsets.symmetric(vertical: paddingY, horizontal: paddingX),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.album,
+            color: color,
+            size: iconSize,
+          ),
+          SizedBox(
+            width: Dimensions.screenWidth * 0.03,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                SizedBox(
+                  width: Dimensions.screenWidth * 0.7,
+                  child: Text(
+                    adress,
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: Dimensions.screenWidth * 0.04,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  SizedBox(
-                    height: Dimensions.screenHeight * 0.01,
-                  ),
-                  SizedBox(
-                    width: Dimensions.screenWidth * 0.7,
-                    child: Text(
-                      adress,
-                      style: GoogleFonts.montserrat(
-                        color: Colors.black,
-                        fontSize: Dimensions.screenWidth * 0.04,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      fontSize: minFontSize,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

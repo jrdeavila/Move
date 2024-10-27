@@ -14,6 +14,7 @@ class ButtonClassic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = MediaQuery.of(context).size.height * 0.02;
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -21,15 +22,13 @@ class ButtonClassic extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        minimumSize: Size(Dimensions.width90, Dimensions.buttonHeight),
       ),
       child: Text(
         text,
         style: GoogleFonts.montserrat(
           color: Colors.white,
-          fontSize: Dimensions.screenWidth * 0.05,
+          fontSize: fontSize,
           letterSpacing: 1.6,
-          fontWeight: FontWeight.w600,
         ),
         textAlign: TextAlign.center,
       ),

@@ -13,10 +13,12 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).size.height * 0.015;
+    final marginB = MediaQuery.of(context).size.height * 0.01;
     return FadeInRightBig(
       child: Container(
-        padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsets.only(bottom: 20.0),
+        padding: EdgeInsets.all(padding),
+        margin: EdgeInsets.only(bottom: marginB),
         width: width,
         height: height,
         decoration: BoxDecoration(
@@ -60,7 +62,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
             const SizedBox(height: 10.0),
             _buildServiceDetails(),
             const SizedBox(height: 10.0),
-            Spacer(),
+            const Spacer(),
             _buildActions(),
           ],
         ),
@@ -69,7 +71,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
   }
 
   Row _buildActions() {
-    final minFontSize = width * 0.03;
+    final minFontSize = height * 0.035;
     return Row(
       children: [
         GestureDetector(
@@ -111,8 +113,8 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
   }
 
   Row _buildServiceDetails() {
-    final minFontSize = width * 0.03;
-    final maxFontSize = width * 0.04;
+    final minFontSize = height * 0.035;
+    final maxFontSize = height * 0.06;
     return Row(
       children: [
         Expanded(
@@ -138,7 +140,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
                     requestService.payment.name,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: minFontSize,
+                      fontSize: maxFontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -165,7 +167,7 @@ class CardRequestService extends GetView<ShowListServiceCtrl> {
                 doubleCurrencyFormatter(requestService.tee),
                 style: TextStyle(
                   fontSize: maxFontSize,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ],
@@ -227,39 +229,38 @@ class AddressInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final minFontSize = constraints.maxWidth * 0.035;
-      final maxFontSize = constraints.maxWidth * 0.05;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
+    final minFontSize = MediaQuery.of(context).size.height * 0.012;
+    final maxFontSize = MediaQuery.of(context).size.height * 0.017;
+    return Row(
+      children: [
+        Icon(
+          Icons.location_on,
+          color: isOrigin ? Colors.blueAccent : Colors.redAccent,
+        ),
+        const SizedBox(width: 10.0),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.location_on,
-                color: isOrigin ? Colors.blueAccent : Colors.redAccent,
+              Text(
+                travelPoint.name,
+                style: TextStyle(
+                  fontSize: maxFontSize,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              const SizedBox(width: 10.0),
-              Expanded(
-                child: Text(
-                  travelPoint.name,
-                  style: TextStyle(
-                    fontSize: maxFontSize,
-                    fontWeight: FontWeight.w600,
-                  ),
+              Text(
+                travelPoint.address,
+                style: TextStyle(
+                  fontSize: minFontSize,
                 ),
               ),
             ],
           ),
-          Text(
-            travelPoint.address,
-            style: TextStyle(
-              fontSize: minFontSize,
-            ),
-          ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }

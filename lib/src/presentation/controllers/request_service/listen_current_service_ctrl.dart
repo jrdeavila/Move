@@ -23,6 +23,7 @@ class ListenCurrentServiceCtrl extends GetxController {
   RxList<RequestService> _listCounterOffers = <RequestService>[].obs;
   final RxBool _loading = false.obs;
   final RxDouble _currentOffer = 0.0.obs;
+  final Rx<VoidCallback> _actionChangeCallback = Rx(() {});
 
   // ---------------------- Getters ----------------------
 
@@ -44,14 +45,17 @@ class ListenCurrentServiceCtrl extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    ever(_currentRequestService, _routing);
-    ever(_currentRequestService, _showQualificationDialog);
-    ever(_currentRequestService, _updateCurrentOffer);
-    // ever(_currentRequestService, _playSoundOnStatusStarted);
-    ever(_listCounterOffers, _playSoundOnGetOffers);
-    ever(_currentRequestService, _listenCounterOffers);
-    ever(_currentRequestService, _listenDriverLocation);
+    ever(_currentRequestService, (value) {
+      _runActionCallback(value);
+      _showQualificationDialog(value);
+      _updateCurrentOffer(value);
+      _listenCounterOffers(value);
+      _listenDriverLocation(value);
+      _routing(value);
+    });
+
     ever(_driverLocation, _moveCamera);
+    ever(_listCounterOffers, _playSoundOnGetOffers);
     _listenCurrentRequestService();
   }
 
@@ -63,6 +67,12 @@ class ListenCurrentServiceCtrl extends GetxController {
   }
 
   // ---------------------- Private Methods ----------------------
+
+  void _runActionCallback(RequestService? requestService) {
+    if (requestService != null) {
+      _actionChangeCallback.value();
+    }
+  }
 
   void _showQualificationDialog(RequestService? requestService) async {
     if (requestService?.status == RequestServiceStatus.finished) {
@@ -278,5 +288,9 @@ class ListenCurrentServiceCtrl extends GetxController {
     });
 
     _loading.value = false;
+  }
+
+  void setActionChangeCallback(void Function() getActionSize) {
+    _actionChangeCallback.value = getActionSize;
   }
 }

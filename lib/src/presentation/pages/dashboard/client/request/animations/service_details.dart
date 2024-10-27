@@ -7,6 +7,9 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
 
   @override
   Widget build(BuildContext context) {
+    final minFontSize = MediaQuery.of(context).size.height * 0.02;
+    final maxFontSize = MediaQuery.of(context).size.height * 0.035;
+    final maxIconSize = MediaQuery.of(context).size.height * 0.04;
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 20.0,
@@ -31,7 +34,7 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
             'Espere a que un conductor acepte su servicio',
             style: GoogleFonts.montserrat(
               color: Colors.grey[600],
-              fontSize: 18,
+              fontSize: minFontSize,
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
@@ -50,7 +53,7 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
                   icon: Icon(
                     Icons.remove_circle,
                     color: Colors.yellow[700],
-                    size: 40,
+                    size: maxIconSize,
                   ),
                 ),
                 const SizedBox(
@@ -62,7 +65,7 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
                     ),
                     style: GoogleFonts.montserrat(
                       color: Colors.black,
-                      fontSize: 35,
+                      fontSize: maxFontSize,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(
@@ -75,23 +78,32 @@ class ServiceDetailsView extends GetView<ListenCurrentServiceCtrl> {
                   icon: Icon(
                     Icons.add_circle,
                     color: Colors.yellow[700],
-                    size: 40,
+                    size: maxIconSize,
                   ),
                 ),
               ],
             );
           }),
+          Divider(
+            color: Colors.grey[300],
+            thickness: 1.0,
+          ),
           CardDetails(
             color: Colors.blue,
             adress: controller.currentRequestService?.origin.address ??
                 'Dirección de origen',
-            title: 'Origen',
+            title: controller.currentRequestService?.origin.name ?? 'Origen',
           ),
           CardDetails(
-            color: const Color.fromRGBO(255, 198, 65, 1),
+            color: Colors.redAccent,
             adress: controller.currentRequestService?.destination.address ??
                 'Dirección de destino',
-            title: 'Destino',
+            title:
+                controller.currentRequestService?.destination.name ?? 'Destino',
+          ),
+          Divider(
+            color: Colors.grey[300],
+            thickness: 1.0,
           ),
           const SizedBox(
             height: 20,

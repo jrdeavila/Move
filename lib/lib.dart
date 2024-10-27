@@ -14,6 +14,7 @@ export 'package:google_fonts/google_fonts.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:wakelock_plus/wakelock_plus.dart';
 export 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+export 'package:screen_brightness/screen_brightness.dart';
 
 export 'firebase_options.dart';
 export "main.dart";
