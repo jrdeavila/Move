@@ -8,4 +8,8 @@ class BannerCtrl extends GetxController {
   void showSuccess(String title, String message) {
     showSnackbar(title, message, icon: Icons.check_circle_outline_rounded);
   }
+
+  void showError(String title, String message) {
+    showSnackbar(title, message, icon: Icons.error_outline_rounded);
+  }
 }

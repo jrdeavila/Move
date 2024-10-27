@@ -16,5 +16,5 @@ export 'package:wakelock_plus/wakelock_plus.dart';
 export 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 export 'firebase_options.dart';
-export 'main.dart';
+export "main.dart";
 export 'src/src.dart';
