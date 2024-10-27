@@ -26,8 +26,8 @@ class DashboardClientView extends GetView<SessionCtrl> {
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth;
       final height = constraints.maxHeight * 0.2;
-      final fontSize = width * 0.06;
-      final fontDescription = width * 0.04;
+      final fontSize = height * 0.15;
+      final fontDescription = height * 0.08;
       final imageSize = width * 0.2;
       return CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -59,10 +59,10 @@ class DashboardClientView extends GetView<SessionCtrl> {
       sliver: SliverList(
         delegate: SliverChildListDelegate([
           Text('Dashboard',
-              style: GoogleFonts.montserrat(
+              style: TextStyle(
                 color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
               )),
           DashboardCard(
             width: width,
@@ -115,6 +115,9 @@ class DashboardClientView extends GetView<SessionCtrl> {
   }
 
   SliverAppBar _buildAppBar(BuildContext context) {
+    final height = MediaQuery.of(context).size.height * 0.14;
+    final nameFontSize = height * 0.18;
+    final minFontSize = height * 0.12;
     return SliverAppBar(
         actions: [
           TextButton(
@@ -127,16 +130,17 @@ class DashboardClientView extends GetView<SessionCtrl> {
                 Text(
                   "Salir de la app",
                   style: GoogleFonts.montserrat(
-                    fontSize: 16.0,
+                    fontSize: minFontSize,
                     color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
                   width: 10.0,
                 ),
-                const Icon(
+                Icon(
                   Icons.logout_outlined,
-                  size: 30,
+                  size: nameFontSize,
                   color: Colors.black,
                 ),
               ],
@@ -147,7 +151,7 @@ class DashboardClientView extends GetView<SessionCtrl> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(100),
+            preferredSize: Size.fromHeight(height),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
@@ -157,16 +161,16 @@ class DashboardClientView extends GetView<SessionCtrl> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Bienvenido',
-                            style: GoogleFonts.montserrat(
+                            style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16.0,
+                              fontSize: minFontSize,
                               fontWeight: FontWeight.w300,
                             )),
                         Obx(() => Text(
                             controller.user?.firstname ?? "Nombre de usuario",
                             style: GoogleFonts.montserrat(
                               color: Colors.black,
-                              fontSize: 30.0,
+                              fontSize: nameFontSize,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1.2,
                             ))),
@@ -182,6 +186,8 @@ class DashboardClientView extends GetView<SessionCtrl> {
 
   Widget _buildPointSection(BuildContext context) {
     final clientPointsCtrl = Get.find<ClientPointCtrl>();
+    final minFontSize = MediaQuery.of(context).size.height * 0.02;
+    final maxFontSize = MediaQuery.of(context).size.height * 0.025;
     return GestureDetector(
       onTap: () {
         clientPointsCtrl.goToPoints();
@@ -206,15 +212,16 @@ class DashboardClientView extends GetView<SessionCtrl> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Puntos',
-                    style: GoogleFonts.montserrat(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.0,
+                      fontSize: minFontSize,
                       fontWeight: FontWeight.w300,
                     )),
                 const SizedBox(width: 5),
-                const Icon(
+                Icon(
                   Icons.chevron_right,
                   color: Colors.black,
+                  size: maxFontSize,
                 ),
               ],
             ),
@@ -222,9 +229,9 @@ class DashboardClientView extends GetView<SessionCtrl> {
             Row(
               children: [
                 Obx(() => Text(clientPointsCtrl.points.toString(),
-                    style: GoogleFonts.montserrat(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: maxFontSize,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.2,
                     ))),
